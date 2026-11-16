@@ -177,6 +177,44 @@ a.chip:hover{border-color:var(--ice)}
 .fc-tot{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--bg-2);border:1px solid var(--line);padding:8px 14px}
 .fc-tot b{color:var(--ice);font-size:1.4rem}
 .days{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.fstrip{position:relative;display:grid;grid-template-columns:repeat(5,1fr);background:var(--bg-2);border:1px solid var(--line);padding:14px 6px 10px}
+.fcol{position:relative;text-align:center;cursor:pointer;padding:0 4px;border-radius:6px;transition:background .15s;z-index:1}
+.fcol:hover{background:rgba(94,200,242,.06)}
+.fcol.on{background:rgba(94,200,242,.12);box-shadow:inset 0 0 0 1px rgba(94,200,242,.5)}
+.fcol .dn{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:1.05rem}
+.fcol .dd{font-size:.75rem;color:var(--muted)}
+.fcol .wi{font-size:2.5rem;line-height:1.15;margin:4px 0}
+.fcol .tt{font-family:var(--display);font-weight:700;font-size:1.25rem;height:72px;display:flex;flex-direction:column;justify-content:flex-start}
+.fcol .tt span{color:var(--muted);font-weight:600;font-size:1.05rem}
+.fcol .sun{margin:6px 2px 0;font-family:var(--display);font-weight:700;padding:5px 0;color:#1b1b1b;background:#d8b33a}
+.fcol .snw{margin:0 2px;font-family:var(--display);font-weight:700;font-size:1.25rem;padding:6px 0;background:#161b20}
+.fcol .snw.y{background:#1d3a50;color:#fff}
+.fcol .pp{height:4px;margin:0 2px;background:#333;position:relative;overflow:hidden}
+.fcol .pp i{position:absolute;left:0;top:0;bottom:0;background:#e5383b}
+.fcol .ex{font-size:.72rem;color:var(--muted);margin-top:6px;line-height:1.35}
+.fcol .ex b{color:#ddd;font-weight:600}
+.fcol .more{font-size:.7rem;color:var(--ice);margin-top:4px;font-family:var(--display);letter-spacing:.06em;text-transform:uppercase}
+.fsvg{position:absolute;left:6px;right:6px;pointer-events:none;z-index:0}
+.fhours{margin-top:10px;background:var(--bg-2);border:1px solid rgba(94,200,242,.5);padding:14px 0 10px}
+.fh-head{display:flex;justify-content:space-between;align-items:baseline;padding:0 16px 10px;gap:10px;flex-wrap:wrap}
+.fh-head b{font-family:var(--display);font-size:1.2rem;text-transform:uppercase;letter-spacing:.06em}
+.fh-head span{font-size:.8rem;color:var(--muted)}
+.fh-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;padding:0 10px 6px}
+.fh-grid{display:grid;grid-auto-flow:column;grid-auto-columns:58px;gap:2px}
+.fh-c{text-align:center;font-size:.8rem;color:var(--muted);padding:6px 0;border-radius:4px}
+.fh-c.night{background:rgba(255,255,255,.025)}
+.fh-c .h{font-family:var(--display);font-weight:700;color:#fff;font-size:.95rem}
+.fh-c .i{font-size:1.5rem;line-height:1.3}
+.fh-c .t{font-family:var(--display);font-weight:700;color:#fff;font-size:1.05rem}
+.fh-c .bar{height:48px;display:flex;align-items:flex-end;justify-content:center;margin:4px 0 2px;gap:2px}
+.fh-c .bar i{display:block;width:12px;border-radius:2px 2px 0 0}
+.fh-c .bar .s{background:#5ec8f2}.fh-c .bar .r{background:#4f7cff}
+.fh-c .v{color:#ddd}
+.fh-c .arr{display:inline-block;color:var(--ice)}
+.fh-leg{display:flex;gap:14px;flex-wrap:wrap;padding:8px 16px 0;font-size:.75rem;color:var(--muted)}
+.fh-leg i{display:inline-block;width:10px;height:10px;margin-right:5px;vertical-align:-1px}
+.fh-rows{display:grid;grid-template-columns:auto;}
+@media(max-width:600px){.fcol .wi{font-size:1.9rem}.fcol .dn{font-size:.9rem}.fcol .tt{font-size:1.05rem;height:60px}.fcol .snw{font-size:1.05rem}.fcol .ex{font-size:.66rem}}
 .day{background:var(--bg-2);border:1px solid var(--line);padding:16px 14px;text-align:center;position:relative}
 .day.snowy{border-color:var(--ice);background:linear-gradient(180deg,#0f2f42,#121212 70%)}
 .day .dn{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.08em}
@@ -460,6 +498,8 @@ footer a{color:var(--ice)}
     <div class="fc-tot" id="fcTot">Neve prevista 3 giorni: <b>–</b></div>
   </div>
   <div class="days" id="days"></div>
+  <div class="fstrip" id="fstrip" hidden></div>
+  <div class="fhours" id="fhours" hidden></div>
   <div class="fc-src">
     <p class="meta">Modello: Open-Meteo (best match per l'Europa), quota 1837 m. Le previsioni di neve sono indicative.</p>
     <a class="btn btn-line" id="bfLink" target="_blank" rel="noopener">Confronta su bergfex</a>
@@ -626,7 +666,7 @@ var I18N={
 "Dati meteo:":"Weather data:","Protezione Civile della Regione FVG":"FVG Region Civil Protection",
 "(CC BY 4.0) · Bollettino valanghe: AINEVA / Protezione Civile FVG · Previsioni:":"(CC BY 4.0) · Avalanche bulletin: AINEVA / FVG Civil Protection · Forecast:",
 "(CC BY 4.0) · Mappa: OpenTopoMap / OpenStreetMap · misure non validate.":"(CC BY 4.0) · Map: OpenTopoMap / OpenStreetMap · measurements not validated.",
-"Aggiungi alla schermata Home":"Add to Home screen","Chiudi":"Close","Impianti":"Lifts","❄ Neve 1837 m":"❄ Snow 1837 m","Lato sloveno":"Slovenian side","Neve Kanin SLO 2260 m · cm":"Snow Kanin SLO 2260 m · cm","Neve":"Snow","Temperatura":"Temperature","Vento":"Wind","Variazione 24 h":"24 h change","Entrambi":"Both","Neve IT 1837 m":"Snow IT 1837 m","Neve SLO 2260 m":"Snow SLO 2260 m","Temp. SLO":"Temp. SLO","Vento SLO":"Wind SLO","Kanin · 2260 m":"Kanin · 2260 m","Stazione ARSO Kanin (2260 m)":"ARSO Kanin station (2260 m)","neve":"snow","vento":"wind","fonte ARSO ↗":"source ARSO ↗","Guide e corsi":"Guides & courses","fonte PromoTurismoFVG ↗":"source PromoTurismoFVG ↗","aperto":"open","chiuso":"closed","stato n.d.":"status n/a",
+"Aggiungi alla schermata Home":"Add to Home screen","Chiudi":"Close","Impianti":"Lifts","Ora":"Hour","Neve/pioggia":"Snow/rain","Prob.":"Prob.","Vento":"Wind","Pioggia":"Rain","Neve":"Snow","ore":"hours","Previsione oraria a 1837 m · vento in km/h":"Hourly forecast at 1837 m · wind in km/h","Frecce: direzione verso cui soffia il vento":"Arrows: direction the wind blows towards","Ore di sole":"Sunshine hours","❄ Neve 1837 m":"❄ Snow 1837 m","Lato sloveno":"Slovenian side","Neve Kanin SLO 2260 m · cm":"Snow Kanin SLO 2260 m · cm","Neve":"Snow","Temperatura":"Temperature","Vento":"Wind","Variazione 24 h":"24 h change","Entrambi":"Both","Neve IT 1837 m":"Snow IT 1837 m","Neve SLO 2260 m":"Snow SLO 2260 m","Temp. SLO":"Temp. SLO","Vento SLO":"Wind SLO","Kanin · 2260 m":"Kanin · 2260 m","Stazione ARSO Kanin (2260 m)":"ARSO Kanin station (2260 m)","neve":"snow","vento":"wind","fonte ARSO ↗":"source ARSO ↗","Guide e corsi":"Guides & courses","fonte PromoTurismoFVG ↗":"source PromoTurismoFVG ↗","aperto":"open","chiuso":"closed","stato n.d.":"status n/a",
 "Cabinovia Canin":"Canin gondola","Seggiovia Gilberti":"Gilberti chairlift",
 "Freerider in neve fresca":"Freerider in fresh snow","Sulla cresta del Golovec, Sella Nevea":"On the Golovec ridge, Sella Nevea","Stato impianti":"Lift status","Previsioni 4 giorni":"4-day forecast",
 "Webcam Sella Nevea in quota (1870 m)":"Sella Nevea webcam up the mountain (1870 m)","Webcam Sella Nevea a valle":"Sella Nevea webcam in the valley","Neve fresca a Sella Nevea":"Fresh snow in Sella Nevea",
@@ -687,7 +727,7 @@ const CONFIG = {
   api: "https://monitor.protezionecivile.fvg.it/api",
   stationPage: "https://monitor.protezionecivile.fvg.it/stazione/541",
   forecast: {
-    url: "https://api.open-meteo.com/v1/forecast?latitude=46.3743&longitude=13.4703&elevation=1837&daily=weather_code,temperature_2m_max,temperature_2m_min,snowfall_sum,precipitation_sum,wind_gusts_10m_max&hourly=freezing_level_height&timezone=Europe%2FRome&forecast_days=4",
+    url: "https://api.open-meteo.com/v1/forecast?latitude=46.3743&longitude=13.4703&elevation=1837&daily=weather_code,temperature_2m_max,temperature_2m_min,snowfall_sum,precipitation_sum,wind_gusts_10m_max,sunshine_duration,precipitation_probability_max&hourly=freezing_level_height,temperature_2m,weather_code,precipitation,snowfall,precipitation_probability,wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day&timezone=Europe%2FRome&forecast_days=5",
     bergfex: "https://www.bergfex.com/sella-nevea/wetter/berg/"
   },
   powderThreshold: 15,            // cm di neve fresca in 24 h per il "Powder alert"
@@ -935,7 +975,7 @@ async function loadForecast(){
   try{
     const j=await (await fetch(CONFIG.forecast.url)).json(), d=j.daily, h=j.hourly;
     let tot=0;
-    $("days").innerHTML=d.time.map((t,i)=>{
+    $("days").innerHTML=d.time.slice(0,4).map((t,i)=>{
       const dt=new Date(t+"T12:00"), sn=Math.round((d.snowfall_sum[i]||0)*10)/10;
       if(i>0) tot+=sn;
       const fz=h.time.map((x,k)=>[x,h.freezing_level_height[k]]).filter(([x])=>x.startsWith(t)&&+x.slice(11,13)>=6&&+x.slice(11,13)<=18).map(a=>a[1]);
@@ -950,11 +990,73 @@ async function loadForecast(){
         <li>Raffiche <b>${Math.round(d.wind_gusts_10m_max[i])} km/h</b></li>
         ${fz.length?(()=>{const a=Math.round(Math.min(...fz)/50)*50,b=Math.round(Math.max(...fz)/50)*50;return `<li>Zero termico <b>${a===b?a:a+"–"+b} m</b></li>`})():""}</ul></div>`;
     }).join("");
-    $("mini").innerHTML=d.time.map((t,i)=>{const dt=new Date(t+"T12:00"),sn=d.snowfall_sum[i]||0;
+    FC=j; if(FCV==="new"){ $("days").hidden=true; $("fstrip").hidden=false; renderStrip(); }
+    $("mini").innerHTML=d.time.slice(0,4).map((t,i)=>{const dt=new Date(t+"T12:00"),sn=d.snowfall_sum[i]||0;
       return `<div><span class="md">${i===0?"Oggi":dt.toLocaleDateString(LOC,{weekday:"short"})}</span><br><span class="mi">${(WMO[d.weather_code[i]]||["❔"])[0]}</span><br><span class="ms">${sn>=1?"+"+Math.round(sn):sn>0?"&lt;1":"0"} cm</span><br><span class="mt">${Math.round(d.temperature_2m_max[i])}°/${Math.round(d.temperature_2m_min[i])}°</span></div>`}).join("");
     $("fcTot").innerHTML=`Neve prevista prossimi 3 giorni: <b>${tot>0&&tot<1?"&lt;1":Math.round(tot)} cm</b>`;
   }catch(e){ console.error(e); $("days").innerHTML=`<p class="meta">Previsioni non disponibili. <a href="${CONFIG.forecast.bergfex}" target="_blank" rel="noopener" style="color:var(--ice)">Vedi su bergfex</a></p>`; }
 }
+
+let FC=null, FSEL=-1;
+const FCV=new URLSearchParams(location.search).get("fc")==="classic"?"classic":"new";
+const DIRA=["↓","↙","←","↖","↑","↗","→","↘"];
+function wIcon(c,day){ if(!day&&(c===0||c===1)) return "🌙"; if(!day&&c===2) return "☁️"; return (WMO[c]||["❔"])[0]; }
+function renderStrip(){
+  const d=FC.daily, h=FC.hourly, n=d.time.length, el=$("fstrip");
+  const cols=d.time.map((t,i)=>{
+    const dt=new Date(t+"T12:00"), sn=d.snowfall_sum[i]||0, sun=(d.sunshine_duration[i]||0)/3600, pr=d.precipitation_probability_max[i]||0;
+    const name=i===0?"Oggi":i===1?"Domani":dt.toLocaleDateString(LOC,{weekday:"short"});
+    const fz=h.time.map((x,k)=>[x,h.freezing_level_height[k]]).filter(([x])=>x.startsWith(t)&&+x.slice(11,13)>=6&&+x.slice(11,13)<=18).map(a=>a[1]);
+    const fzt=fz.length?Math.round(Math.max(...fz)/50)*50:null;
+    const sTxt=sn>=1?Math.round(sn)+"cm":sn>0?"&lt;1cm":"0cm";
+    const alpha=.35+.65*Math.min(1,sun/8);
+    return `<div class="fcol${i===FSEL?" on":""}" data-i="${i}">
+      <div class="dn">${name}</div><div class="dd">${dt.toLocaleDateString(LOC,{day:"numeric",month:"short"})}</div>
+      <div class="wi">${(WMO[d.weather_code[i]]||["❔"])[0]}</div>
+      <div class="tt"><div>${Math.round(d.temperature_2m_max[i])}°</div><span>${Math.round(d.temperature_2m_min[i])}°</span></div>
+      <div class="sun" style="background:rgba(216,179,58,${alpha.toFixed(2)})" title="Ore di sole">☀ ${Math.round(sun)}h</div>
+      <div class="snw${sn>0?" y":""}" title="Neve">${sTxt}</div>
+      <div class="pp" title="Prob. precipitazioni ${pr}%"><i style="width:${pr}%"></i></div>
+      <div class="ex">💨 <b>${Math.round(d.wind_gusts_10m_max[i])}</b> km/h${fzt?`<br>0° <b>${fzt}</b> m`:""}</div>
+      <div class="more">${i===FSEL?"▲":"▼"} ore</div></div>`;}).join("");
+  el.innerHTML=`<svg class="fsvg" id="fsvg"></svg>`+cols;
+  // temperature lines across columns (max + min)
+  requestAnimationFrame(()=>{
+    const svg=$("fsvg"); if(!svg) return; const r=el.getBoundingClientRect();
+    const pts=k=>[...el.querySelectorAll(".fcol")].map(c=>{const e=c.querySelector(".tt").children[k].getBoundingClientRect();return [e.left+e.width/2-r.left-6, e.top+e.height/2-r.top]});
+    const top=Math.min(...pts(0).map(p=>p[1]))-20, bot=Math.max(...pts(1).map(p=>p[1]))+20;
+    svg.style.top=top+"px"; svg.style.height=(bot-top)+"px"; svg.setAttribute("viewBox",`0 0 ${r.width-12} ${bot-top}`);
+    const line=(p,c)=>`<polyline points="${p.map(([x,y])=>x+","+(y-top)).join(" ")}" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity=".28"/>`;
+    svg.innerHTML=line(pts(0),"#ff9a7a")+line(pts(1),"#8fd3f5");
+  });
+  el.querySelectorAll(".fcol").forEach(c=>c.onclick=()=>{const i=+c.dataset.i; FSEL=FSEL===i?-1:i; renderStrip(); renderHours();});
+}
+function renderHours(){
+  const box=$("fhours"); if(FSEL<0){box.hidden=true;return;}
+  const d=FC.daily, h=FC.hourly, day=d.time[FSEL], dt=new Date(day+"T12:00");
+  const idx=h.time.map((x,k)=>x.startsWith(day)?k:-1).filter(k=>k>=0);
+  const maxP=Math.max(2,...idx.map(k=>(h.precipitation[k]||0)));
+  const cells=idx.map(k=>{
+    const hr=h.time[k].slice(11,16), sn=h.snowfall[k]||0, pr=h.precipitation[k]||0;
+    const snMm=Math.min(pr,sn/0.7), rnMm=Math.max(0,pr-snMm);
+    const hs=Math.round(snMm/maxP*46), hrn=Math.round(rnMm/maxP*46);
+    const dir=h.wind_direction_10m[k], arr=DIRA[Math.round(((dir%360)/45))%8];
+    return `<div class="fh-c${h.is_day[k]?"":" night"}"><div class="h">${hr.slice(0,2)}</div><div class="i">${wIcon(h.weather_code[k],h.is_day[k])}</div>
+      <div class="t">${Math.round(h.temperature_2m[k])}°</div>
+      <div class="bar">${hs?`<i class="s" style="height:${hs}px"></i>`:""}${hrn?`<i class="r" style="height:${hrn}px"></i>`:""}</div>
+      <div class="v">${sn>0?(sn<1?"&lt;1":sn.toFixed(1))+" cm":pr>0?pr.toFixed(1)+" mm":"–"}</div>
+      <div>${h.precipitation_probability[k]??"–"}%</div>
+      <div class="v"><span class="arr" style="transform:rotate(0deg)">${arr}</span> ${Math.round(h.wind_speed_10m[k])}</div>
+      <div>${Math.round(h.wind_gusts_10m[k])}</div>
+      <div>${Math.round(h.freezing_level_height[k]/50)*50}</div></div>`;}).join("");
+  const lab=`<div class="fh-c" style="text-align:left;position:sticky;left:0;background:var(--bg-2);z-index:2;padding-right:4px"><div class="h">Ora</div><div class="i">&nbsp;</div><div class="t">°C</div><div class="bar" style="justify-content:flex-start;align-items:center">mm</div><div>Neve/pioggia</div><div>Prob.</div><div>Vento</div><div>Raffiche</div><div>0° m</div></div>`;
+  box.innerHTML=`<div class="fh-head"><b>${FSEL===0?"Oggi":FSEL===1?"Domani":dt.toLocaleDateString(LOC,{weekday:"long"})} · ${dt.toLocaleDateString(LOC,{day:"numeric",month:"long"})}</b><span>Previsione oraria a 1837 m · vento in km/h</span></div>
+    <div class="fh-scroll"><div class="fh-grid" style="grid-template-columns:76px">${lab}${cells}</div></div>
+    <div class="fh-leg"><span><i style="background:#5ec8f2"></i>Neve</span><span><i style="background:#4f7cff"></i>Pioggia</span><span>Frecce: direzione verso cui soffia il vento</span></div>`;
+  box.hidden=false;
+  const sc=box.querySelector(".fh-scroll"); if(FSEL===0){const now=new Date().getHours(); sc.scrollLeft=Math.max(0,(now-1)*60);}
+}
+window.addEventListener("resize",()=>{if(FC&&FCV==="new")renderStrip();});
 
 function median(a){const s=[...a].sort((x,y)=>x-y);return s.length?s[Math.floor(s.length/2)]:null}
 function newSnow24(snow){
