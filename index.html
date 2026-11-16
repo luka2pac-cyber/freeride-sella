@@ -104,8 +104,8 @@ html{overflow-x:clip}
 .mini .ms{color:var(--ice);font-size:1rem}
 .mini .mt{font-size:.78rem;color:#ddd}
 .cond{--c:#888;max-width:460px;margin:16px auto 0;background:rgba(0,0,0,.66);border:1px solid var(--line);border-left:5px solid var(--c);text-align:left;padding:10px 14px 9px}
-.cond h4{margin:0;font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.05em;font-size:1.05rem;color:var(--c);display:flex;align-items:center;gap:8px}
-.cond h4 span{font-size:.72rem;color:var(--muted);letter-spacing:.1em;font-weight:700}
+.cond h4{margin:0;font-family:var(--display);font-weight:800;text-transform:uppercase;letter-spacing:.05em;font-size:1.05rem;color:var(--c);line-height:1.25}
+.cond h4 span{font-size:.72rem;white-space:nowrap;margin-left:6px;color:var(--muted);letter-spacing:.1em;font-weight:700}
 .cond ul{list-style:none;margin:6px 0 4px;padding:0}
 .cond li{font-size:.9rem;line-height:1.3;padding:3px 0 3px 22px;position:relative;color:#e6e3de}
 .cond li i{position:absolute;left:0;top:3px;font-style:normal}
@@ -1170,15 +1170,24 @@ function renderCond(){
     if(snowSoon>=COND.snowSoon) add(1,"🌨️",`In arrivo circa +${Math.round(snowSoon)} cm nelle prossime 24 h`,`About +${Math.round(snowSoon)} cm expected in the next 24 h`);
     if(fog>=3) add(1,"🌫️","Visibilità ridotta (nebbia): orientamento difficile sui pendii aperti","Poor visibility (fog): hard to navigate on open slopes");
   }
-  if(BUL&&BUL.level>=3) add(3,"⚠️",`Bollettino valanghe: pericolo ${BUL.txt}`,`Avalanche bulletin: danger ${tr(BUL.txt)}`);
-  else if(BUL&&BUL.level===2) add(1,"⚠️",`Bollettino valanghe: pericolo ${BUL.txt}`,`Avalanche bulletin: danger ${tr(BUL.txt)}`);
+  const BADV={
+    1:[0,"Pericolo 1 · Debole: condizioni generalmente favorevoli, attenzione solo ai pendii estremamente ripidi","Danger 1 · Low: generally favourable, take care only on extremely steep slopes"],
+    2:[1,"Pericolo 2 · Moderato: condizioni per lo più favorevoli, scegli con cura i pendii ripidi alle quote ed esposizioni indicate","Danger 2 · Moderate: mostly favourable, choose steep slopes carefully at the indicated elevations and aspects"],
+    3:[3,"Pericolo 3 · Marcato: situazione critica, evita i pendii ripidi alle quote ed esposizioni indicate, uno alla volta","Danger 3 · Considerable: critical situation, avoid steep slopes at the indicated elevations and aspects, one at a time"],
+    4:[3,"Pericolo 4 · Forte: fuoripista sconsigliato, resta su terreno poco ripido","Danger 4 · High: off-piste not recommended, stay on gentle terrain"],
+    5:[3,"Pericolo 5 · Molto forte: niente fuoripista","Danger 5 · Very high: no off-piste"]};
+  if(BUL&&BADV[BUL.level]&&(base==null||base>=COND.minBase||BUL.level>=3)){
+    const [sv,it,en]=BADV[BUL.level], el2=BUL.elev?` (${BUL.elev})`:"";
+    F.push({sev:sv,ic:"⚠️",t:L2(it,en)+(el2?tr(el2):""),bul:true});
+  }
   else if(BUL&&BUL.level===0&&base!=null&&base>=COND.minBase) add(1,"📋","Bollettino valanghe non disponibile: valuta con prudenza extra","No avalanche bulletin available: be extra careful");
-  F.sort((a,b)=>b.sev-a.sev);
-  const mx=F.length?F[0].sev:0;
+  F.sort((a,b)=>(b.bul?1:0)-(a.bul?1:0)||b.sev-a.sev);
+  const mx=F.length?Math.max(...F.map(f=>f.sev)):0;
   let col,head;
   if(base!=null&&base<COND.minBase){ col="#9aa3ad"; head=L2(`Neve insufficiente per il fuoripista (${base} cm)`,`Not enough snow for off-piste (${base} cm)`); }
-  else if(mx>=3){ col="#ff5a4e"; head=L2("Condizioni critiche","Critical conditions"); }
-  else if(mx===2){ col="#ff9e3d"; head=L2("Attenzione","Caution"); }
+  else if(BUL&&BUL.level>=4){ col="#ff5a4e"; head=L2("Fuoripista sconsigliato","Off-piste not recommended"); }
+  else if(mx>=3){ col="#ff5a4e"; head=L2("Massima prudenza","Extreme caution"); }
+  else if(mx===2){ col="#ff9e3d"; head=L2("Prudenza","Caution"); }
   else if(mx===1){ col="#ffd34d"; head=L2("Condizioni discrete","Fair conditions"); }
   else { col="#7ee081"; head=powder?L2("Powder day!","Powder day!"):L2("Buone condizioni","Good conditions"); }
   el.style.setProperty("--c",col);
