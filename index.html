@@ -130,6 +130,11 @@ html{overflow-x:clip}
 .lifts{display:flex;flex-wrap:wrap;gap:6px 14px;justify-content:center;align-items:center;margin:14px auto 0;padding:9px 14px;max-width:640px;background:rgba(0,0,0,.6);border:1px solid var(--line);text-decoration:none;color:var(--ink);font-family:var(--display);font-weight:600;letter-spacing:.04em;text-transform:uppercase;font-size:.95rem}
 .lifts:empty{display:none}
 .lifts:hover{border-color:var(--ice)}
+[hidden]{display:none!important}
+.slo{margin-top:14px;padding:12px 16px;border:1px solid var(--line);background:rgba(255,255,255,.03);display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;font-size:.95rem}
+.slo-k{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ice)}
+.slo b{color:#fff}
+.slo a{color:var(--ice)}
 .lifts .lk{color:var(--ice);display:inline-flex;align-items:center;gap:6px}
 .lifts .gic{width:20px;height:20px;flex:none}
 .lifts .li{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
@@ -370,7 +375,8 @@ footer a{color:var(--ice)}
     <img class="slogo" id="logo" alt="Sella Nevea Freeride Arena">
     <p class="tag" id="tagline"></p>
     <div class="chips">
-      <span class="chip">❄ Neve <b id="chSnowV">–</b></span>
+      <span class="chip" title="Livinal Lunc 1837 m (IT)">❄ Neve 1837 m <b id="chSnowV">–</b></span>
+      <a class="chip" id="chSlo" href="#kaninSlo" hidden title="ARSO Kanin 2260 m (SLO)">❄ Kanin SLO 2260 m <b id="chSloV">–</b></a>
       <span class="chip" id="chNew">Nuova 24 h <b id="chNewV">–</b></span>
       <span class="chip">🌡 <b id="chTempV">–</b></span>
       <span class="chip">💨 <b id="chWindV">–</b></span>
@@ -410,6 +416,7 @@ footer a{color:var(--ice)}
     <div class="chart"><h3>Vento e raffiche · km/h</h3><div class="box"><canvas id="chWind"></canvas></div></div>
   </div>
   <p class="meta" id="updated"></p>
+  <div class="slo" id="kaninSlo" hidden><span class="slo-k">Lato sloveno</span><span id="sloTxt"></span></div>
 </section>
 
 <section id="webcam" class="rv">
@@ -602,7 +609,7 @@ var I18N={
 "Dati meteo:":"Weather data:","Protezione Civile della Regione FVG":"FVG Region Civil Protection",
 "(CC BY 4.0) · Bollettino valanghe: AINEVA / Protezione Civile FVG · Previsioni:":"(CC BY 4.0) · Avalanche bulletin: AINEVA / FVG Civil Protection · Forecast:",
 "(CC BY 4.0) · Mappa: OpenTopoMap / OpenStreetMap · misure non validate.":"(CC BY 4.0) · Map: OpenTopoMap / OpenStreetMap · measurements not validated.",
-"Aggiungi alla schermata Home":"Add to Home screen","Chiudi":"Close","Impianti":"Lifts","Guide e corsi":"Guides & courses","fonte PromoTurismoFVG ↗":"source PromoTurismoFVG ↗","aperto":"open","chiuso":"closed","stato n.d.":"status n/a",
+"Aggiungi alla schermata Home":"Add to Home screen","Chiudi":"Close","Impianti":"Lifts","❄ Neve 1837 m":"❄ Snow 1837 m","Lato sloveno":"Slovenian side","Stazione ARSO Kanin (2260 m)":"ARSO Kanin station (2260 m)","neve":"snow","vento":"wind","fonte ARSO ↗":"source ARSO ↗","Guide e corsi":"Guides & courses","fonte PromoTurismoFVG ↗":"source PromoTurismoFVG ↗","aperto":"open","chiuso":"closed","stato n.d.":"status n/a",
 "Cabinovia Canin":"Canin gondola","Seggiovia Gilberti":"Gilberti chairlift",
 "Freerider in neve fresca":"Freerider in fresh snow","Sulla cresta del Golovec, Sella Nevea":"On the Golovec ridge, Sella Nevea","Stato impianti":"Lift status","Previsioni 4 giorni":"4-day forecast",
 "Webcam Sella Nevea in quota (1870 m)":"Sella Nevea webcam up the mountain (1870 m)","Webcam Sella Nevea a valle":"Sella Nevea webcam in the valley","Neve fresca a Sella Nevea":"Fresh snow in Sella Nevea",
@@ -990,6 +997,22 @@ async function loadLifts(){
   el.innerHTML=`<span class="lk"><svg class="gic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4l20 3"/><path d="M12 5.5V9"/><rect x="6" y="9" width="12" height="11" rx="2.5"/><path d="M6 14h12"/><path d="M10 9v5M14 9v5"/></svg>Impianti</span>${items}<span class="ln">${note}</span>`;
 }
 loadLifts();
+
+async function loadKanin(){
+  let j; try{ const r=await fetch("kanin.json?t="+Date.now(),{cache:"no-store"}); if(!r.ok) return; j=await r.json(); }catch(e){ return; }
+  if(j.snow==null && j.t==null) return;
+  const snow=j.snow!=null?Math.round(j.snow)+" cm":"–";
+  $("chSloV").textContent=snow; $("chSlo").hidden=false;
+  let when=""; const m=(j.valid_utc||"").match(/(\d+)\.(\d+)\.(\d+) (\d+):(\d+)/);
+  if(m){ const d=new Date(Date.UTC(+m[3],+m[2]-1,+m[1],+m[4],+m[5])); when=d.toLocaleString(LOC,{weekday:"short",hour:"2-digit",minute:"2-digit"}); }
+  const parts=[`<span>Stazione ARSO Kanin (2260 m)</span>`,`<span><span>neve</span> <b>${snow}</b></span>`];
+  if(j.t!=null) parts.push(`<span>🌡 <b>${j.t.toFixed(1)} °C</b></span>`);
+  if(j.wind!=null) parts.push(`<span><span>vento</span> <b>${Math.round(j.wind)} km/h${j.deg!=null?" "+DIRS[Math.round((j.deg%360)/45)%8]:""}</b></span>`);
+  if(when) parts.push(`<span>${when}</span>`);
+  parts.push(`<a href="${j.url||"https://www.vreme.si/podatki/Kanin/sneg"}" target="_blank" rel="noopener">fonte ARSO ↗</a>`);
+  $("sloTxt").innerHTML=parts.join(" · "); $("kaninSlo").hidden=false;
+}
+loadKanin();
 
 function initInstall(){
   const btn=$("installBtn"), btn2=$("installBtn2"), help=$("ihelp");

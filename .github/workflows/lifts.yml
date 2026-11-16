@@ -1,7 +1,7 @@
 name: Stato impianti Sella Nevea
 on:
   schedule:
-    - cron: "7,27,47 * * * *"
+    - cron: "7,17,27,37,47,57 * * * *"
   workflow_dispatch:
   push:
     paths: [".github/scripts/**", ".github/workflows/lifts.yml"]
@@ -14,9 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: python3 .github/scripts/lifts.py
+      - run: python3 .github/scripts/kanin.py
       - run: |
           git config user.name "lifts-bot"
           git config user.email "lifts-bot@users.noreply.github.com"
           git pull -q --rebase || true
-          git add lifts.json
+          git add lifts.json kanin.json 2>/dev/null || git add lifts.json
           git diff --cached --quiet || (git commit -m "Stato impianti aggiornato" && git push)
