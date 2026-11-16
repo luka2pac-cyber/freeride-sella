@@ -912,13 +912,13 @@ async function getSensor(sid, from, to){
   return j.measures.filter(m=>!seen.has(m.dt)&&seen.add(m.dt))
     .map(m=>({t:new Date(m.dt.replace(" ","T")+"Z"), v:m.value})).sort((a,b)=>a.t-b.t);
 }
-let DATA=null, charts={}, hours=24;
+let DATA=null, charts={}, hours=24, STFAIL=false;
 async function load(){
   const to=new Date(), from=new Date(to.getTime()-170*3600e3), s=CONFIG.station.sensors;
   try{
     const [snow,temp,wind,gust,dir]=await Promise.all([s.snow,s.temp,s.wind,s.gust,s.dir].map(id=>getSensor(id,from,to)));
     DATA={snow,temp,wind,gust,dir}; render(); renderPowder(); renderCond();
-  }catch(e){ console.error(e); $("err").style.display="block"; }
+  }catch(e){ console.error(e); $("err").style.display="block"; STFAIL=true; renderCond(); }
 }
 const last=a=>a.length?a[a.length-1]:null;
 function valueAt(a,t){let r=null;for(const x of a){if(x.t<=t)r=x;else break}return r}
@@ -1342,7 +1342,7 @@ function leeDir(wind,dir,since){
   return DIRS[Math.round(to/45)%8];
 }
 function renderCond(){
-  const el=$("cond"); if(!el||(!DATA&&!FC)) return;
+  const el=$("cond"); if(!el||(!DATA&&!FC)||(!DATA&&!STFAIL)) return;
   const F=[]; const add=(sev,ic,it,en)=>F.push({sev,ic,t:L2(it,en)});
   let base=null, powder=false;
   if(DATA&&DATA.snow.length){
