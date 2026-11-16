@@ -463,7 +463,6 @@ footer a{color:var(--ice)}
       <span class="chip" id="chNew">Nuova 24 h <b id="chNewV">–</b></span>
       <span class="chip">🌡 <b id="chTempV">–</b></span>
       <span class="chip">💨 <b id="chWindV">–</b></span>
-      <a class="chip" href="#sicurezza"><span class="dot" id="chDot"></span> Valanghe <b id="chAvaV">–</b></a>
     </div>
     <div class="cond" id="cond" hidden></div>
     <a class="mini" href="#meteo" id="mini" aria-label="Previsioni 4 giorni"></a>
@@ -1120,7 +1119,7 @@ async function loadBulletin(){
   const show=(lvl,txt,note,chip)=>{
     document.querySelectorAll(".lights span").forEach(s=>s.classList.toggle("on",+s.dataset.l===lvl));
     $("semLvl").textContent=txt; $("semNote").innerHTML=note;
-    $("chAvaV").textContent=chip; $("chDot").style.background=DCOL[lvl]||"#555";
+    
   };
   let j=null;
   try{ const r=await fetch(CONFIG.bulletin.url,{cache:"no-store"}); if(r.ok) j=await r.json(); }catch(e){}
