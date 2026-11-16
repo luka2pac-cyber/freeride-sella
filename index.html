@@ -380,7 +380,7 @@ footer a{color:var(--ice)}
     <p class="tag" id="tagline"></p>
     <div class="chips">
       <span class="chip" title="Livinal Lunc 1837 m (IT)">❄ Neve 1837 m <b id="chSnowV">–</b></span>
-      <a class="chip" id="chSlo" href="#kaninSlo" hidden title="ARSO Kanin 2260 m (SLO)">❄ Kanin SLO 2260 m <b id="chSloV">–</b></a>
+      <a class="chip" id="chSlo" href="#neve" hidden title="ARSO Kanin 2260 m (SLO)">❄ Kanin SLO 2260 m <b id="chSloV">–</b></a>
       <span class="chip" id="chNew">Nuova 24 h <b id="chNewV">–</b></span>
       <span class="chip">🌡 <b id="chTempV">–</b></span>
       <span class="chip">💨 <b id="chWindV">–</b></span>
@@ -777,7 +777,7 @@ function initStatic(){
   $("social").innerHTML = CONFIG.social.filter(x=>x.url).map(x=>`<a class="btn btn-line" href="${x.url}" target="_blank" rel="noopener">${ICON[x.t]||""}${x.t}</a>`).join("");
   $("disclaimer").textContent = CONFIG.disclaimer;
   $("foot").innerHTML = `<div class="flogos"><img src="${CONFIG.logo}" alt="${CONFIG.title}"><img class="sq" src="${CONFIG.logo2}" alt="Freeride Arena Sella Nevea"><a href="https://www.sellaneveamountain.com/" target="_blank" rel="noopener" title="Sella Nevea Mountain Experience"><img class="snme" src="snme-logo.png" alt="Sella Nevea Mountain Experience"></a></div>
-    Dati meteo: <a href="https://monitor.protezionecivile.fvg.it" target="_blank" rel="noopener">Protezione Civile della Regione FVG</a> (CC BY 4.0) · Bollettino valanghe: AINEVA / Protezione Civile FVG · Previsioni: <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo.com</a> (CC BY 4.0) · Mappa: OpenTopoMap / OpenStreetMap · misure non validate.<br>© ${new Date().getFullYear()} ${CONFIG.title}`;
+    Dati meteo: <a href="https://monitor.protezionecivile.fvg.it" target="_blank" rel="noopener">Protezione Civile della Regione FVG</a> (CC BY 4.0) · Bollettino valanghe: AINEVA / Protezione Civile FVG · Kanin SLO: <a href="https://www.vreme.si/podatki/Kanin/sneg" target="_blank" rel="noopener">ARSO</a> · Previsioni: <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo.com</a> (CC BY 4.0) · Mappa: OpenTopoMap / OpenStreetMap · misure non validate.<br>© ${new Date().getFullYear()} ${CONFIG.title}`;
 }
 
 const fmtUTC = d => d.toISOString().slice(0,19).replace("T"," ");
@@ -1032,8 +1032,7 @@ function compactLine(i){
     `<span class="meta" style="margin:0">${i.when} · ${i.src}</span></div>`;
 }
 function renderSlo(){
-  if(!SLO) return; const box=$("kaninSlo"), i=sloInfo(); box.hidden=false;
-  box.innerHTML=compactLine(i);
+  if(!SLO) return; const i=sloInfo();
   $("sloChartBox").hidden=false; document.querySelector(".charts").classList.add("four");
   if(i.ser.length) draw("chSloB",[{label:tr("Neve")+" cm",data:i.ser.map(x=>({t:x.t,v:x.snow})),color:"#9b8cff",fill:true}],{suggestedMin:0});
 }
