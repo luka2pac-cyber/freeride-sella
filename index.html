@@ -135,6 +135,13 @@ html{overflow-x:clip}
 .cond ul{list-style:none;margin:0;padding:0}
 .cond li{font-size:.95rem;line-height:1.35;padding:6px 0 6px 28px;position:relative;color:#eee}
 .cond li i{position:absolute;left:2px;top:6px;font-style:normal}
+.cond .snq{margin:8px 0 6px;padding:8px 10px;background:rgba(255,255,255,.04);border-left:3px solid var(--c)}
+.cond .snq h4{margin:0 0 6px;font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;color:var(--muted)}
+.cond .snq .r{display:grid;grid-template-columns:56px 1fr;gap:8px;padding:4px 0;font-size:.88rem;line-height:1.3;color:#eee;border-top:1px solid rgba(255,255,255,.06)}
+.cond .snq .r:first-of-type{border-top:0}
+.cond .snq .a{font-family:var(--display);font-weight:800;letter-spacing:.04em;display:flex;align-items:flex-start;gap:6px}
+.cond .snq .a i{width:9px;height:9px;border-radius:50%;margin-top:4px;flex:0 0 auto}
+.cond .snq .f{font-size:.8rem;color:var(--muted);margin-top:6px;line-height:1.3}
 .cond small{display:block;font-size:.7rem;color:var(--muted);line-height:1.3}
 .cond .cscale{display:none;gap:3px;margin:10px 0 4px}
 .cond .cscale span{flex:1;height:22px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--s) 22%,#111);color:rgba(255,255,255,.45);font-family:var(--display);font-weight:800;font-size:.8rem}
@@ -789,6 +796,7 @@ const CONFIG = {
   stationPage: "https://monitor.protezionecivile.fvg.it/stazione/541",
   forecast: {
     url: "https://api.open-meteo.com/v1/forecast?latitude=46.3743&longitude=13.4703&elevation=1837&daily=weather_code,temperature_2m_max,temperature_2m_min,snowfall_sum,precipitation_sum,wind_gusts_10m_max,wind_speed_10m_max,wind_direction_10m_dominant,sunshine_duration,precipitation_probability_max&hourly=sunshine_duration,freezing_level_height,temperature_2m,weather_code,precipitation,snowfall,precipitation_probability,wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day&timezone=Europe%2FRome&forecast_days=5",
+    past: "https://api.open-meteo.com/v1/forecast?latitude=46.3743&longitude=13.4703&elevation=1837&hourly=temperature_2m,sunshine_duration,snowfall,rain,wind_gusts_10m,wind_direction_10m&timezone=GMT&past_days=7&forecast_days=2",
     bergfex: "https://www.bergfex.com/sella-nevea/wetter/berg/"
   },
   powderThreshold: 15,            // cm di neve fresca in 24 h per il "Powder alert"
@@ -906,7 +914,7 @@ async function getSensor(sid, from, to){
 }
 let DATA=null, charts={}, hours=24;
 async function load(){
-  const to=new Date(), from=new Date(to.getTime()-100*3600e3), s=CONFIG.station.sensors;
+  const to=new Date(), from=new Date(to.getTime()-170*3600e3), s=CONFIG.station.sensors;
   try{
     const [snow,temp,wind,gust,dir]=await Promise.all([s.snow,s.temp,s.wind,s.gust,s.dir].map(id=>getSensor(id,from,to)));
     DATA={snow,temp,wind,gust,dir}; render(); renderPowder(); renderCond();
@@ -1168,6 +1176,106 @@ async function loadBulletin(){
 }
 
 
+
+/* ===== Neve stimata per esposizione (modello semplice, solo indicativo) ===== */
+let FCP=null;
+async function loadPast(){
+  try{ const j=await (await fetch(CONFIG.forecast.past)).json(); const h=j.hourly;
+    FCP=h.time.map((t,k)=>({t:new Date(t+"Z"),T:h.temperature_2m[k],sun:(h.sunshine_duration[k]||0)/3600,sn:h.snowfall[k]||0,rn:h.rain[k]||0,g:h.wind_gusts_10m[k]||0,d:h.wind_direction_10m[k]}));
+    renderCond();
+  }catch(e){ console.error(e); }
+}
+// fattore di insolazione per esposizione secondo il mese (sole basso d'inverno: nord quasi sempre in ombra)
+function sunFac(m){ // m 0-11
+  if(m===10||m===11||m===0) return {N:.05,E:.45,S:1,O:.45};
+  if(m===1||m===9) return {N:.15,E:.55,S:1,O:.55};
+  if(m===2) return {N:.35,E:.7,S:1,O:.7};
+  return {N:.55,E:.8,S:1,O:.8};
+}
+const ASP=["N","E","S","O"], ASPN={N:["Nord","North"],E:["Est","East"],S:["Sud","South"],O:["Ovest","West"]};
+function aspOf(deg){ return ASP[Math.round(((deg%360)+360)%360/90)%4]; }
+function hourly(arr,mult){ const m={}; (arr||[]).forEach(x=>{const k=Math.floor(x.t/3600e3);(m[k]=m[k]||[]).push(x.v*(mult||1));}); return m; }
+function snowModel(){
+  if(!DATA||!DATA.snow.length) return null;
+  const now=Date.now(), base=Math.round(DATA.snow[DATA.snow.length-1].v);
+  if(base<COND.minBase) return null;
+  // ultima nevicata negli ultimi 7 giorni (stazione)
+  const hh={}; DATA.snow.filter(x=>x.t>=now-7*864e5).forEach(x=>{const k=Math.floor(x.t/3600e3);(hh[k]=hh[k]||[]).push(x.v);});
+  const ser=Object.keys(hh).map(Number).sort((a,b)=>a-b).map(k=>({k,v:median(hh[k])}));
+  let mn=Infinity, ev={cm:0,end:null};
+  ser.forEach(x=>{ if(x.v<mn) mn=x.v; const d=x.v-mn; if(d>ev.cm+0.5) ev={cm:d,end:x.k*3600e3}; });
+  ev.cm=Math.round(ev.cm); const hasEv=ev.cm>=10;
+  const since=hasEv?ev.end:now-72*3600e3, age=hasEv?(now-ev.end)/864e5:null;
+  // serie orarie: temperatura e raffiche dalla stazione, sole/pioggia/direzione dal modello
+  const sT=hourly(DATA.temp), sG=hourly(DATA.gust,3.6), sD=hourly(DATA.dir);
+  const P={}; (FCP||[]).forEach(x=>P[Math.floor(x.t/3600e3)]=x);
+  const fac=sunFac(new Date().getMonth());
+  const sunW={N:0,E:0,S:0,O:0}, sunC={N:0,E:0,S:0,O:0}; let warm=0, wind=0, rain=false, windVec=[0,0], tmax=-99, n=0;
+  for(let k=Math.floor(since/3600e3)+1;k<=Math.floor(now/3600e3);k++){
+    const p=P[k]||{}, T=sT[k]?median(sT[k]):p.T, G=sG[k]?Math.max(...sG[k]):p.g, D=sD[k]?median(sD[k]):p.d, sun=p.sun||0;
+    if(T==null) continue; n++; tmax=Math.max(tmax,T);
+    ASP.forEach(a=>{ if(T>-3) sunW[a]+=sun*fac[a]; else sunC[a]+=sun*fac[a]; });
+    if(T>0) warm+=T;
+    if(G>=50){ wind++; if(D!=null){const r=D*Math.PI/180; windVec[0]+=Math.sin(r); windVec[1]+=Math.cos(r);} }
+    if((p.rn||0)>0.2&&T>0.5) rain=true;
+  }
+  if(!n) return null;
+  const from=(windVec[0]||windVec[1])?(Math.atan2(windVec[0],windVec[1])*180/Math.PI+360)%360:null;
+  const windward=from!=null?aspOf(from):null, lee=from!=null?aspOf(from+180):null;
+  const t12=Object.keys(sT).map(Number).filter(k=>k>=Math.floor((now-12*3600e3)/3600e3)).map(k=>median(sT[k]));
+  const cold12=t12.length&&Math.min(...t12)<-1, warmNow=t12.length&&t12[t12.length-1]>1;
+  const rows={};
+  ASP.forEach(a=>{
+    let c, it, en;
+    const melt=warm+2*sunW[a], cs=sunC[a], ww=wind>=3&&a===windward, lw=wind>=3&&a===lee;
+    const ageTxt=()=>age<1?[`powder fresca (+${ev.cm} cm)`,`fresh powder (+${ev.cm} cm)`]:age<3.5?[`powder di ${Math.max(1,Math.round(age))} giorni (+${ev.cm} cm), ancora leggera`,`${Math.max(1,Math.round(age))}-day-old powder (+${ev.cm} cm), still light`]:[`powder di ${Math.round(age)} giorni, assestata ma ancora soffice`,`${Math.round(age)}-day-old powder, settled but still soft`];
+    if(rain){ c="#ff9e3d"; [it,en]=cold12?["crosta da pioggia, dura e portante","rain crust, hard and supportive"]:["neve bagnata dalla pioggia, pesante","rain-soaked snow, heavy"]; }
+    else if(hasEv&&age<=7&&melt<4&&cs<12){
+      c="#7ee081"; [it,en]=ageTxt();
+      if(ww){ c="#ffd34d"; [it,en]=["esposto al vento: probabile neve ventata o crosta da vento, polvere solo nelle zone riparate","wind-exposed: likely wind-packed snow or wind crust, powder only in sheltered spots"]; }
+      else if(lw){ c="#ffd34d"; it+=", ma accumuli da vento (lastroni)"; en+=", but wind-loaded (slabs)"; }
+    }
+    else if(hasEv&&age<=7&&melt<10){
+      c="#ffd34d";
+      [it,en]=melt<4?["sole al freddo: possibile crosta sottile, polvere nelle zone d'ombra e nel bosco","sun in the cold: possible thin crust, powder in shaded spots and in the trees"]
+                    :["possibile crosta sottile da sole, polvere nelle zone d'ombra","possible thin sun crust, powder in shaded spots"];
+      if(ww){ [it,en]=["neve ventata e crosta sottile","wind-packed snow and thin crust"]; }
+    }
+    else if(melt>=10){
+      c="#ff9e3d";
+      if(warmNow&&!cold12) [it,en]=["neve pesante e umida, possibile pappa nelle ore calde","heavy, damp snow, possibly slushy in the warm hours"];
+      else if(sunW[a]>=3) [it,en]=["crosta da rigelo al mattino, firn/neve morbida nelle ore centrali se c'è sole","refrozen crust in the morning, corn/soft snow at midday in the sun"];
+      else [it,en]=["crosta da rigelo, dura","refrozen crust, hard"];
+      if(a==="N"&&hasEv&&age<=7&&sunW.N<2&&warm<80){ c="#ffd34d"; [it,en]=["neve fresca appesantita dal caldo, possibile crosta leggera; migliore in alto e nelle zone d'ombra","new snow made heavier by the warmth, possible light crust; better higher up and in the shade"]; }
+    }
+    else {
+      c="#9aa3ad";
+      if(ww) [it,en]=["neve vecchia ventata, dura o a sastrugi","old wind-packed snow, hard or sastrugi"];
+      else if(a==="N") [it,en]=tmax<0?["neve vecchia fredda, compatta; possibile soffice nelle zone riparate","old cold snow, packed; possibly soft in sheltered spots"]:["neve vecchia assestata","old settled snow"];
+      else [it,en]=cs>=12?["neve vecchia, possibile crosta sottile da sole","old snow, possible thin sun crust"]:["neve vecchia assestata","old settled snow"];
+    }
+    rows[a]={c,t:L2(it,en)};
+  });
+  // prossime 24 h (modello)
+  const fut=(FCP||[]).filter(x=>x.t>now&&x.t<=now+24*3600e3);
+  const fT=fut.length?Math.max(...fut.map(x=>x.T)):null, fS=fut.reduce((a,x)=>a+x.sn,0), fSun=fut.reduce((a,x)=>a+x.sun,0), fG=fut.length?Math.max(...fut.map(x=>x.g)):0, fR=fut.some(x=>x.rn>0.2&&x.T>0.5);
+  const F=[];
+  if(fS>=5) F.push(L2(`in arrivo circa +${Math.round(fS)} cm`,`about +${Math.round(fS)} cm on the way`));
+  if(fR) F.push(L2("pioggia sulla neve: crosta quando rigela","rain on the snow: crust when it refreezes"));
+  else if(fT!=null&&fT>2&&fSun>=3) F.push(L2(`sole e rialzo termico (max ${Math.round(fT)}°): la neve al sole si trasforma, il nord regge`,`sun and warming (max ${Math.round(fT)}°): snow in the sun will transform, north faces hold`));
+  else if(fT!=null&&fT>2) F.push(L2(`rialzo termico (max ${Math.round(fT)}°): neve più pesante`,`warming (max ${Math.round(fT)}°): heavier snow`));
+  else if(fSun>=4&&hasEv) F.push(L2("sole ma freddo: al sud possibile crosta sottile, al nord la polvere tiene","sunny but cold: possible thin crust on south faces, north powder holds"));
+  if(fG>=60) F.push(L2(`vento forte (raffiche ${Math.round(fG)} km/h): la neve verrà ventata sulle creste`,`strong wind (gusts ${Math.round(fG)} km/h): snow will be wind-affected on ridges`));
+  return {rows,hasEv,ev,age,wind,windward,lee,next:F};
+}
+function snowModelHTML(m){
+  if(!m) return "";
+  const head=L2("Neve stimata per esposizione · 1800–2100 m","Estimated snow by aspect · 1800–2100 m");
+  const rows=ASP.map(a=>`<div class="r"><span class="a"><i style="background:${m.rows[a].c}"></i>${L2(...ASPN[a])}</span><span>${m.rows[a].t}</span></div>`).join("");
+  const nx=m.next.length?`<div class="f">${L2("Prossime 24 h","Next 24 h")}: ${m.next.join(" · ")}</div>`:"";
+  return `<div class="snq"><h4>${head}</h4>${rows}${nx}<div class="f">${L2("Stima indicativa da temperatura, sole, vento e nevicate: verifica sempre sul posto.","Rough estimate from temperature, sun, wind and snowfall: always check on site.")}</div></div>`;
+}
+
 /* ===== Valutazione automatica delle condizioni ===== */
 let BUL=null;
 const COND={minBase:30, thinBase:80, slabSnow:10, bigSnow:30, slabWind:25, slabGust:50, gustHi:60, gustVHi:80, snowSoon:10};
@@ -1215,30 +1323,11 @@ function renderCond(){
       const lee=leeDir(wind,dir,s24);
       add(2,"🌬️",`Neve fresca + vento (raffiche ${Math.round(g24)} km/h): probabili accumuli da vento${lee?` sui pendii esposti a ${lee}`:""}`,`New snow + wind (gusts ${Math.round(g24)} km/h): wind slabs likely${lee?` on ${lee}-facing slopes`:""}`);
     }
-    // ---- qualità della neve (stima: "possibile") ----
-    const ev=snowEvent(snow), tmaxS=(a,since)=>{const v=temp.filter(x=>x.t>=since).map(x=>x.v);return v.length?Math.max(...v):null};
-    const gmaxS=since=>Math.max(0,...gust.filter(x=>x.t>=since).map(x=>x.v*3.6));
-    let qDone=false;
-    if(base>=COND.minBase&&ev&&ev.cm>=CONFIG.powderThreshold){
-      const age=(Date.now()-ev.end)/864e5, gd=Math.max(0,Math.floor(age+0.25));
-      const tS=tmaxS(temp,ev.end), gS=gmaxS(ev.end);
-      const ageIt=gd<1?"fresca":gd===1?"di 1 giorno":`di ${gd} giorni`, ageEn=gd<1?"fresh":gd===1?"1 day old":`${gd} days old`;
-      qDone=true;
-      if(gS>=COND.gustHi) add(1,"🌬️",`Neve ${ageIt} (+${ev.cm} cm) ma vento forte dopo la nevicata (raffiche ${Math.round(gS)} km/h): possibile neve ventata e crosta da vento sulle creste, polvere solo in canali e zone riparate`,`Snow ${ageEn} (+${ev.cm} cm) but strong wind since (gusts ${Math.round(gS)} km/h): possible wind-packed snow and wind crust on ridges, powder only in gullies and sheltered spots`);
-      else if(tS!=null&&tS>2) add(1,"🌤️",`Neve ${ageIt} (+${ev.cm} cm), poi rialzo termico (max ${tS.toFixed(1)} °C): possibile crosta o neve pesante sui pendii al sole, polvere ancora probabile sui versanti nord`,`Snow ${ageEn} (+${ev.cm} cm), then warming (max ${tS.toFixed(1)} °C): possible crust or heavy snow on sunny slopes, powder still likely on north faces`);
-      else if(tS!=null&&tS>0) { powder=age<2; add(0,"❄️",`Powder ${ageIt} (+${ev.cm} cm): buona sui versanti nord, possibile neve umida o leggera crosta al sole`,`Powder ${ageEn} (+${ev.cm} cm): good on north faces, possibly damp snow or a light crust in the sun`); }
-      else if(age<=4){ powder=age<2; add(0,"❄️",gd<1?`Powder! +${ev.cm} cm di neve fresca`:`Powder ${ageIt} (+${ev.cm} cm), sempre al freddo: polvere ancora probabile, soprattutto sui versanti nord`,gd<1?`Powder! +${ev.cm} cm of fresh snow`:`Powder ${ageEn} (+${ev.cm} cm), stayed cold: powder still likely, especially on north faces`);
-        if(gS>=40) add(0,"🌬️",`Possibile neve ventata sulle creste esposte (raffiche fino a ${Math.round(gS)} km/h)`,`Possible wind-affected snow on exposed ridges (gusts up to ${Math.round(gS)} km/h)`); }
-      else qDone=false;
-    }
+    const SM=snowModel(); if(SM&&SM.hasEv&&SM.age<2&&SM.rows.N.c==="#7ee081") powder=true;
+    let qDone=!!SM;
     if(base>=10&&tmax!=null&&tmin12!=null){
       if(tmax>1&&tmin12<-1){ if(!qDone) add(1,"🧊","Gelo-disgelo: possibile neve dura o crostosa al mattino, si ammorbidisce col sole (firn nelle ore centrali)","Melt-freeze: likely hard or crusty snow in the morning, softens in the sun (corn snow at midday)"); qDone=true; }
       else if(tmin12>0.5&&tmax>2){ add(2,"💧","Nessun rigelo notturno: neve pesante e bagnata, rischio valanghe bagnate nelle ore calde","No overnight refreeze: heavy wet snow, wet-avalanche risk in the warm hours"); qDone=true; }
-    }
-    if(!qDone&&base>=COND.minBase){
-      if(ev&&ev.cm>=7&&(Date.now()-ev.end)<72*3600e3) add(0,"🌨️",`Spolverata di +${ev.cm} cm su fondo vecchio: possibile neve dura sotto`,`Dusting of +${ev.cm} cm on an old base: possibly hard snow underneath`);
-      else if(tmax!=null&&tmax<=0) add(0,"🧊","Neve vecchia e fredda: possibile neve compatta o ventata, dura sulle creste","Old cold snow: likely packed or wind-affected, hard on the ridges");
-      else add(0,"🏔️","Neve vecchia assestata: qualità variabile, possibile crosta al mattino","Old settled snow: variable quality, possible crust in the morning");
     }
   }
   if(FC){
@@ -1285,7 +1374,7 @@ function renderCond(){
   const scale=`<div class="cscale">${[1,2,3,4,5].map(i=>`<span class="${i===lvl?"on":""}" style="--s:${EC[i-1]}">${i}</span>`).join("")}</div>`;
   el.className="cond vc vbc";
   el.innerHTML=`<div class="cbar"><div class="cbadge">${badge}</div><div class="chead"><b>${head}</b><span>${sub}</span></div></div>`+
-    scale+(F.length?`<ul>${(F.length>5?F.slice(0,5):F).map(f=>`<li class="s${f.sev}"><i>${f.ic}</i>${f.t}</li>`).join("")}</ul>`:"")+
+    scale+(F.length?`<ul>${(F.length>5?F.slice(0,5):F).map(f=>`<li class="s${f.sev}"><i>${f.ic}</i>${f.t}</li>`).join("")}</ul>`:"")+snowModelHTML(snowModel())+
     `<small>${L2("Stima automatica da stazione Livinal Lunc, modello meteo e bollettino. Non sostituisce il bollettino né la valutazione sul posto.","Automatic estimate from the Livinal Lunc station, weather model and bulletin. It does not replace the bulletin or your own assessment on site.")}</small>`;
   el.hidden=false;
 }
@@ -1373,9 +1462,10 @@ function initUI(){
   document.querySelectorAll("section[id]").forEach(s=>so.observe(s));
 }
 
-initStatic(); initInstall(); initUI(); initMap(); initMapUI(); loadForecast(); loadBulletin(); load();
+initStatic(); initInstall(); initUI(); initMap(); initMapUI(); loadForecast(); loadBulletin(); load(); loadPast();
 setInterval(load,15*60e3);
 setInterval(loadForecast,60*60e3);
+setInterval(loadPast,60*60e3);
 </script>
 <script>document.querySelectorAll(".lang button").forEach(function(b){b.classList.toggle("on",b.dataset.l===LANG);b.onclick=function(){if(b.dataset.l!==LANG)setLang(b.dataset.l);};});</script>
 </body>
