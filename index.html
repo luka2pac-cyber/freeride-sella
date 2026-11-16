@@ -43,6 +43,10 @@ p{margin:0}
 .brand span{font-family:var(--display);font-weight:700;font-size:1.15rem;letter-spacing:.06em;text-transform:uppercase;line-height:1}
 .brand small{display:block;color:var(--ice);font-size:.78rem;letter-spacing:.14em}
 .menu{display:flex;gap:2px;margin-left:auto}
+.lang{display:flex;margin-left:14px;border:1px solid var(--line)}
+.lang button{background:none;border:0;color:var(--muted);font-family:var(--display);font-weight:700;letter-spacing:.06em;padding:7px 10px;cursor:pointer}
+.lang button.on{background:var(--ice-deep);color:#fff}
+
 .menu a{font-family:var(--display);font-weight:600;text-transform:uppercase;letter-spacing:.08em;font-size:.95rem;text-decoration:none;color:var(--muted);padding:8px 10px;border-bottom:2px solid transparent}
 .menu a svg{width:15px;height:15px;vertical-align:-2px;margin-right:5px;opacity:.8}
 .menu a:hover,.menu a.on{color:#fff;border-color:var(--ice)}
@@ -67,14 +71,16 @@ p{margin:0}
 .hv-c .hero-photo::after{background:linear-gradient(180deg,rgba(11,11,11,0) 0%,rgba(11,11,11,.25) 35%,rgba(11,11,11,.8) 60%,var(--bg) 100%)}
 .hv-c .hero-in{margin-top:0;padding-top:min(42vh,400px)}
 .secbanner{display:none}
-.hv-c .secbanner{display:block;position:relative;margin:-76px calc(50% - 50vw) 44px;height:clamp(170px,28vw,360px);overflow:hidden}
+.hv-c .secbanner{display:block;position:relative;margin:-48px calc(50% - 50vw) 44px;height:clamp(170px,28vw,360px);overflow:hidden}
 .secbanner img{width:100%;height:100%;object-fit:cover;object-position:38% 50%;display:block}
 .secbanner::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,7,8,0) 50%,#060708 100%)}
 html{overflow-x:clip}
 
 .hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 55%,var(--bg) 100%)}
 .hero-in{position:relative;padding:0 20px 90px;max-width:900px;margin:-70px auto 0;z-index:1}
+.hero .logos{display:flex;gap:18px;justify-content:center;align-items:center}
 .hero .logo{width:130px;height:130px;border-radius:50%;background:#fff;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.hero .logo.l2{object-fit:contain;padding:6px}
 .hero h1{font-size:clamp(2.3rem,7vw,4.6rem);margin-top:14px}
 .hero h1 em{display:block;font-style:normal;font-family:var(--display);font-weight:700;color:var(--ice);letter-spacing:.22em;font-size:.5em;margin-top:6px}
 .hero .tag{font-family:var(--display);font-weight:600;letter-spacing:.14em;text-transform:uppercase;margin-top:12px;color:#e8e6e1}
@@ -164,7 +170,7 @@ a.chip:hover{border-color:var(--ice)}
 .day li b{color:var(--ink);font-weight:600}
 .fc-src{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}
 .fc-src .meta{margin:0}
-section{padding:76px 0 64px;position:relative}
+section{padding:48px 0 40px;position:relative}
 section.alt{background:#060708;box-shadow:0 0 0 100vmax #060708;clip-path:inset(0 -100vmax);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 main{counter-reset:sec}
 section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::before,section>.fc-head .eyebrow::before,.comm .eyebrow::before{counter-increment:sec;content:counter(sec,decimal-leading-zero);display:inline-block;margin-right:10px;padding-right:10px;border-right:1px solid var(--line);color:var(--muted)}
@@ -172,7 +178,7 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .eyebrow{font-family:var(--display);font-weight:600;font-size:1rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ice);margin-bottom:8px;display:block}
 .title{font-size:clamp(1.75rem,3.6vw,2.6rem)}
 .intro{color:var(--muted);max-width:60ch;margin-top:12px}
-.head{margin-bottom:28px}
+.head{margin-bottom:20px}
 
 .toggle{display:inline-flex;border:1px solid var(--line);margin-bottom:14px}
 .toggle button{border:0;background:none;color:var(--muted);padding:7px 16px;font-family:var(--display);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.95rem;cursor:pointer}
@@ -303,6 +309,8 @@ footer a{color:var(--ice)}
 
 @media(max-width:900px){
   .menu{display:none}
+  .lang{margin-left:auto;margin-right:8px}
+  .lang button{padding:6px 8px}
   .install{margin-left:auto}
   .strip-grid{grid-template-columns:1fr}
   .cell{border-right:0;border-bottom:1px solid var(--line)}
@@ -310,14 +318,14 @@ footer a{color:var(--ice)}
   .days{grid-template-columns:1fr 1fr}
   .kit{grid-template-columns:1fr 1fr}
   .links{grid-template-columns:1fr}
-  section{padding:52px 0 48px}
+  section{padding:34px 0 30px}
 }
 @media(max-width:520px){
   body{font-size:16px}
   .hero-photo{aspect-ratio:16/9}
   .hv-c .hero-photo{height:125vw}
   .hv-c .hero-in{padding-top:58vw}
-  .hv-c .secbanner{margin-top:-52px}
+  .hv-c .secbanner{margin-top:-34px}
   .hero-in{margin-top:-52px}
   .hero .logo{width:96px;height:96px}
   .hero-btns{grid-template-columns:1fr 1fr;width:100%}
@@ -338,6 +346,7 @@ footer a{color:var(--ice)}
   <nav class="menu">
     <a href="#neve"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M4.9 4.9l14.2 14.2M2 12h20M4.9 19.1 19.1 4.9"/><path d="m9 4 3 3 3-3M9 20l3-3 3 3M4 9l3 3-3 3M20 9l-3 3 3 3"/></svg>Neve</a><a href="#meteo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v2M4.9 4.9l1.4 1.4M20 12h2M19.1 4.9l-1.4 1.4"/><path d="M15.9 13A4 4 0 0 0 8.3 10.3"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>Meteo</a><a href="#webcam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>Webcam</a><a href="#sicurezza"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Sicurezza</a><a href="#discese"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>Discese</a><a href="#video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="15" height="14" rx="2"/><path d="m22 8-5 4 5 4V8z"/></svg>Video</a><a href="#community"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg>Community</a>
   </nav>
+  <div class="lang" role="group" aria-label="Lingua"><button data-l="it">IT</button><button data-l="en">EN</button></div>
   <button class="btn btn-fill install" id="installBtn">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="2"/><path d="M12 7v7m-3-3 3 3 3-3"/></svg><span class="il">Installa </span>app
   </button>
@@ -346,7 +355,7 @@ footer a{color:var(--ice)}
 <header class="hero" id="top">
   <div class="hero-photo"><img id="heroImg" alt="Freerider in neve fresca"><img id="heroImg2" alt="Sulla cresta del Golovec, Sella Nevea"></div>
   <div class="hero-in">
-    <img class="logo" id="logo" alt="Sella Nevea Freeride Arena">
+    <div class="logos"><img class="logo" id="logo" alt="Sella Nevea Freeride Arena"><img class="logo l2" id="logo2h" alt="Freeride Arena Sella Nevea"></div>
     <h1>Sella Nevea<em>Freeride Arena</em></h1>
     <p class="tag" id="tagline"></p>
     <div class="chips">
@@ -467,12 +476,8 @@ footer a{color:var(--ice)}
 
 <section id="video" class="rv">
   <div class="head">
-    <span class="eyebrow">Guarda</span>
-    <h2 class="title">Video</h2>
-  </div>
-  <div class="head" style="margin-top:0">
-    <span class="eyebrow">Dalla community</span>
-    <h3 class="title" style="font-size:clamp(1.4rem,3vw,2rem)">Video da Sella Nevea</h3>
+    <span class="eyebrow">YouTube</span>
+    <h2 class="title">Video della community</h2>
     <p class="intro">Video pubblici di altri rider su YouTube, come esempio di linee e condizioni. Tutti i diritti ai rispettivi autori.</p>
   </div>
   <div class="cvwrap"><div class="cvids" id="cvideos"></div>
@@ -528,6 +533,110 @@ footer a{color:var(--ice)}
 </div></div>
 
 <script>
+/* ===== Lingua IT / EN ===== */
+var LANG=(function(){try{var q=new URLSearchParams(location.search).get("lang");if(q==="en"||q==="it"){localStorage.setItem("fr-lang",q);return q;}var s=localStorage.getItem("fr-lang");if(s)return s;}catch(e){}return "it";})();
+var LOC=LANG==="en"?"en-GB":"it-IT";
+document.documentElement.lang=LANG;
+var I18N={
+"Neve":"Snow","Meteo":"Weather","Sicurezza":"Safety","Discese":"Runs","Installa":"Install",
+"La community freeride del Canin":"The Canin freeride community","❄ Neve":"❄ Snow","Nuova 24 h":"New 24 h","Valanghe":"Avalanche",
+"Oggi":"Today","Domani":"Tomorrow","Previsioni 4 giorni · tocca per i dettagli":"4-day forecast · tap for details","Neve live":"Live snow",
+"Aggiungi alla Home":"Add to Home screen","Dati live":"Live data","Neve, temperatura e vento":"Snow, temperature and wind",
+"Stazione automatica della Protezione Civile FVG al Livinal Lunc (1837 m), versante nord del Canin sopra il Rif. Gilberti. Dati ogni 15 minuti, non validati.":"Automatic weather station of the FVG Civil Protection at Livinal Lunc (1837 m), north side of Canin above Rif. Gilberti. Data every 15 minutes, not validated.",
+"Non riesco a caricare i dati in diretta. Guardali sul sito della Protezione Civile:":"Live data could not be loaded. See them on the Civil Protection website:",
+"24 ore":"24 hours","48 ore":"48 hours","Altezza neve · cm":"Snow depth · cm","Temperatura · °C":"Temperature · °C","Vento e raffiche · km/h":"Wind and gusts · km/h",
+"Guarda adesso":"Live now","Panorami a 360° aggiornati ogni pochi minuti. Trascina per girare la vista.":"360° panoramas updated every few minutes. Drag to turn the view.",
+"In quota · 1870 m":"Up the mountain · 1870 m","Canin, arrivo cabinovia":"Canin, top of the gondola","Schermo intero ↗":"Full screen ↗",
+"A valle · 1140 m":"Valley · 1140 m","Campo scuola, Sella Nevea":"Ski school area, Sella Nevea",
+"Previsioni a 1800 m":"Forecast at 1800 m","Meteo e neve prevista":"Weather and expected snow","Neve prevista prossimi 3 giorni:":"Expected snow next 3 days:","Neve prevista 3 giorni:":"Expected snow 3 days:",
+"Precipitazioni":"Precipitation","Raffiche":"Gusts","Zero termico":"Freezing level",
+"Sereno":"Clear","Quasi sereno":"Mostly clear","Parz. nuvoloso":"Partly cloudy","Nuvoloso":"Cloudy","Nebbia":"Fog","Pioviggine":"Drizzle","Pioggia gelata":"Freezing rain",
+"Pioggia debole":"Light rain","Pioggia":"Rain","Pioggia forte":"Heavy rain","Neve debole":"Light snow","Neve forte":"Heavy snow","Nevischio":"Snow grains",
+"Rovesci":"Showers","Rovesci forti":"Heavy showers","Rovesci di neve":"Snow showers","Rovesci di neve forti":"Heavy snow showers","Temporale":"Thunderstorm",
+"Modello: Open-Meteo (best match per l'Europa), quota 1837 m. Le previsioni di neve sono indicative.":"Model: Open-Meteo (best match for Europe), elevation 1837 m. Snow forecasts are indicative.",
+"Confronta su bergfex":"Compare on bergfex","Prima di partire":"Before you go","⚠ Pericolo valanghe · Canin":"⚠ Avalanche danger · Canin",
+"Carico…":"Loading…","Non disponibile":"Not available","n.d.":"n/a","Bollettino completo":"Full bulletin",
+"Debole":"Low","Moderato":"Moderate","Marcato":"Considerable","Forte":"High","Molto forte":"Very high",
+"1 · Debole":"1 · Low","2 · Moderato":"2 · Moderate","3 · Marcato":"3 · Considerable","4 · Forte":"4 · High","5 · Molto forte":"5 · Very high",
+"Fuori pista sei in terreno non controllato":"Off-piste you are in uncontrolled terrain",
+"I percorsi indicati sono da ritenersi sicuri solo in condizioni di buon innevamento; con innevamento insufficiente è sconsigliato uscire dalle piste battute.":"The routes shown can only be considered safe with good snow cover; with insufficient snow it is not advisable to leave the groomed slopes.",
+"acceso e testato":"switched on and tested","Pala e sonda":"Shovel and probe","sempre nello zaino":"always in your pack","Bollettino":"Bulletin","letto ogni giorno":"read every day",
+"Mai da soli":"Never alone","uno alla volta sui ripidi · 112":"one at a time on steep slopes · 112",
+"Bollettino valanghe FVG":"FVG avalanche bulletin","Protezione Civile FVG":"FVG Civil Protection","Bollettini AINEVA":"AINEVA bulletins","Tutto l'arco alpino italiano":"The whole Italian Alps",
+"Livinal Lunc – dati completi":"Livinal Lunc – full data",
+"Le informazioni su questa pagina hanno solo scopo informativo. Ognuno pratica il fuoripista sotto la propria responsabilità.":"The information on this page is for information only. Everyone skis off-piste at their own risk.",
+"Le linee":"The lines","Mappa delle discese":"Freeride runs map","⚠ Tracciati indicativi":"⚠ Approximate tracks",
+"– linee e punti sono ricostruiti dal cartello ufficiale e":"– lines and points are reconstructed from the official sign and",
+"non hanno coordinate precise":"do not have precise coordinates",
+"(errore possibile di 100 m e oltre). Non usarli per navigare: segui le indicazioni sul posto e valuta sempre il terreno. Quote e lunghezze approssimative.":"(possible error of 100 m or more). Do not use them for navigation: follow the signs on site and always assess the terrain. Elevations and lengths are approximate.",
+"Facili":"Easy","Medie":"Intermediate","Difficili":"Difficult","📍 Dove sono":"📍 Where am I","📍 Cerco…":"📍 Locating…","Topografica":"Topographic",
+"Difficoltà":"Difficulty","facile":"easy","media":"intermediate","medio-difficile":"advanced","Zona":"Area","Quota ≈":"Elevation ≈","Lunghezza ≈":"Length ≈",
+"Prima parte come la Livinallunc Classica, poi traverso verso la mulattiera del Poviz e giù lungo la mulattiera fino a Sella Nevea.":"First part as the Livinallunc Classica, then traverse to the Poviz mule track and down along the track to Sella Nevea.",
+"● cerchio = partenza · ■ quadrato = arrivo. Valori approssimativi, tracciato non preciso.":"● circle = start · ■ square = finish. Approximate values, track not precise.",
+"Le linee in video":"The lines on video","Cartelli e panorami":"Signs and panoramas",
+"Cartello ufficiale con pendenze (sul cartello n. 1–11 = qui n. 2–12)":"Official sign with slopes (on the sign no. 1–11 = here no. 2–12)",
+"Fonte: cartello ufficiale freeride Sella Nevea, cartografia © Casa Editrice Tabacco":"Source: official Sella Nevea freeride sign, cartography © Casa Editrice Tabacco",
+"Mappa topografica Golovec e Forato":"Topographic map Golovec and Forato","Fonte: cartello ufficiale freeride Sella Nevea":"Source: official Sella Nevea freeride sign",
+"Panorama – lato Montasio":"Panorama – Montasio side","Panorama – lato Canin":"Panorama – Canin side","Fonte: sellaneveaparco.it":"Source: sellaneveaparco.it","Fonte: TurismoFVG.it":"Source: TurismoFVG.it",
+"Video della community":"Community videos",
+"Video pubblici di altri rider su YouTube, come esempio di linee e condizioni. Tutti i diritti ai rispettivi autori.":"Public videos by other riders on YouTube, as examples of lines and conditions. All rights to their respective authors.",
+"Mostra tutti":"Show all","Mostra meno":"Show less",
+"Con chi la conosce":"With the locals","Corsi e uscite guidate":"Courses and guided tours",
+"Vuoi imparare a leggere la neve o scoprire le linee con qualcuno che conosce il Canin da sempre?":"Want to learn to read the snow or discover the lines with someone who has always known Canin?",
+"Livio Sadoch · maestro di sci & guida alpina":"Livio Sadoch · ski instructor & mountain guide",
+"Uscite e corsi in piccoli gruppi con un maestro di sci e una guida alpina: freeride, scialpinismo, neve e valanghe, autosoccorso con ARTVA, pala e sonda.":"Small-group tours and courses with a ski instructor and a mountain guide: freeride, ski touring, snow and avalanches, companion rescue with transceiver, shovel and probe.",
+"Sito web":"Website","Unisciti a noi":"Join us","La community":"The community",
+"Uscite di gruppo, foto, video e condizioni in tempo reale dai rider di Sella Nevea.":"Group outings, photos, videos and real-time conditions from the Sella Nevea riders.",
+"Dati meteo:":"Weather data:","Protezione Civile della Regione FVG":"FVG Region Civil Protection",
+"(CC BY 4.0) · Bollettino valanghe: AINEVA / Protezione Civile FVG · Previsioni:":"(CC BY 4.0) · Avalanche bulletin: AINEVA / FVG Civil Protection · Forecast:",
+"(CC BY 4.0) · Mappa: OpenTopoMap / OpenStreetMap · misure non validate.":"(CC BY 4.0) · Map: OpenTopoMap / OpenStreetMap · measurements not validated.",
+"Aggiungi alla schermata Home":"Add to Home screen","Chiudi":"Close","Impianti":"Lifts","fonte PromoTurismoFVG ↗":"source PromoTurismoFVG ↗","aperto":"open","chiuso":"closed","stato n.d.":"status n/a",
+"Cabinovia Canin":"Canin gondola","Seggiovia Gilberti":"Gilberti chairlift",
+"Freerider in neve fresca":"Freerider in fresh snow","Sulla cresta del Golovec, Sella Nevea":"On the Golovec ridge, Sella Nevea","Stato impianti":"Lift status","Previsioni 4 giorni":"4-day forecast",
+"Webcam Sella Nevea in quota (1870 m)":"Sella Nevea webcam up the mountain (1870 m)","Webcam Sella Nevea a valle":"Sella Nevea webcam in the valley","Neve fresca a Sella Nevea":"Fresh snow in Sella Nevea",
+"Precedenti":"Previous","Successivi":"Next","Neve cm":"Snow cm","Vento":"Wind","Raffica":"Gust",
+"Posizione non disponibile su questo dispositivo.":"Location not available on this device.","Non riesco a leggere la posizione. Controlla i permessi del browser.":"Could not read your location. Check the browser permissions.",
+"Apri il menu del browser":"Open the browser menu","Scegli":"Choose","o":"or","Conferma":"Confirm","Tocca":"Tap","in Safari":"in Safari","⬆️ in Safari":"⬆️ in Safari","Aggiungi":"Add","Condividi":"Share","Installa app":"Install app","Aggiungi a schermata Home":"Add to Home screen"
+};
+var I18R=[
+[/^di (.+)$/,"by $1"],[/^Guarda (.+)$/,"Watch $1"],[/^(\d+) video · scorri ⇆$/,"$1 videos · swipe ⇆"],[/^(\d+) video$/,"$1 videos"],
+[/^Ultimo dato: (.+) \(ora locale\) · aggiornamento automatico ogni 15 min\.$/,"Last reading: $1 (local time) · automatic update every 15 min."],
+[/^sopra (\d+) m/,"above $1 m"],[/^sotto (\d+) m/,"below $1 m"],[/^Nessun bollettino valido oggi \(fuori stagione\?\)\.$/,"No valid bulletin today (off season?)."],
+[/^Apertura invernale prevista per (.+)\.$/,"Winter opening planned for $1."],[/^agg\. /,"upd. "],[/ · agg\. /," · upd. "],
+[/Dalla cresta (\d+) varianti in discesa \(tratteggio corto\) verso il Piano del Prevala\./,"From the ridge, $1 descent variants (short dashes) towards the Prevala plateau."],
+[/^\+(\d+) cm · POWDER!$/,"+$1 cm · POWDER!"]
+];
+var IT_DAYS={sabato:"Saturday",domenica:"Sunday",lunedì:"Monday",martedì:"Tuesday",mercoledì:"Wednesday",giovedì:"Thursday",venerdì:"Friday"};
+var IT_MON={gennaio:"January",febbraio:"February",marzo:"March",aprile:"April",maggio:"May",giugno:"June",luglio:"July",agosto:"August",settembre:"September",ottobre:"October",novembre:"November",dicembre:"December"};
+function tr(s){
+  if(LANG!=="en"||!s)return s;
+  var m=s.match(/^(\s*)([\s\S]*?)(\s*)$/),core=m[2];if(!core)return s;
+  if(I18N[core]!==undefined)return m[1]+I18N[core]+m[3];
+  var out=core;
+  for(var i=0;i<I18R.length;i++)out=out.replace(I18R[i][0],I18R[i][1]);
+  out=out.replace(/\b(sabato|domenica|lunedì|martedì|mercoledì|giovedì|venerdì)\b/g,function(d){return IT_DAYS[d]}).replace(/\b(gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\b/g,function(d){return IT_MON[d]});
+  return m[1]+out+m[3];
+}
+function trNode(root){
+  if(LANG!=="en")return;
+  var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),n,list=[];
+  while(n=w.nextNode()){var p=n.parentElement;if(p&&!p.closest("script,style"))list.push(n);}
+  list.forEach(function(t){var v=tr(t.nodeValue);if(v!==t.nodeValue)t.nodeValue=v;});
+  var els=root.querySelectorAll?root.querySelectorAll("[aria-label],[title],[alt]"):[];
+  Array.prototype.forEach.call(els,function(e){["aria-label","title","alt"].forEach(function(a){var v=e.getAttribute(a);if(v){var t=tr(v);if(t!==v)e.setAttribute(a,t);}});});
+}
+function setLang(l){try{localStorage.setItem("fr-lang",l);}catch(e){}var u=new URL(location.href);u.searchParams.delete("lang");location.replace(u.pathname+u.search+location.hash);}
+if(LANG==="en"){
+  var _alert=window.alert;window.alert=function(m){_alert(tr(m));};
+  document.addEventListener("DOMContentLoaded",function(){
+    trNode(document.body);
+    new MutationObserver(function(ms){ms.forEach(function(m){
+      if(m.type==="characterData"){var v=tr(m.target.nodeValue);if(v!==m.target.nodeValue)m.target.nodeValue=v;}
+      else m.addedNodes.forEach(function(n){if(n.nodeType===3){var v=tr(n.nodeValue);if(v!==n.nodeValue)n.nodeValue=v;}else if(n.nodeType===1)trNode(n);});
+    });}).observe(document.body,{childList:true,subtree:true,characterData:true});
+  });
+}
+
 document.documentElement.classList.add("hv-c");
 /* ================= CONFIG – modifica qui ================= */
 const CONFIG = {
@@ -607,7 +716,7 @@ const CONFIG = {
 const $ = id => document.getElementById(id);
 const diffTxt = {1:["facile","d1"],2:["media","d2"],3:["medio-difficile","d3"]};
 const zoneCol = {Golovec:"#2f9fd0",Forato:"#2fa35c"};
-const DIRS = ["N","NE","E","SE","S","SO","O","NO"];
+const DIRS = LANG==="en"?["N","NE","E","SE","S","SW","W","NW"]:["N","NE","E","SE","S","SO","O","NO"];
 const ICON = {
   Facebook:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3c-2.8 0-4 1.7-4 4.3V10H7v4h3v8h4v-8h3l1-4h-4V8.6c0-.4.3-.6.6-.6z"/></svg>',
   Instagram:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>'
@@ -615,7 +724,7 @@ const ICON = {
 
 function initStatic(){
   $("tagline").textContent = CONFIG.tagline;
-  $("logo").src = $("tlogo").src = $("clogo").src = CONFIG.logo;
+  $("logo2h").src = CONFIG.logo2; $("logo").src = $("tlogo").src = $("clogo").src = CONFIG.logo;
   $("heroImg").src = CONFIG.hero; $("heroImg2").src = CONFIG.hero2; document.querySelectorAll(".secbanner img").forEach(i=>i.src=CONFIG.hero);
   $("errlink").href = CONFIG.stationPage;
   $("gallery").innerHTML = CONFIG.gallery.map((g,i)=>
@@ -648,7 +757,7 @@ function initStatic(){
 }
 
 const fmtUTC = d => d.toISOString().slice(0,19).replace("T"," ");
-const tLabel = d => d.toLocaleString("it-IT",{weekday:"short",hour:"2-digit",minute:"2-digit"});
+const tLabel = d => d.toLocaleString(LOC,{weekday:"short",hour:"2-digit",minute:"2-digit"});
 async function getSensor(sid, from, to){
   const u = `${CONFIG.api}/stations/${CONFIG.station.id}/sensors/${sid}/measures?from=${encodeURIComponent(fmtUTC(from))}&to=${encodeURIComponent(fmtUTC(to))}`;
   const r = await fetch(u); if(!r.ok) throw new Error("HTTP "+r.status);
@@ -674,7 +783,7 @@ function render(){
   const ls=last(snow);
   if(ls){
     setStationPin(Math.round(ls.v)); $("chSnowV").textContent=`${Math.round(ls.v)} cm`;
-    $("updated").textContent=`Ultimo dato: ${ls.t.toLocaleString("it-IT")} (ora locale) · aggiornamento automatico ogni 15 min.`;
+    $("updated").textContent=`Ultimo dato: ${ls.t.toLocaleString(LOC)} (ora locale) · aggiornamento automatico ogni 15 min.`;
   }
   const lt=last(temp);
   if(lt){
@@ -684,10 +793,10 @@ function render(){
   if(lw){
     $("chWindV").textContent=`${Math.round(lw.v*3.6)} km/h`+(ld?` ${DIRS[Math.round((ld.v%360)/45)%8]}`:"");
   }
-  draw("chSnow",[{label:"Neve cm",data:f(snow),color:"#5ec8f2",fill:true}],{suggestedMin:0});
+  draw("chSnow",[{label:tr("Neve cm"),data:f(snow),color:"#5ec8f2",fill:true}],{suggestedMin:0});
   draw("chTemp",[{label:"°C",data:f(temp),color:"#ff7a59"}],{zero:true});
-  draw("chWind",[{label:"Vento",data:f(wind).map(x=>({t:x.t,v:x.v*3.6})),color:"#5ec8f2",fill:true},
-    {label:"Raffica",data:f(wind).map(x=>{const g=valueAt(gust,x.t);return {t:x.t,v:g?g.v*3.6:null}}),color:"#ffc65c"}],{suggestedMin:0,legend:true});
+  draw("chWind",[{label:tr("Vento"),data:f(wind).map(x=>({t:x.t,v:x.v*3.6})),color:"#5ec8f2",fill:true},
+    {label:tr("Raffica"),data:f(wind).map(x=>{const g=valueAt(gust,x.t);return {t:x.t,v:g?g.v*3.6:null}}),color:"#ffc65c"}],{suggestedMin:0,legend:true});
 }
 if(window.Chart){ Chart.defaults.color="#a3a09b"; Chart.defaults.font.family="Barlow, sans-serif"; }
 function draw(id,series,opt){
@@ -795,9 +904,9 @@ async function loadForecast(){
       if(i>0) tot+=sn;
       const fz=h.time.map((x,k)=>[x,h.freezing_level_height[k]]).filter(([x])=>x.startsWith(t)&&+x.slice(11,13)>=6&&+x.slice(11,13)<=18).map(a=>a[1]);
       const [ic,tx]=WMO[d.weather_code[i]]||["❔",""];
-      const name=i===0?"Oggi":i===1?"Domani":dt.toLocaleDateString("it-IT",{weekday:"long"});
+      const name=i===0?"Oggi":i===1?"Domani":dt.toLocaleDateString(LOC,{weekday:"long"});
       const sTxt=sn>=1?`+${Math.round(sn)} <small>cm</small>`:sn>0?`&lt;1 <small>cm</small>`:`0 <small>cm</small>`;
-      return `<div class="day${sn>=5?" snowy":""}"><div class="dn">${name}</div><div class="dd">${dt.toLocaleDateString("it-IT",{day:"numeric",month:"short"})}</div>
+      return `<div class="day${sn>=5?" snowy":""}"><div class="dn">${name}</div><div class="dd">${dt.toLocaleDateString(LOC,{day:"numeric",month:"short"})}</div>
         <div class="wi">${ic}</div><div class="wt">${tx}</div>
         <div class="tt">${Math.round(d.temperature_2m_max[i])}° <span>/ ${Math.round(d.temperature_2m_min[i])}°</span></div>
         <div class="sn">${sTxt}</div>
@@ -806,7 +915,7 @@ async function loadForecast(){
         ${fz.length?(()=>{const a=Math.round(Math.min(...fz)/50)*50,b=Math.round(Math.max(...fz)/50)*50;return `<li>Zero termico <b>${a===b?a:a+"–"+b} m</b></li>`})():""}</ul></div>`;
     }).join("");
     $("mini").innerHTML=d.time.map((t,i)=>{const dt=new Date(t+"T12:00"),sn=d.snowfall_sum[i]||0;
-      return `<div><span class="md">${i===0?"Oggi":dt.toLocaleDateString("it-IT",{weekday:"short"})}</span><br><span class="mi">${(WMO[d.weather_code[i]]||["❔"])[0]}</span><br><span class="ms">${sn>=1?"+"+Math.round(sn):sn>0?"&lt;1":"0"} cm</span><br><span class="mt">${Math.round(d.temperature_2m_max[i])}°/${Math.round(d.temperature_2m_min[i])}°</span></div>`}).join("");
+      return `<div><span class="md">${i===0?"Oggi":dt.toLocaleDateString(LOC,{weekday:"short"})}</span><br><span class="mi">${(WMO[d.weather_code[i]]||["❔"])[0]}</span><br><span class="ms">${sn>=1?"+"+Math.round(sn):sn>0?"&lt;1":"0"} cm</span><br><span class="mt">${Math.round(d.temperature_2m_max[i])}°/${Math.round(d.temperature_2m_min[i])}°</span></div>`}).join("");
     $("fcTot").innerHTML=`Neve prevista prossimi 3 giorni: <b>${tot>0&&tot<1?"&lt;1":Math.round(tot)} cm</b>`;
   }catch(e){ console.error(e); $("days").innerHTML=`<p class="meta">Previsioni non disponibili. <a href="${CONFIG.forecast.bergfex}" target="_blank" rel="noopener" style="color:var(--ice)">Vedi su bergfex</a></p>`; }
 }
@@ -836,7 +945,7 @@ function parseBulletin(j){
   (b.dangerRatings||[]).forEach(d=>{const v=DANGER[d.mainValue]; if(v&&v[0]>max){max=v[0];txt=v[1];
     elev=d.elevation?(d.elevation.lowerBound?`sopra ${d.elevation.lowerBound} m`:d.elevation.upperBound?`sotto ${d.elevation.upperBound} m`:""):""}});
   return {level:max,txt,elev,highlights:(b.avalancheActivity||{}).highlights||"",
-    day:new Date(new Date(b.validTime.startTime).getTime()+12*3600e3).toLocaleDateString("it-IT",{weekday:"long",day:"numeric",month:"long"})};
+    day:new Date(new Date(b.validTime.startTime).getTime()+12*3600e3).toLocaleDateString(LOC,{weekday:"long",day:"numeric",month:"long"})};
 }
 async function loadBulletin(){
   const link=`<a href="${CONFIG.bulletin.page}" target="_blank" rel="noopener">Bollettino completo</a>`;
@@ -864,7 +973,7 @@ async function loadLifts(){
     const st=known(x.status)?x.status:"";
     const t=x.status==="open"?"aperto":x.status==="close"?"chiuso":"stato n.d.";
     return `<span class="li" title="${x.name}: ${t}"><span class="ld ${st}"></span>${short(x.name)}</span>`;}).join("");
-  const chk=j.checked?new Date(j.checked).toLocaleString("it-IT",{weekday:"short",hour:"2-digit",minute:"2-digit"}):"";
+  const chk=j.checked?new Date(j.checked).toLocaleString(LOC,{weekday:"short",hour:"2-digit",minute:"2-digit"}):"";
   const note=(j.alert?j.alert+" · ":"")+(chk?`agg. ${chk} · `:"")+"fonte PromoTurismoFVG ↗";
   el.innerHTML=`<span class="lk">Impianti</span>${items}<span class="ln">${note}</span>`;
 }
@@ -904,5 +1013,6 @@ initStatic(); initInstall(); initUI(); initMap(); initMapUI(); loadForecast(); l
 setInterval(load,15*60e3);
 setInterval(loadForecast,60*60e3);
 </script>
+<script>document.querySelectorAll(".lang button").forEach(function(b){b.classList.toggle("on",b.dataset.l===LANG);b.onclick=function(){if(b.dataset.l!==LANG)setLang(b.dataset.l);};});</script>
 </body>
 </html>
