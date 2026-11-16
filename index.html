@@ -1389,7 +1389,7 @@ function renderCond(){
     const isRain=k=>(h.precipitation[k]||0)-(h.snowfall[k]||0)/0.7>0.3&&(h.temperature_2m[k]||0)>0.5;
     const rainPast=ps.some(isRain), rainNext=nx12.some(isRain);
     const fog=nx12.filter(k=>h.is_day[k]&&(h.weather_code[k]===45||h.weather_code[k]===48)).length;
-    if(gMax>=COND.gustVHi) add(2,"💨",`Vento molto forte nelle prossime ore (raffiche fino a ${Math.round(gMax)} km/h): creste esposte, possibili chiusure degli impianti`,`Very strong wind in the coming hours (gusts up to ${Math.round(gMax)} km/h): exposed ridges, lifts may close`);
+    if(gMax>=COND.gustVHi) add(2,"💨",`Vento molto forte nelle prossime ore (raffiche fino a ${Math.round(gMax)} km/h): creste esposte${LIFTS_ON?", possibili chiusure degli impianti":""}`,`Very strong wind in the coming hours (gusts up to ${Math.round(gMax)} km/h): exposed ridges${LIFTS_ON?", lifts may close":""}`);
     else if(gMax>=COND.gustHi) add(1,"💨",`Vento forte in quota (raffiche fino a ${Math.round(gMax)} km/h)`,`Strong wind up high (gusts up to ${Math.round(gMax)} km/h)`);
     if((rainPast||rainNext)&&(base==null||base>=10)) add(2,"🌧️",rainNext?"Pioggia prevista sulla neve: manto appesantito, crosta quando rigela":"Pioggia recente sulla neve: manto appesantito, crosta quando rigela",rainNext?"Rain expected on the snow: heavier snowpack, crust when it refreezes":"Recent rain on the snow: heavier snowpack, crust when it refreezes");
     if(snowSoon>=COND.snowSoon) add(1,"🌨️",`In arrivo circa +${Math.round(snowSoon)} cm nelle prossime 24 h`,`About +${Math.round(snowSoon)} cm expected in the next 24 h`);
@@ -1428,10 +1428,12 @@ function renderCond(){
   el.hidden=false;
 }
 
+var LIFTS_ON=false; // almeno un impianto aperto = stagione in corso
 async function loadLifts(){
   const el=$("lifts"); let j;
   try{ const r=await fetch("lifts.json?t="+Date.now(),{cache:"no-store"}); if(!r.ok) return; j=await r.json(); }catch(e){ return; }
   const L=(j.lifts||[]); if(!L.length) return;
+  LIFTS_ON=L.some(x=>x.status==="open"); if(LIFTS_ON) renderCond();
   const order=n=>/funifor/i.test(n)?0:/telecabina/i.test(n)?1:2;
   const short=n=>n.replace(/^Telecabina /,"Cabinovia ").replace(/^Seggiovia /,"Seggiovia ").replace(/^Tappeto /,"Tappeto ");
   const known=s=>s==="open"||s==="close";
