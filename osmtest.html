@@ -1,7 +1,0 @@
-<!doctype html><meta charset="utf-8"><pre id="o">loading</pre><script>
-fetch('https://api.openstreetmap.org/api/0.6/map.json?bbox=13.476,46.377,13.488,46.388').then(r=>r.json()).then(j=>{
-const N={};j.elements.filter(e=>e.type==='node').forEach(n=>N[n.id]=[+n.lat.toFixed(5),+n.lon.toFixed(5)]);
-const W=j.elements.filter(e=>e.type==='way'&&e.tags&&/path|track|footway/.test(e.tags.highway||''));
-document.getElementById('o').textContent=JSON.stringify(W.map(w=>({id:w.id,t:w.tags,p:w.nodes.map(i=>N[i]).filter(Boolean)})));
-}).catch(e=>document.getElementById('o').textContent='ERR '+e);
-</script>
