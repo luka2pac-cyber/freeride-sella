@@ -126,6 +126,11 @@ html{overflow-x:clip}
 .cond.vc li i{left:10px;top:8px}
 .cond.vc li.s3{border-left-color:#ff5a4e}.cond.vc li.s2{border-left-color:#ff9e3d}.cond.vc li.s1{border-left-color:#ffd34d}.cond.vc li.s0{border-left-color:#7ee081}
 .cond.vc small{margin-top:8px}
+/* B+C · carta luminosa con scala */
+.cond.vbc{background:color-mix(in srgb,var(--c) 14%,rgba(0,0,0,.84));border:2px solid var(--c);border-top-width:2px;box-shadow:0 0 28px color-mix(in srgb,var(--c) 40%,transparent);border-radius:10px;padding:14px}
+.cond.vbc .cbadge{display:flex;width:58px;height:58px;border-radius:50%;background:var(--c);color:#111;font-size:2rem;box-shadow:0 0 0 4px rgba(0,0,0,.5)}
+.cond.vbc .chead span{color:#ddd}
+.cond.vbc li{background:rgba(0,0,0,.35)}
 @media(max-width:600px){.cond .chead b{font-size:1.15rem}.cond.vc .chead b{font-size:1.2rem}.cond li{font-size:.86rem}.cond .cbadge{width:46px;height:46px;font-size:1.6rem}}
 .mini-cap{font-family:var(--display);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:4px}
 .hero-install{display:none;margin:18px auto 0}
@@ -1211,7 +1216,7 @@ function renderCond(){
   const sub=lvl?L2(`Pericolo valanghe ${lvl} · ${BUL.txt.split(" · ")[1]}`,`Avalanche danger ${lvl} · ${tr(BUL.txt).split(" · ")[1]}`):L2("Bollettino valanghe n.d.","Avalanche bulletin n/a");
   const EC=["#ccff66","#ffff00","#ff9900","#ff0000","#ff0000"];
   const scale=`<div class="cscale">${[1,2,3,4,5].map(i=>`<span class="${i===lvl?"on":""}" style="--s:${EC[i-1]}">${i}</span>`).join("")}</div>`;
-  el.className="cond vc";
+  el.className="cond "+(new URLSearchParams(location.search).get("cv")==="bc"?"vc vbc":"vc");
   el.innerHTML=`<div class="cbar"><div class="cbadge">${badge}</div><div class="chead"><b>${head}</b><span>${sub}</span></div></div>`+
     scale+(F.length?`<ul>${F.slice(0,4).map(f=>`<li class="s${f.sev}"><i>${f.ic}</i>${f.t}</li>`).join("")}</ul>`:"")+
     `<small>${L2("Stima automatica da stazione Livinal Lunc, modello meteo e bollettino. Non sostituisce il bollettino né la valutazione sul posto.","Automatic estimate from the Livinal Lunc station, weather model and bulletin. It does not replace the bulletin or your own assessment on site.")}</small>`;
