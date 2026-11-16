@@ -133,20 +133,8 @@ html{overflow-x:clip}
 [hidden]{display:none!important}
 .slo{margin-top:16px;padding:14px 18px;border:1px solid rgba(94,200,242,.45);border-left:4px solid var(--ice);background:linear-gradient(90deg,rgba(94,200,242,.12),rgba(94,200,242,.02));display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;font-size:1rem}
 .slo .big{font-family:var(--display);font-weight:700;font-size:1.6rem;color:#fff;line-height:1}
-.sloA{margin-top:18px;border:1px solid rgba(94,200,242,.45);border-left:4px solid var(--ice);background:linear-gradient(135deg,rgba(94,200,242,.14),rgba(10,14,20,.6));padding:18px}
-.sloA-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-bottom:14px}
-.sloA-h h3{font-family:var(--display);font-size:1.5rem;letter-spacing:.04em;text-transform:uppercase;margin:0}
-.sloA-h .meta{margin:0;margin-left:auto}
-.sloA-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
-.sloA-stats div{background:rgba(0,0,0,.35);border:1px solid var(--line);padding:10px 12px}
-.sloA-stats b{display:block;font-family:var(--display);font-size:1.7rem;color:#fff;line-height:1.1}
-.sloA-stats span{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-.sloA .box{height:200px}
-.sloT{display:flex;gap:0;border:1px solid var(--line);margin-left:auto}
-.sloT button{background:none;border:0;color:var(--muted);font-family:var(--display);font-weight:700;letter-spacing:.06em;padding:6px 12px;cursor:pointer}
-.sloT button.on{background:var(--ice-deep);color:#fff}
 .charts.four{grid-template-columns:repeat(2,1fr)}
-@media(max-width:700px){.sloA-stats{grid-template-columns:1fr 1fr}.sloA-h .meta{margin-left:0}}
+
 .slo-k{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ice)}
 .slo b{color:#fff}
 .slo a{color:var(--ice)}
@@ -829,20 +817,10 @@ function render(){
   if(lw){
     $("chWindV").textContent=`${Math.round(lw.v*3.6)} km/h`+(ld?` ${DIRS[Math.round((ld.v%360)/45)%8]}`:"");
   }
-  const ov=SLOV==="c"&&SLO&&SLO.ser.length, showIT=!ov||sloShow!=="slo", showS=ov&&sloShow!=="it";
-  const sl=k=>f(snow).map(x=>({t:x.t,v:sloAt(x.t,k)}));
-  const hid=(arr,on)=>on?arr:arr.map(x=>({t:x.t,v:null}));
-  if(ov){
-    draw("chSnow",[{label:tr("Neve IT 1837 m"),data:hid(f(snow),showIT),color:"#5ec8f2",fill:true},{label:tr("Neve SLO 2260 m"),data:hid(sl("snow"),showS),color:"#9b8cff",fill:true}],{suggestedMin:0,legend:true});
-    draw("chTemp",[{label:"°C IT",data:hid(f(temp),showIT),color:"#ff7a59"},{label:tr("Temp. SLO"),data:hid(f(temp).map(x=>({t:x.t,v:sloAt(x.t,"temp")})),showS),color:"#c9a2ff"}],{zero:true,legend:true});
-    draw("chWind",[{label:tr("Vento")+" IT",data:hid(f(wind).map(x=>({t:x.t,v:x.v*3.6})),showIT),color:"#5ec8f2",fill:true},
-      {label:tr("Vento SLO"),data:hid(f(wind).map(x=>({t:x.t,v:sloAt(x.t,"wind")})),showS),color:"#9b8cff"}],{suggestedMin:0,legend:true});
-  } else {
   draw("chSnow",[{label:tr("Neve cm"),data:f(snow),color:"#5ec8f2",fill:true}],{suggestedMin:0});
   draw("chTemp",[{label:"°C",data:f(temp),color:"#ff7a59"}],{zero:true});
   draw("chWind",[{label:tr("Vento"),data:f(wind).map(x=>({t:x.t,v:x.v*3.6})),color:"#5ec8f2",fill:true},
     {label:tr("Raffica"),data:f(wind).map(x=>{const g=valueAt(gust,x.t);return {t:x.t,v:g?g.v*3.6:null}}),color:"#ffc65c"}],{suggestedMin:0,legend:true});
-  }
 }
 if(window.Chart){ Chart.defaults.color="#a3a09b"; Chart.defaults.font.family="Barlow, sans-serif"; }
 function draw(id,series,opt){
@@ -1026,8 +1004,6 @@ async function loadLifts(){
 loadLifts();
 
 let SLO=null;
-const SLOV=(()=>{const v=(new URLSearchParams(location.search).get("slo")||"a").toLowerCase();return "abc".includes(v)?v:"a"})();
-let sloShow="both";
 async function loadKanin(){
   let j; try{ const r=await fetch("kanin.json?t="+Date.now(),{cache:"no-store"}); if(!r.ok) return; j=await r.json(); }catch(e){ return; }
   if(j.snow==null && j.t==null) return;
@@ -1036,7 +1012,7 @@ async function loadKanin(){
   if(m) when=new Date(Date.UTC(+m[3],+m[2]-1,+m[1],+m[4],+m[5]));
   j.when=when; SLO=j;
   $("chSloV").textContent=j.snow!=null?Math.round(j.snow)+" cm":"–"; $("chSlo").hidden=false;
-  renderSlo(); if(DATA && SLOV==="c") render();
+  renderSlo();
 }
 function sloAt(t,k){let r=null;for(const x of SLO.ser){if(x.t<=t)r=x;else break}return r&&r[k]!=null?r[k]:null}
 function sloInfo(){
@@ -1057,32 +1033,9 @@ function compactLine(i){
 }
 function renderSlo(){
   if(!SLO) return; const box=$("kaninSlo"), i=sloInfo(); box.hidden=false;
-  if(SLOV==="a"){
-    box.innerHTML=`<div class="sloA"><div class="sloA-h"><span class="slo-k">Lato sloveno</span><h3>Kanin · 2260 m</h3><span class="meta">${i.when} · ${i.src}</span></div>
-      <div class="sloA-stats"><div><b>${i.snow}</b><span>Neve</span></div><div><b>${i.temp}</b><span>Temperatura</span></div><div><b>${i.wind}</b><span>Vento</span></div><div><b>${i.d24}</b><span>Variazione 24 h</span></div></div>
-      ${i.ser.length?'<div class="box"><canvas id="chSloA"></canvas></div>':""}</div>`;
-    if(i.ser.length && window.Chart){
-      if(charts.chSloA) charts.chSloA.destroy();
-      charts.chSloA=new Chart($("chSloA"),{type:"line",data:{labels:i.ser.map(x=>tLabel(x.t)),datasets:[
-        {label:tr("Neve")+" cm",data:i.ser.map(x=>x.snow),borderColor:"#5ec8f2",backgroundColor:"#5ec8f230",fill:true,pointRadius:0,borderWidth:2,tension:.25,yAxisID:"y"},
-        {label:"°C",data:i.ser.map(x=>x.temp),borderColor:"#ff7a59",pointRadius:0,borderWidth:1.5,tension:.25,yAxisID:"y1"}]},
-        options:{responsive:true,maintainAspectRatio:false,interaction:{mode:"index",intersect:false},plugins:{legend:{display:true,labels:{boxWidth:12}}},
-          scales:{x:{ticks:{maxTicksLimit:6},grid:{display:false}},y:{suggestedMin:0,suggestedMax:10,grid:{color:"rgba(242,241,238,.08)"},title:{display:true,text:"cm"}},
-            y1:{position:"right",grid:{display:false},title:{display:true,text:"°C"}}}}});
-    }
-  } else if(SLOV==="b"){
-    box.innerHTML=compactLine(i);
-    $("sloChartBox").hidden=false; document.querySelector(".charts").classList.add("four");
-    if(i.ser.length) draw("chSloB",[{label:tr("Neve")+" cm",data:i.ser.map(x=>({t:x.t,v:x.snow})),color:"#9b8cff",fill:true}],{suggestedMin:0});
-  } else {
-    box.innerHTML=compactLine(i);
-    if(!$("sloToggle")){ const t=document.createElement("div"); t.className="sloT"; t.id="sloToggle";
-      t.innerHTML=`<button data-s="it">IT 1837 m</button><button data-s="slo">SLO 2260 m</button><button data-s="both" class="on">Entrambi</button>`;
-      $("range").appendChild(t); $("range").style.display="flex"; $("range").style.flexWrap="wrap"; $("range").style.gap="10px";
-      t.addEventListener("click",e=>{e.stopPropagation(); const b=e.target.closest("button"); if(!b) return; sloShow=b.dataset.s;
-        t.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b)); if(DATA) render();});
-    }
-  }
+  box.innerHTML=compactLine(i);
+  $("sloChartBox").hidden=false; document.querySelector(".charts").classList.add("four");
+  if(i.ser.length) draw("chSloB",[{label:tr("Neve")+" cm",data:i.ser.map(x=>({t:x.t,v:x.snow})),color:"#9b8cff",fill:true}],{suggestedMin:0});
 }
 loadKanin();
 
