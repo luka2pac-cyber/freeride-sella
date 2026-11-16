@@ -405,6 +405,13 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .pro ul{display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0;margin:10px 0}
 .pro li{font-family:var(--display);font-weight:600;font-size:.82rem;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line);padding:3px 9px}
 .pro .acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.pro .pph{flex-basis:100%;display:grid;grid-template-columns:2fr 1fr;gap:8px;margin-top:4px}
+.pro .pph figure{margin:0;position:relative;overflow:hidden;background:#000}
+.pro .pph img{width:100%;height:100%;aspect-ratio:3/2;object-fit:cover;display:block}
+.pro .pph figure:last-child img{aspect-ratio:auto;object-position:50% 35%}
+.pro .pph figcaption{position:absolute;left:0;right:0;bottom:0;padding:16px 10px 6px;background:linear-gradient(transparent,rgba(0,0,0,.75));font-family:var(--display);font-weight:600;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase;color:#fff}
+.pro .pcr{flex-basis:100%;font-size:.72rem;color:var(--muted);margin-top:-12px}
+@media(max-width:600px){.pro .pph{grid-template-columns:1fr}.pro .pph figure:last-child img{aspect-ratio:4/3;object-position:50% 45%}}
 .pro .mail{font-size:.85rem;color:var(--muted);margin-top:8px}
 .disc{font-size:.85rem;color:var(--muted);margin-top:14px}
 
@@ -650,6 +657,11 @@ footer a{color:var(--ice)}
       </div>
       <p class="mail">✉ sellaneveamountainexperience@outlook.it</p>
     </div>
+    <div class="pph">
+      <figure><img src="snme-group.jpg" alt="Gruppo di un corso freeride a Sella Nevea" loading="lazy"><figcaption>Corso freeride sul Canin</figcaption></figure>
+      <figure><img src="snme-livio.jpg" alt="Livio Sadoch, maestro di sci" loading="lazy"><figcaption>Livio Sadoch</figcaption></figure>
+    </div>
+    <p class="pcr">Foto: Sella Nevea Mountain Experience</p>
   </div>
 </section>
 
@@ -734,7 +746,7 @@ var I18N={
 "Dati meteo:":"Weather data:","Protezione Civile della Regione FVG":"FVG Region Civil Protection",
 "(CC BY 4.0) · Bollettino valanghe: AINEVA / Protezione Civile FVG · Previsioni:":"(CC BY 4.0) · Avalanche bulletin: AINEVA / FVG Civil Protection · Forecast:",
 "(CC BY 4.0) · Mappa: OpenTopoMap / OpenStreetMap · misure non validate.":"(CC BY 4.0) · Map: OpenTopoMap / OpenStreetMap · measurements not validated.",
-"Aggiungi alla schermata Home":"Add to Home screen","Chiudi":"Close","Impianti":"Lifts","Ora":"Hour","Neve/pioggia":"Snow/rain","Prob.":"Prob.","Vento":"Wind","Pioggia":"Rain","Neve":"Snow","ore":"hours","Previsione oraria a 1837 m · vento in km/h":"Hourly forecast at 1837 m · wind in km/h","Frecce: direzione verso cui soffia il vento":"Arrows: direction the wind blows towards","Ore di sole":"Sunshine hours","Sole":"Sun","Vento (più rosso = più forte)":"Wind (redder = stronger)","❄ Neve 1837 m":"❄ Snow 1837 m","Lato sloveno":"Slovenian side","Neve Kanin SLO 2260 m · cm":"Snow Kanin SLO 2260 m · cm","Neve":"Snow","Temperatura":"Temperature","Vento":"Wind","Variazione 24 h":"24 h change","Entrambi":"Both","Neve IT 1837 m":"Snow IT 1837 m","Neve SLO 2260 m":"Snow SLO 2260 m","Temp. SLO":"Temp. SLO","Vento SLO":"Wind SLO","Kanin · 2260 m":"Kanin · 2260 m","Stazione ARSO Kanin (2260 m)":"ARSO Kanin station (2260 m)","neve":"snow","vento":"wind","fonte ARSO ↗":"source ARSO ↗","Corsi e uscite":"Courses & tours","fonte PromoTurismoFVG ↗":"source PromoTurismoFVG ↗","aperto":"open","chiuso":"closed","stato n.d.":"status n/a",
+"Aggiungi alla schermata Home":"Add to Home screen","Chiudi":"Close","Impianti":"Lifts","Ora":"Hour","Neve/pioggia":"Snow/rain","Prob.":"Prob.","Vento":"Wind","Pioggia":"Rain","Neve":"Snow","ore":"hours","Previsione oraria a 1837 m · vento in km/h":"Hourly forecast at 1837 m · wind in km/h","Frecce: direzione verso cui soffia il vento":"Arrows: direction the wind blows towards","Ore di sole":"Sunshine hours","Sole":"Sun","Vento (più rosso = più forte)":"Wind (redder = stronger)","❄ Neve 1837 m":"❄ Snow 1837 m","Lato sloveno":"Slovenian side","Neve Kanin SLO 2260 m · cm":"Snow Kanin SLO 2260 m · cm","Neve":"Snow","Temperatura":"Temperature","Vento":"Wind","Variazione 24 h":"24 h change","Entrambi":"Both","Neve IT 1837 m":"Snow IT 1837 m","Neve SLO 2260 m":"Snow SLO 2260 m","Temp. SLO":"Temp. SLO","Vento SLO":"Wind SLO","Kanin · 2260 m":"Kanin · 2260 m","Stazione ARSO Kanin (2260 m)":"ARSO Kanin station (2260 m)","neve":"snow","vento":"wind","fonte ARSO ↗":"source ARSO ↗","Corsi e uscite":"Courses & tours","Corso freeride sul Canin":"Freeride course on the Canin","Foto: Sella Nevea Mountain Experience":"Photos: Sella Nevea Mountain Experience","fonte PromoTurismoFVG ↗":"source PromoTurismoFVG ↗","aperto":"open","chiuso":"closed","stato n.d.":"status n/a",
 "Cabinovia Canin":"Canin gondola","Seggiovia Gilberti":"Gilberti chairlift",
 "Freerider in neve fresca":"Freerider in fresh snow","Sulla cresta del Golovec, Sella Nevea":"On the Golovec ridge, Sella Nevea","Stato impianti":"Lift status","Previsioni 4 giorni":"4-day forecast",
 "Webcam Sella Nevea in quota (1870 m)":"Sella Nevea webcam up the mountain (1870 m)","Webcam Sella Nevea a valle":"Sella Nevea webcam in the valley","Neve fresca a Sella Nevea":"Fresh snow in Sella Nevea",
