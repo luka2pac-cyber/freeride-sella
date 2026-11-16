@@ -724,7 +724,7 @@ const ICON = {
 
 function initStatic(){
   $("tagline").textContent = CONFIG.tagline;
-  $("logo2h").src = CONFIG.logo2; $("logo").src = $("tlogo").src = $("clogo").src = CONFIG.logo;
+  $("logo2h").src = CONFIG.logo2; $("logo").src = "logo-hero.png"; $("tlogo").src = $("clogo").src = CONFIG.logo;
   $("heroImg").src = CONFIG.hero; $("heroImg2").src = CONFIG.hero2; document.querySelectorAll(".secbanner img").forEach(i=>i.src=CONFIG.hero);
   $("errlink").href = CONFIG.stationPage;
   $("gallery").innerHTML = CONFIG.gallery.map((g,i)=>
