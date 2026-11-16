@@ -135,6 +135,9 @@ html{overflow-x:clip}
 .slo .big{font-family:var(--display);font-weight:700;font-size:1.6rem;color:#fff;line-height:1}
 .charts.four{grid-template-columns:repeat(2,1fr)}
 
+.sloMini{margin:8px 0 0;font-size:.85rem;color:var(--muted)}
+.sloMini b{color:#fff;font-weight:600}
+.sloMini a{color:var(--ice)}
 .slo-k{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--ice)}
 .slo b{color:#fff}
 .slo a{color:var(--ice)}
@@ -418,7 +421,7 @@ footer a{color:var(--ice)}
     <div class="chart"><h3>Altezza neve · cm</h3><div class="box"><canvas id="chSnow"></canvas></div></div>
     <div class="chart"><h3>Temperatura · °C</h3><div class="box"><canvas id="chTemp"></canvas></div></div>
     <div class="chart"><h3>Vento e raffiche · km/h</h3><div class="box"><canvas id="chWind"></canvas></div></div>
-    <div class="chart" id="sloChartBox" hidden><h3>Neve Kanin SLO 2260 m · cm</h3><div class="box"><canvas id="chSloB"></canvas></div></div>
+    <div class="chart" id="sloChartBox" hidden><h3>Neve Kanin SLO 2260 m · cm</h3><div class="box"><canvas id="chSloB"></canvas></div><p class="sloMini" id="sloMini"></p></div>
   </div>
   <p class="meta" id="updated"></p>
   <div id="kaninSlo" hidden></div>
@@ -1033,6 +1036,7 @@ function compactLine(i){
 }
 function renderSlo(){
   if(!SLO) return; const i=sloInfo();
+  $("sloMini").innerHTML=`🌡 <b>${i.temp}</b> · 💨 <b>${i.wind}</b>`+(i.when?` · ${i.when}`:"")+` · <a href="${SLO.url||"https://www.vreme.si/podatki/Kanin/sneg"}" target="_blank" rel="noopener">ARSO ↗</a>`;
   $("sloChartBox").hidden=false; document.querySelector(".charts").classList.add("four");
   if(i.ser.length) draw("chSloB",[{label:tr("Neve")+" cm",data:i.ser.map(x=>({t:x.t,v:x.snow})),color:"#9b8cff",fill:true}],{suggestedMin:0});
 }
