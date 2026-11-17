@@ -384,6 +384,22 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .chart{background:var(--bg-2);border:1px solid var(--line);padding:16px}
 .chart h3{font-family:var(--display);font-weight:700;font-size:1.1rem;letter-spacing:.06em;margin-bottom:8px}
 .chart .box{position:relative;height:220px}
+.wdir{display:flex;flex-direction:column;align-items:center}
+#wrose{width:100%;max-width:240px;height:auto;display:block;touch-action:manipulation}
+#wrose .pet{cursor:pointer;transition:opacity .15s}
+#wrose .pet.sel{stroke:#fff;stroke-width:2}
+#wrose.has-sel .pet:not(.sel){opacity:.45}
+.wnow{text-align:center;margin-top:4px;font-family:var(--display);font-weight:700;letter-spacing:.04em}
+.wnow b{font-size:1.6rem;color:#fff}.wnow span{color:var(--muted);font-size:.95rem;margin-left:6px}
+.wstrip{display:flex;gap:1px;margin-top:12px}
+.wstrip i{flex:1;min-width:0;font-style:normal;text-align:center;font-size:14px;line-height:24px;height:24px;border-radius:3px;cursor:pointer;color:#0b0b0b;font-weight:700;overflow:hidden}
+.wstrip i.sel{outline:2px solid #fff;outline-offset:-2px}
+.wstrip i span{display:inline-block}
+.wtl{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-top:3px}
+.wleg{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;font-size:.75rem;color:var(--muted);margin-top:8px}
+.wleg em{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+.wdinfo{min-height:1.3em;text-align:center;color:#e8e6e1}
+
 .meta{font-size:.85rem;color:var(--muted);margin-top:10px}
 .err{display:none;background:#2a1414;border-left:4px solid var(--red);padding:12px 14px;margin-bottom:14px}
 .err a{color:var(--ice)}
@@ -635,6 +651,7 @@ footer a{color:var(--ice)}
     <div class="chart"><h3>Altezza neve · cm</h3><div class="box"><canvas id="chSnow"></canvas></div><p class="sloMini">Livinal Lunc 1837 m · <a href="https://monitor.protezionecivile.fvg.it/misure/541/23" target="_blank" rel="noopener">PC FVG ↗</a></p></div>
     <div class="chart"><h3>Temperatura · °C</h3><div class="box"><canvas id="chTemp"></canvas></div><p class="sloMini">Livinal Lunc 1837 m · <a href="https://monitor.protezionecivile.fvg.it/misure/541/2" target="_blank" rel="noopener">PC FVG ↗</a></p></div>
     <div class="chart"><h3>Vento e raffiche · km/h</h3><div class="box"><canvas id="chWind"></canvas></div><p class="sloMini">Livinal Lunc 1837 m · <a href="https://monitor.protezionecivile.fvg.it/misure/541/6" target="_blank" rel="noopener">PC FVG ↗</a></p></div>
+    <div class="chart" id="dirBox"><h3>Direzione vento</h3><div class="wdir"><svg id="wrose" viewBox="-120 -120 240 240" role="img" aria-label="Rosa dei venti"></svg><div class="wnow" id="wnow"></div></div><div class="wstrip" id="wstrip"></div><div class="wleg" id="wleg"></div><p class="sloMini wdinfo" id="wdInfo"></p><p class="sloMini">Livinal Lunc 1837 m · <a href="https://monitor.protezionecivile.fvg.it/misure/541/5" target="_blank" rel="noopener">PC FVG ↗</a></p></div>
     <div class="chart" id="sloChartBox" hidden><h3>Neve Kanin SLO 2260 m · cm</h3><div class="box"><canvas id="chSloB"></canvas></div><p class="sloMini" id="sloMini"></p></div>
   </div>
   <p class="meta" id="updated"></p>
@@ -793,7 +810,7 @@ var I18N={
 "Aggiungi alla Home":"Add to Home screen","Dati live":"Live data","Neve, temperatura e vento":"Snow, temperature and wind",
 "Stazione automatica della Protezione Civile FVG al Livinal Lunc (1837 m), versante nord del Canin sopra il Rif. Gilberti. Dati ogni 15 minuti, non validati.":"Automatic weather station of the FVG Civil Protection at Livinal Lunc (1837 m), north side of Canin above Rif. Gilberti. Data every 15 minutes, not validated.",
 "Non riesco a caricare i dati in diretta. Guardali sul sito della Protezione Civile:":"Live data could not be loaded. See them on the Civil Protection website:",
-"24 ore":"24 hours","48 ore":"48 hours","Altezza neve · cm":"Snow depth · cm","Temperatura · °C":"Temperature · °C","Vento e raffiche · km/h":"Wind and gusts · km/h",
+"24 ore":"24 hours","48 ore":"48 hours","Altezza neve · cm":"Snow depth · cm","Direzione vento":"Wind direction","Temperatura · °C":"Temperature · °C","Vento e raffiche · km/h":"Wind and gusts · km/h",
 "Guarda adesso":"Live now","Panorami a 360° aggiornati ogni pochi minuti. Trascina per girare la vista.":"360° panoramas updated every few minutes. Drag to turn the view.",
 "In quota · 1870 m":"Up the mountain · 1870 m","Canin, arrivo cabinovia":"Canin, top of the gondola","Schermo intero ↗":"Full screen ↗",
 "A valle · 1140 m":"Valley · 1140 m","Campo scuola, Sella Nevea":"Ski school area, Sella Nevea",
@@ -1054,7 +1071,50 @@ function render(){
   draw("chTemp",[{label:"°C",data:f(temp),color:"#ff7a59"}],{zero:true});
   draw("chWind",[{label:tr("Vento"),data:f(wind).map(x=>({t:x.t,v:x.v*3.6})),color:"#5ec8f2",fill:true},
     {label:tr("Raffica"),data:f(wind).map(x=>{const g=valueAt(gust,x.t);return {t:x.t,v:g?g.v*3.6:null}}),color:"#ffc65c"}],{suggestedMin:0,legend:true});
+  try{renderDir(dir,wind,cut)}catch(e){console.error(e)}
 }
+/* ---------- smer vetra: roža + časovni trak ---------- */
+const D16=LANG==="en"?["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"]:["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSO","SO","OSO","O","ONO","NO","NNO"];
+const d16=d=>D16[Math.round(((d%360)+360)%360/22.5)%16];
+function spdCol(k){return k<10?"#5ec8f2":k<25?"#7ee08f":k<40?"#ffc65c":k<60?"#ff9a4d":"#ff5a5a";}
+const SPL=[[0,"<10"],[10,"10–25"],[25,"25–40"],[40,"40–60"],[60,">60"]];
+function renderDir(dir,wind,cut){
+  const box=$("dirBox"); if(!box) return;
+  const pts=dir.filter(x=>x.t>=cut).map(x=>{const w=valueAt(wind,x.t);return {t:x.t,d:x.v,k:w?w.v*3.6:0}});
+  if(!pts.length){box.hidden=true;return} box.hidden=false;
+  const cnt=Array(16).fill(0), sum=Array(16).fill(0); let calm=0;
+  pts.forEach(p=>{if(p.k<2){calm++;return} const i=Math.round(((p.d%360)+360)%360/22.5)%16; cnt[i]++; sum[i]+=p.k;});
+  const n=pts.length, mx=Math.max(1,...cnt), R0=16, R1=92;
+  const pol=(a,r)=>[(r*Math.sin(a*Math.PI/180)).toFixed(1),(-r*Math.cos(a*Math.PI/180)).toFixed(1)];
+  let g="";
+  [.25,.5,.75,1].forEach(f=>{g+=`<circle r="${R0+(R1-R0)*f}" fill="none" stroke="rgba(242,241,238,${f===1?.18:.08})"/>`});
+  for(let i=0;i<16;i+=2){const [x1,y1]=pol(i*22.5,R0),[x2,y2]=pol(i*22.5,R1);g+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="rgba(242,241,238,.07)"/>`}
+  cnt.forEach((c,i)=>{ if(!c) return; const r=R0+(R1-R0)*c/mx, a=i*22.5, [ax,ay]=pol(a-9.5,R0),[bx,by]=pol(a-9.5,r),[cx,cy]=pol(a+9.5,r),[dx,dy]=pol(a+9.5,R0);
+    g+=`<path class="pet" data-i="${i}" d="M${ax} ${ay}L${bx} ${by}A${r} ${r} 0 0 1 ${cx} ${cy}L${dx} ${dy}A${R0} ${R0} 0 0 0 ${ax} ${ay}Z" fill="${spdCol(sum[i]/c)}" fill-opacity=".85"/>`;});
+  [[0,D16[0]],[90,D16[4]],[180,D16[8]],[270,D16[12]]].forEach(([a,t])=>{const [x,y]=pol(a,R1+14);g+=`<text x="${x}" y="${y}" fill="#e8e6e1" font-size="14" font-weight="700" text-anchor="middle" dominant-baseline="central" font-family="Saira Condensed,Arial Narrow,sans-serif">${t}</text>`});
+  const lp=pts[pts.length-1];
+  g+=`<circle r="${R0-2}" fill="#0b0b0b" stroke="rgba(242,241,238,.25)"/><g transform="rotate(${Math.round(lp.d)%360})"><line x1="0" y1="-${R0+6}" x2="0" y2="${R0-2}" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M0 ${R0+6}L-6 ${R0-4}L6 ${R0-4}Z" fill="#fff"/></g>`;
+  const svg=$("wrose"); svg.innerHTML=g; svg.classList.remove("has-sel");
+  $("wnow").innerHTML=`<b>${L2("da ","from ")}${d16(lp.d)}</b><span>${Math.round(lp.d)}° · ${Math.round(lp.k)} km/h · ${lp.t.toLocaleTimeString(LOC,{hour:"2-digit",minute:"2-digit"})}</span>`;
+  const info=$("wdInfo"), dflt=L2(`Ultime ${hours} h · calma ${Math.round(calm/n*100)}% · tocca la rosa o una freccia`,`Last ${hours} h · calm ${Math.round(calm/n*100)}% · tap the rose or an arrow`);
+  info.textContent=dflt;
+  const H=[], now=new Date(), stp=hours>24?2:1; for(let h=hours;h>0;h-=stp){const a=new Date(now-h*3600e3), b=new Date(now-(h-stp)*3600e3), q=pts.filter(p=>p.t>=a&&p.t<b); if(!q.length){H.push(null);continue}
+    let x=0,y=0,k=0; q.forEach(p=>{const r=p.d*Math.PI/180; x+=Math.sin(r); y+=Math.cos(r); k+=p.k}); H.push({t:b,d:(Math.atan2(x,y)*180/Math.PI+360)%360,k:k/q.length});}
+  const st=$("wstrip"); st.innerHTML=H.map((h,j)=>h?`<i data-j="${j}" style="background:${spdCol(h.k)}"><span style="transform:rotate(${Math.round((h.d+180)%360)}deg)">↑</span></i>`:`<i style="background:rgba(242,241,238,.06)"></i>`).join("");
+  st.parentNode.querySelectorAll(".wtl").forEach(e=>e.remove());
+  const tl=document.createElement("div"); tl.className="wtl"; const tk=hours/4;
+  tl.innerHTML=[0,1,2,3,4].map(m=>{const d=new Date(now-(hours-m*tk)*3600e3);return `<span>${d.toLocaleTimeString(LOC,{hour:"2-digit",minute:"2-digit"})}</span>`}).join("");
+  st.after(tl);
+  $("wleg").innerHTML=SPL.map(([v,t])=>`<span><em style="background:${spdCol(v)}"></em>${t}</span>`).join("")+`<span>km/h</span>`;
+  const clear=()=>{svg.querySelectorAll(".pet.sel").forEach(e=>e.classList.remove("sel"));st.querySelectorAll("i.sel").forEach(e=>e.classList.remove("sel"));svg.classList.remove("has-sel");};
+  svg.onclick=e=>{const p=e.target.closest(".pet"); const was=p&&p.classList.contains("sel"); clear(); if(!p||was){info.textContent=dflt;return}
+    const i=+p.dataset.i; p.classList.add("sel"); svg.classList.add("has-sel");
+    info.textContent=L2(`Da ${D16[i]}: ${Math.round(cnt[i]/n*100)}% del tempo · media ${Math.round(sum[i]/cnt[i])} km/h`,`From ${D16[i]}: ${Math.round(cnt[i]/n*100)}% of the time · avg ${Math.round(sum[i]/cnt[i])} km/h`);};
+  st.onclick=e=>{const c=e.target.closest("i[data-j]"); const was=c&&c.classList.contains("sel"); clear(); if(!c||was){info.textContent=dflt;return}
+    c.classList.add("sel"); const h=H[+c.dataset.j], a=new Date(h.t-stp*3600e3);
+    info.textContent=`${a.toLocaleString(LOC,{weekday:"short",hour:"2-digit",minute:"2-digit"})}–${h.t.toLocaleTimeString(LOC,{hour:"2-digit",minute:"2-digit"})} · ${L2("da","from")} ${d16(h.d)} ${Math.round(h.d)}° · ${Math.round(h.k)} km/h`;};
+}
+
 if(window.Chart){ Chart.defaults.color="#a3a09b"; Chart.defaults.font.family="Barlow, sans-serif"; }
 function draw(id,series,opt){
   if(!window.Chart) return;
