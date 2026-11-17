@@ -1558,7 +1558,7 @@ loadKanin();
 
 /* ===== Navigazione rapida (?nav=a|b|c) ===== */
 (function(){
-  var v=new URLSearchParams(location.search).get("nav"); if(!/^[abc]$/.test(v||"")) return;
+  var v=new URLSearchParams(location.search).get("nav")||"b"; if(!/^[abc]$/.test(v)) return;
   document.documentElement.classList.add("nav-"+v);
   var S=[["top","⬆️","Top"],["neve","❄️","Neve"],["meteo","🌤️","Meteo"],["sicurezza","⚠️","Valanghe"],["webcam","📷","Webcam"],["discese","🗺️","Discese"],["video","🎬","Video"],["corsi","🎿","Corsi"],["community","👥","Community"]];
   if(v!=="c") S=S.slice(1);
