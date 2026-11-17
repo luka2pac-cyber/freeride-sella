@@ -545,8 +545,19 @@ footer a{color:var(--ice)}
   .comm img{width:100px;height:100px}
   .il{display:none}
   .brand span{font-size:1rem}
-  .install{padding:7px 12px}
+  .install{padding:7px 10px}
+  .top .wrap{gap:8px}
+  .brand{min-width:0;gap:8px}
+  .brand img{width:36px;height:36px;flex:none}
+  .brand span{font-size:.95rem}
+  .brand small{font-size:.7rem;letter-spacing:.1em}
+  .lang{margin-right:0;flex:none}
+  .lang button{padding:6px 7px}
+  .lang .flag{display:none}
+  .install{flex:none}
 }
+@media(max-width:350px){.install .il,.install{font-size:.85rem}.install svg{display:none}}
+@supports not (overflow:clip){html,body{overflow-x:hidden}}
 @media(prefers-reduced-motion:reduce){.hero-photo img{animation:none}.rv{opacity:1;transform:none}}
 </style>
 </head>
