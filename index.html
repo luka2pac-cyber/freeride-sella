@@ -553,10 +553,12 @@ footer a{color:var(--ice)}
   .brand small{font-size:.7rem;letter-spacing:.1em}
   .lang{margin-right:0;flex:none}
   .lang button{padding:6px 7px}
-  .lang .flag{display:none}
+  .lang .flag{width:24px;height:16px}
+  .lang button{gap:5px}
   .install{flex:none}
 }
-@media(max-width:350px){.install .il,.install{font-size:.85rem}.install svg{display:none}}
+@media(max-width:400px){.install{font-size:0;gap:0;padding:7px 9px}.install svg{width:22px;height:22px}.brand span{font-size:.9rem}}
+@media(max-width:340px){.brand span{display:none}}
 @supports not (overflow:clip){html,body{overflow-x:hidden}}
 
 /* hero variante (mobile) – logotipi ostanejo */
