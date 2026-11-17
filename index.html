@@ -559,26 +559,14 @@ footer a{color:var(--ice)}
 @media(max-width:350px){.install .il,.install{font-size:.85rem}.install svg{display:none}}
 @supports not (overflow:clip){html,body{overflow-x:hidden}}
 
-/* hero variante (mobile) */
+/* hero variante (mobile) – logotipi ostanejo */
 @media(max-width:520px){
-  .hb-a .hero .logos{display:none}
-  .hb-a.hv-c .hero-photo{height:88vw}
-  .hb-a.hv-c .hero-in{padding-top:51vw}
-  .hb-b.hv-c .hero-photo{height:84vw}
-  .hb-b.hv-c #heroImg2{object-position:66% 40%}
-  .hb-b.hv-c .hero-in{padding-top:47vw;display:grid;grid-template-columns:62px 1fr;column-gap:12px;align-items:center}
-  .hb-b .hero-in>*{grid-column:1/-1}
-  .hb-b .hero-in>.logos{grid-column:1;grid-row:1}
-  .hb-b .hero .logo{width:62px;height:62px}
-  .hb-b .hero-in>h1{grid-column:2;grid-row:1;text-align:left;margin:0;font-size:2.05rem}
-  .hb-b .hero h1 em{letter-spacing:.18em;margin-top:2px}
-  .hb-b .hero em .slogo{display:none}
-  .hb-b .hero .tag{text-align:left;margin-top:10px}
-  .hb-c .hero .logos,.hb-c .hero .tag,.hb-c .hero em .slogo{display:none}
-  .hb-c.hv-c .hero-photo{height:70vw}
-  .hb-c.hv-c #heroImg2{object-position:74% 52%;transform:scale(1.25);animation:none}
-  .hb-c.hv-c .hero-in{padding-top:37vw}
-  .hb-c .hero h1{margin-top:0}
+  .hb-a.hv-c .hero-in{padding-top:45vw}
+  .hb-b.hv-c .hero-photo{height:104vw}
+  .hb-b.hv-c .hero-in{padding-top:22.5vw}
+  .hb-c.hv-c .hero-photo{height:84vw}
+  .hb-c.hv-c #heroImg2{object-position:72% 62%}
+  .hb-c.hv-c .hero-in{padding-top:12vw}
 }
 @media(prefers-reduced-motion:reduce){.hero-photo img{animation:none}.rv{opacity:1;transform:none}}
 </style>
@@ -896,7 +884,7 @@ if(LANG==="en"){
 }
 
 document.documentElement.classList.add("hv-c");
-(function(){var v=new URLSearchParams(location.search).get("hb");if(/^[abc]$/.test(v))document.documentElement.classList.add("hb-"+v);})();
+(function(){var v=new URLSearchParams(location.search).get("hb")||"c";if(/^[abc]$/.test(v))document.documentElement.classList.add("hb-"+v);})();
 (function(){var v=new URLSearchParams(location.search).get("hd")||"b";if(!/^[abc]$/.test(v))return;var d=document.documentElement;d.classList.add("hd","hd-"+v);
 var M={neve:["❄️","#5ec8f2"],meteo:["🌤️","#f5b83d"],webcam:["📷","#9fb3c8"],sicurezza:["⚠️","#EE1C25"],discese:["🗺️","#4cc38a"],video:["🎬","#b388ff"],corsi:["🎿","#5ec8f2"],community:["👥","#2f9fd0"]};
 Object.keys(M).forEach(function(id){var sec=document.getElementById(id);if(!sec)return;var eb=sec.querySelector(".eyebrow");if(!eb)return;
