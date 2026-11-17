@@ -1531,7 +1531,7 @@ loadKanin();
 
 /* ===== Postaje po višini (?ch=a|b|c) ===== */
 (function(){
-  var v=new URLSearchParams(location.search).get("ch"); if(!/^[abc]$/.test(v||"")) return;
+  var v=new URLSearchParams(location.search).get("ch")||"c"; if(!/^[abc]$/.test(v)) return;
   var box=$("st3"), chips=document.querySelector(".chips"); box.hidden=false; box.className="st3 "+v; chips.style.display="none";
   var VAL={snow:null,t:null};
   (async function(){
