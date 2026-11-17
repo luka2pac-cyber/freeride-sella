@@ -309,6 +309,32 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .intro{color:var(--muted);max-width:60ch;margin-top:12px}
 .head{margin-bottom:20px}
 
+/* ===== Postaje po višini (?ch=a|b|c) ===== */
+.st3{margin:20px auto 0;max-width:620px;font-family:var(--display);text-transform:uppercase;letter-spacing:.04em}
+.st3 .grp{background:rgba(0,0,0,.6);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:8px;text-align:left}
+.st3 .gh{font-weight:700;font-size:.9rem;color:var(--ice);display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.st3 .gh .e{font-size:1.25rem}
+.st3 .gh small{color:var(--muted);font-weight:600;letter-spacing:.06em}
+.st3 .row{display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--line);font-weight:700;font-size:.95rem}
+.st3 .gh+.row{border-top:0}
+.st3 .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.st3 .nm small{display:block;color:var(--muted);font-size:.72rem;font-weight:600}
+.st3 .v{min-width:62px;text-align:right;white-space:nowrap}.st3 .v b{color:var(--ice)}
+.st3 .v.t b{color:#ffb38a}.st3 .v.w{min-width:78px}.st3 .v.w b{color:var(--ink)}
+.st3 .xtra{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.st3 .xtra span{background:rgba(0,0,0,.6);border:1px solid var(--line);padding:5px 10px;font-weight:700;font-size:.9rem}
+.st3 .xtra b{color:var(--ice)}
+/* b: due box affiancati */
+.st3.b .cols{display:grid;grid-template-columns:1.6fr 1fr;gap:8px}
+.st3.b .grp{margin-top:0}
+.st3.b .row{flex-wrap:wrap;gap:2px 10px}.st3.b .nm{flex:0 0 100%}.st3.b .v{min-width:0;text-align:left}
+/* c: tabella unica, emoji per riga */
+.st3.c .grp{padding:6px 12px}
+.st3.c .row .e{font-size:1.3rem;width:28px;text-align:center}
+.st3.c .hd{display:flex;gap:8px;font-size:.7rem;color:var(--muted);padding:2px 0 4px;font-weight:600}
+.st3.c .hd span:first-child{flex:1;padding-left:36px}.st3.c .hd span{min-width:62px;text-align:right}.st3.c .hd span:last-child{min-width:78px}
+.st3.c .sep{border-top:1px dashed rgba(94,200,242,.35)}
+@media(max-width:520px){.st3 .row{font-size:.85rem}.st3 .v{min-width:52px}.st3 .v.w{min-width:70px}.st3.b .cols{grid-template-columns:1fr 1fr}.st3.c .hd span{min-width:52px}.st3.c .hd span:last-child{min-width:60px}.st3.c .v{min-width:46px}.st3.c .v.w{min-width:60px}.st3.c .hd span{min-width:46px}}
+
 /* ===== Varianti testate sezioni (?hd=a|b|c) ===== */
 .hd .eyebrow::before{content:none!important;display:none!important}
 .hd section>.head,.hd .fc-head>div{text-align:center}
@@ -524,6 +550,7 @@ footer a{color:var(--ice)}
       <span class="chip">🌡 <b id="chTempV">–</b></span>
       <span class="chip">💨 <b id="chWindV">–</b></span>
     </div>
+    <div class="st3" id="st3" hidden></div>
     <div class="cond" id="cond" hidden></div>
     <a class="mini" href="#meteo" id="mini" aria-label="Previsioni 4 giorni"></a>
     <div class="mini-cap">Previsioni 4 giorni · tocca per i dettagli</div>
@@ -709,7 +736,7 @@ var LOC=LANG==="en"?"en-GB":"it-IT";
 document.documentElement.lang=LANG;
 var I18N={
 "Neve":"Snow","Meteo":"Weather","Sicurezza":"Safety","Discese":"Runs","Installa":"Install",
-"La community freeride del Canin":"The Canin freeride community","❄ Neve":"❄ Snow","Nuova 24 h":"New 24 h","Valanghe":"Avalanche",
+"La community freeride del Canin":"The Canin freeride community","❄ Neve":"❄ Snow","Nuova 24 h":"New 24 h","In quota":"Up high","A valle":"Valley","Vento km/h":"Wind km/h","Valanghe":"Avalanche",
 "Oggi":"Today","Domani":"Tomorrow","Previsioni 4 giorni · tocca per i dettagli":"4-day forecast · tap for details","Neve live":"Live snow",
 "Aggiungi alla Home":"Add to Home screen","Dati live":"Live data","Neve, temperatura e vento":"Snow, temperature and wind",
 "Stazione automatica della Protezione Civile FVG al Livinal Lunc (1837 m), versante nord del Canin sopra il Rif. Gilberti. Dati ogni 15 minuti, non validati.":"Automatic weather station of the FVG Civil Protection at Livinal Lunc (1837 m), north side of Canin above Rif. Gilberti. Data every 15 minutes, not validated.",
@@ -1501,6 +1528,36 @@ function renderSlo(){
   if(i.ser.length) draw("chSloB",[{label:tr("Neve")+" cm",data:i.ser.map(x=>({t:x.t,v:x.snow})),color:"#9b8cff",fill:true}],{suggestedMin:0});
 }
 loadKanin();
+
+/* ===== Postaje po višini (?ch=a|b|c) ===== */
+(function(){
+  var v=new URLSearchParams(location.search).get("ch"); if(!/^[abc]$/.test(v||"")) return;
+  var box=$("st3"), chips=document.querySelector(".chips"); box.hidden=false; box.className="st3 "+v; chips.style.display="none";
+  var VAL={snow:null,t:null};
+  (async function(){
+    try{
+      var to=new Date(), from=new Date(to.getTime()-6*3600e3);
+      var q=function(sid){return fetch(CONFIG.api+"/stations/542/sensors/"+sid+"/measures?from="+encodeURIComponent(fmtUTC(from))+"&to="+encodeURIComponent(fmtUTC(to))).then(function(r){return r.json()}).then(function(j){var m=(j.measures||[]);m.sort(function(a,b){return a.dt<b.dt?-1:1});return m.length?m[m.length-1].value:null})};
+      var r=await Promise.all([q(23),q(2)]); VAL.snow=r[0]; VAL.t=r[1];
+    }catch(e){}
+    draw3();
+  })();
+  var txt=function(id){var e=$(id);return e?e.textContent.trim():"–"};
+  function draw3(){
+    var K=SLO||{}, kS=K.snow!=null?Math.round(K.snow)+" cm":"–", kT=K.t!=null?fix1(K.t)+"°":"–",
+        kW=K.wind!=null?Math.round(K.wind)+(K.deg!=null?" "+DIRS[Math.round((K.deg%360)/45)%8]:""):"–";
+    var lS=txt("chSnowV"), lT=txt("chTempV").replace(" °C","°"), lW=txt("chWindV").replace(" km/h",""), n24=txt("chNewV");
+    var vS=VAL.snow!=null?Math.round(VAL.snow)+" cm":"–", vT=VAL.t!=null?fix1(VAL.t)+"°":"–";
+    var I1=v==="c"?"":"❄ ",I2=v==="c"?"":"🌡 ",I3=v==="c"?"":"💨 ";var R=function(e,nm,sub,sn,t,w){return '<div class="row">'+(v==="c"?'<span class="e">'+e+'</span>':'')+'<span class="nm">'+nm+'<small>'+sub+'</small></span><span class="v">'+I1+'<b>'+sn+'</b></span><span class="v t">'+I2+'<b>'+t+'</b></span>'+(w!==undefined?'<span class="v w">'+I3+'<b>'+w+'</b></span>':(v==="b"?'':'<span class="v w"></span>'))+'</div>'};
+    var r1=R("🏔️","Kanin SLO","2260 m",kS,kT,kW), r2=R("⛰️","Canin IT","1837 m",lS,lT,lW), r3=R("🌲","Sella Nevea","1180 m",vS,vT);
+    var x='<div class="xtra"><span>Nuova 24 h <b>'+n24+'</b></span><span>💨 km/h · 1837 m</span></div>';
+    if(v==="a") box.innerHTML='<div class="grp"><div class="gh"><span class="e">⛰️</span>In quota</div>'+r1+r2+'</div><div class="grp"><div class="gh"><span class="e">🌲</span>A valle</div>'+r3+'</div><div class="xtra"><span>Nuova 24 h <b>'+n24+'</b></span></div>';
+    else if(v==="b") box.innerHTML='<div class="cols"><div class="grp"><div class="gh"><span class="e">⛰️</span>In quota</div>'+r1+r2+'</div><div class="grp"><div class="gh"><span class="e">🌲</span>A valle</div>'+r3+'</div></div><div class="xtra"><span>Nuova 24 h <b>'+n24+'</b></span></div>';
+    else box.innerHTML='<div class="grp"><div class="hd"><span></span><span>Neve</span><span>Temp.</span><span>Vento km/h</span></div>'+r1+r2+'<div class="sep"></div>'+r3.replace('class="row"','class="row" style="border-top:0"')+'</div><div class="xtra"><span>Nuova 24 h <b>'+n24+'</b></span></div>';
+  }
+  new MutationObserver(function(){clearTimeout(draw3.t);draw3.t=setTimeout(draw3,150)}).observe(chips,{subtree:true,childList:true,characterData:true});
+  setTimeout(draw3,3000);
+})();
 
 function initInstall(){
   const btn=$("installBtn"), btn2=$("installBtn2"), help=$("ihelp");
