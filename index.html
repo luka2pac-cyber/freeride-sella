@@ -1556,6 +1556,17 @@ function renderSlo(){
 }
 loadKanin();
 
+/* ===== Ri-salto all'ancora dopo il caricamento (#sezione) ===== */
+(function(){
+  var h=location.hash.slice(1); if(!h||h==="top") return;
+  var stop=false, cancel=function(){stop=true};
+  ["wheel","touchstart","keydown","mousedown"].forEach(function(e){addEventListener(e,cancel,{passive:true,once:true})});
+  function go(){ if(stop) return; var t=document.getElementById(h); if(!t) return;
+    var y=t.getBoundingClientRect().top+scrollY-70; if(Math.abs(scrollY-y)>8) scrollTo({top:y,behavior:"auto"}); }
+  [300,1200,2500,4500].forEach(function(ms){setTimeout(go,ms)});
+  addEventListener("load",function(){setTimeout(go,200)});
+})();
+
 /* ===== Navigazione rapida (?nav=a|b|c) ===== */
 (function(){
   var v=new URLSearchParams(location.search).get("nav")||"b"; if(!/^[abc]$/.test(v)) return;
