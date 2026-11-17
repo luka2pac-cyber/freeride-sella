@@ -347,6 +347,7 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .st3 .gh+.row{border-top:0}
 .st3 .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.st3 .nm small{display:block;color:var(--muted);font-size:.72rem;font-weight:600}
 .st3 .v{min-width:62px;text-align:right;white-space:nowrap}.st3 .v b{color:var(--ice)}
+.st3 .wa{display:inline-block;font-style:normal;font-size:.85em;margin-left:4px;color:var(--ice);line-height:1}
 .st3 .v.t b{color:#ffb38a}.st3 .v.w{min-width:78px}.st3 .v.w b{color:var(--ink)}
 .st3 .xtra{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
 .st3 .xtra span{background:rgba(0,0,0,.6);border:1px solid var(--line);padding:5px 10px;font-weight:700;font-size:.9rem}
@@ -1694,11 +1695,12 @@ loadKanin();
   var txt=function(id){var e=$(id);return e?e.textContent.trim():"–"};
   function draw3(){
     var K=SLO||{}, kS=K.snow!=null?Math.round(K.snow)+" cm":"–", kT=K.t!=null?fix1(K.t)+"°":"–",
-        kW=K.wind!=null?Math.round(K.wind)+(K.deg!=null?" "+DIRS[Math.round((K.deg%360)/45)%8]:""):"–";
-    var lS=txt("chSnowV"), lT=txt("chTempV").replace(" °C","°"), lW=txt("chWindV").replace(" km/h",""), n24=txt("chNewV");
+        AR=function(d){return d==null?"":'<i class="wa" style="transform:rotate('+Math.round((d+180)%360)+'deg)" aria-hidden="true">↑</i>'},
+        kW=K.wind!=null?Math.round(K.wind)+(K.deg!=null?" "+DIRS[Math.round((K.deg%360)/45)%8]+AR(K.deg):""):"–";
+    var lS=txt("chSnowV"), lT=txt("chTempV").replace(" °C","°"), lW=txt("chWindV").replace(" km/h",""), ldd=(typeof DATA!=="undefined"&&DATA&&DATA.dir&&DATA.dir.length)?DATA.dir[DATA.dir.length-1].v:null, n24=txt("chNewV");
     var vS=VAL.snow!=null?Math.round(VAL.snow)+" cm":"–", vT=VAL.t!=null?fix1(VAL.t)+"°":"–";
     var I1=v==="c"?"":"❄ ",I2=v==="c"?"":"🌡 ",I3=v==="c"?"":"💨 ";var R=function(e,nm,sub,sn,t,w){return '<div class="row">'+(v==="c"?'<span class="e">'+e+'</span>':'')+'<span class="nm">'+nm+'<small>'+sub+'</small></span><span class="v">'+I1+'<b>'+sn+'</b></span><span class="v t">'+I2+'<b>'+t+'</b></span>'+(w!==undefined?'<span class="v w">'+I3+'<b>'+w+'</b></span>':(v==="b"?'':'<span class="v w"></span>'))+'</div>'};
-    var r1=R("🏔️","Kanin SLO","2260 m",kS,kT,kW), r2=R("⛰️","Canin IT","1837 m",lS,lT,lW), r3=R("🌲","Sella Nevea","1180 m",vS,vT);
+    var r1=R("🏔️","Kanin SLO","2260 m",kS,kT,kW), r2=R("⛰️","Canin IT","1837 m",lS,lT,lW+(lW!=="–"?AR(ldd):"")), r3=R("🌲","Sella Nevea","1180 m",vS,vT);
     var x='<div class="xtra"><span>Nuova 24 h <b>'+n24+'</b></span><span>💨 km/h · 1837 m</span></div>';
     if(v==="a") box.innerHTML='<div class="grp"><div class="gh"><span class="e">⛰️</span>In quota</div>'+r1+r2+'</div><div class="grp"><div class="gh"><span class="e">🌲</span>A valle</div>'+r3+'</div><div class="xtra"><span>Nuova 24 h <b>'+n24+'</b></span></div>';
     else if(v==="b") box.innerHTML='<div class="cols"><div class="grp"><div class="gh"><span class="e">⛰️</span>In quota</div>'+r1+r2+'</div><div class="grp"><div class="gh"><span class="e">🌲</span>A valle</div>'+r3+'</div></div><div class="xtra"><span>Nuova 24 h <b>'+n24+'</b></span></div>';
