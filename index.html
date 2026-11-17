@@ -808,7 +808,7 @@ if(LANG==="en"){
 }
 
 document.documentElement.classList.add("hv-c");
-(function(){var v=new URLSearchParams(location.search).get("hd");if(!/^[abc]$/.test(v||""))return;var d=document.documentElement;d.classList.add("hd","hd-"+v);
+(function(){var v=new URLSearchParams(location.search).get("hd")||"b";if(!/^[abc]$/.test(v))return;var d=document.documentElement;d.classList.add("hd","hd-"+v);
 var M={neve:["❄️","#5ec8f2"],meteo:["🌤️","#f5b83d"],webcam:["📷","#9fb3c8"],sicurezza:["⚠️","#EE1C25"],discese:["🗺️","#4cc38a"],video:["🎬","#b388ff"],corsi:["🎿","#5ec8f2"],community:["👥","#2f9fd0"]};
 Object.keys(M).forEach(function(id){var sec=document.getElementById(id);if(!sec)return;var eb=sec.querySelector(".eyebrow");if(!eb)return;
 if(v==="c"){var e=document.createElement("span");e.className="sie";e.textContent=M[id][0];eb.insertBefore(e,eb.firstChild);}
