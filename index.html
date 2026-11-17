@@ -679,6 +679,7 @@ footer a{color:var(--ice)}
   </div>
   <div class="mapwarn"><b>⚠ Tracciati indicativi</b> – linee e punti sono ricostruiti dal cartello ufficiale e <b>non hanno coordinate precise</b> (errore possibile di 100 m e oltre). Non usarli per navigare: segui le indicazioni sul posto e valuta sempre il terreno. Quote e lunghezze approssimative.</div>
   <div class="mapbar" id="mapbar">
+    <button class="fbtn on" data-f="all">Tutte</button>
     <button class="fbtn" data-f="1">Facili</button>
     <button class="fbtn" data-f="2">Medie</button>
     <button class="fbtn" data-f="3">Difficili</button>
@@ -793,7 +794,7 @@ var I18N={
 "– linee e punti sono ricostruiti dal cartello ufficiale e":"– lines and points are reconstructed from the official sign and",
 "non hanno coordinate precise":"do not have precise coordinates",
 "(errore possibile di 100 m e oltre). Non usarli per navigare: segui le indicazioni sul posto e valuta sempre il terreno. Quote e lunghezze approssimative.":"(possible error of 100 m or more). Do not use them for navigation: follow the signs on site and always assess the terrain. Elevations and lengths are approximate.",
-"Facili":"Easy","Medie":"Intermediate","Difficili":"Difficult","📍 Dove sono":"📍 Where am I","📍 Cerco…":"📍 Locating…","Topografica":"Topographic",
+"Tutte":"All","Facili":"Easy","Medie":"Intermediate","Difficili":"Difficult","📍 Dove sono":"📍 Where am I","📍 Cerco…":"📍 Locating…","Topografica":"Topographic",
 "Difficoltà":"Difficulty","facile":"easy","media":"intermediate","medio-difficile":"advanced","Zona":"Area","Quota ≈":"Elevation ≈","Lunghezza ≈":"Length ≈",
 "Prima parte come la Livinallunc Classica, poi traverso verso la mulattiera del Poviz e giù lungo la mulattiera fino a Sella Nevea.":"First part as the Livinallunc Classica, then traverse to the Poviz mule track and down along the track to Sella Nevea.",
 "● cerchio = partenza · ■ quadrato = arrivo. Valori approssimativi, tracciato non preciso.":"● circle = start · ■ square = finish. Approximate values, track not precise.",
@@ -1103,7 +1104,7 @@ function applyFilter(f){
 }
 function initMapUI(){
   $("mapbar").addEventListener("click",e=>{const b=e.target.closest(".fbtn[data-f]"); if(!b) return;
-    const was=b.classList.contains("on"); document.querySelectorAll(".fbtn[data-f]").forEach(x=>x.classList.toggle("on",!was&&x===b)); if(MAP) applyFilter(was?"all":b.dataset.f);});
+    const was=b.classList.contains("on"), f=(was&&b.dataset.f!=="all")?"all":b.dataset.f; document.querySelectorAll(".fbtn[data-f]").forEach(x=>x.classList.toggle("on",x.dataset.f===f)); if(MAP) applyFilter(f);});
   $("routes").addEventListener("click",e=>{const li=e.target.closest("li[data-n]"); if(!li||!MAP) return;
     selectRoute(CONFIG.routes.find(x=>String(x.n)===li.dataset.n).n); $("map").scrollIntoView({behavior:"smooth",block:"center"});});
   $("locBtn").addEventListener("click",()=>{
