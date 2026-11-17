@@ -425,11 +425,11 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 
 .warn{background:var(--bg-2);border-left:4px solid var(--red);padding:18px 20px}
 .warn b{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:1.1rem;display:block;margin-bottom:4px}
-.kit{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
-.kit>div{background:var(--bg-2);border:1px solid var(--line);padding:16px;text-align:center}
-.kit .ic{font-size:1.8rem}
-.kit b{display:block;font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
-.kit span{font-size:.88rem;color:var(--muted)}
+.kit{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:12px 0}
+.kit>div{background:var(--bg-2);border:1px solid var(--line);border-radius:999px;padding:4px 10px;display:inline-flex;align-items:center;gap:5px;font-size:.8rem}
+.kit .ic{font-size:.95rem}
+.kit b{font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;font-size:.82rem}
+.kit span{color:var(--muted);font-size:.75rem}
 .links{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 .links a{display:block;background:var(--bg-2);border:1px solid var(--line);padding:14px 16px;text-decoration:none;transition:.2s}
 .links a:hover{border-color:var(--ice)}
@@ -496,7 +496,6 @@ footer a{color:var(--ice)}
   .cell{border-right:0;border-bottom:1px solid var(--line)}
   .charts,.rgroups{grid-template-columns:1fr}
   .days{grid-template-columns:1fr 1fr}
-  .kit{grid-template-columns:1fr 1fr}
   .links{grid-template-columns:1fr}
   section{padding:34px 0 30px}
 }
@@ -528,7 +527,7 @@ footer a{color:var(--ice)}
 <div class="top"><div class="wrap">
   <a class="brand" href="#top"><img id="tlogo" alt=""><span>Freeride Arena<small>Sella Nevea</small></span></a>
   <nav class="menu">
-    <a href="#neve"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M4.9 4.9l14.2 14.2M2 12h20M4.9 19.1 19.1 4.9"/><path d="m9 4 3 3 3-3M9 20l3-3 3 3M4 9l3 3-3 3M20 9l-3 3 3 3"/></svg>Neve</a><a href="#meteo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v2M4.9 4.9l1.4 1.4M20 12h2M19.1 4.9l-1.4 1.4"/><path d="M15.9 13A4 4 0 0 0 8.3 10.3"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>Meteo</a><a href="#webcam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>Webcam</a><a href="#sicurezza"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Valanghe</a><a href="#discese"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>Discese</a><a href="#video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="15" height="14" rx="2"/><path d="m22 8-5 4 5 4V8z"/></svg>Video</a><a href="#corsi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2.1 6.3-6.3 2.1 2.1-6.3z"/></svg>Corsi e uscite</a><a href="#community"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg>Community</a>
+    <a href="#neve"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M4.9 4.9l14.2 14.2M2 12h20M4.9 19.1 19.1 4.9"/><path d="m9 4 3 3 3-3M9 20l3-3 3 3M4 9l3 3-3 3M20 9l-3 3 3 3"/></svg>Neve</a><a href="#meteo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v2M4.9 4.9l1.4 1.4M20 12h2M19.1 4.9l-1.4 1.4"/><path d="M15.9 13A4 4 0 0 0 8.3 10.3"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>Meteo</a><a href="#sicurezza"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Valanghe</a><a href="#webcam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>Webcam</a><a href="#discese"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>Discese</a><a href="#video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="15" height="14" rx="2"/><path d="m22 8-5 4 5 4V8z"/></svg>Video</a><a href="#corsi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2.1 6.3-6.3 2.1 2.1-6.3z"/></svg>Corsi e uscite</a><a href="#community"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg>Community</a>
   </nav>
   <div class="lang" role="group" aria-label="Lingua"><button data-l="it" title="Italiano"><svg class="flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#009246"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ce2b37"/></svg>IT</button><button data-l="en" title="English"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><clipPath id="ukt"><path d="M30,15h30v15zv15h-30zh-30v-15zv-15h30z"/></clipPath><rect width="60" height="30" fill="#012169"/><path d="M0,0L60,30M60,0L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0L60,30M60,0L0,30" clip-path="url(#ukt)" stroke="#C8102E" stroke-width="4"/><path d="M30,0v30M0,15h60" stroke="#fff" stroke-width="10"/><path d="M30,0v30M0,15h60" stroke="#C8102E" stroke-width="6"/></svg>EN</button></div>
   <button class="btn btn-fill install" id="installBtn">
@@ -558,8 +557,8 @@ footer a{color:var(--ice)}
     <div class="hero-btns">
       <a class="btn btn-line" href="#neve"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M4.9 4.9l14.2 14.2M2 12h20M4.9 19.1 19.1 4.9"/><path d="m9 4 3 3 3-3M9 20l3-3 3 3M4 9l3 3-3 3M20 9l-3 3 3 3"/></svg>Neve live</a>
       <a class="btn btn-line" href="#meteo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v2M4.9 4.9l1.4 1.4M20 12h2M19.1 4.9l-1.4 1.4"/><path d="M15.9 13A4 4 0 0 0 8.3 10.3"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>Meteo</a>
-      <a class="btn btn-line" href="#webcam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>Webcam</a>
       <a class="btn btn-line" href="#sicurezza"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Valanghe</a>
+      <a class="btn btn-line" href="#webcam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>Webcam</a>
       <a class="btn btn-line" href="#discese"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>Discese</a>
       <a class="btn btn-line" href="#video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="15" height="14" rx="2"/><path d="m22 8-5 4 5 4V8z"/></svg>Video</a>
       <a class="btn btn-line" href="#corsi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2.1 6.3-6.3 2.1 2.1-6.3z"/></svg>Corsi e uscite</a>
@@ -607,22 +606,7 @@ footer a{color:var(--ice)}
   </div>
 </section>
 
-<section id="webcam" class="rv">
-  <div class="head">
-    <span class="eyebrow">Guarda adesso</span>
-    <h2 class="title">Webcam</h2>
-    <p class="intro">Panorami a 360° aggiornati ogni pochi minuti. Trascina per girare la vista.</p>
-  </div>
-  <div class="cams">
-    <figure class="cam"><div class="camf"><iframe src="https://sellanevea.panomax.com/" title="Webcam Sella Nevea in quota (1870 m)" loading="lazy" allowfullscreen></iframe></div>
-      <figcaption><b>In quota · 1870 m</b><span>Canin, arrivo cabinovia</span><a href="https://sellanevea.panomax.com/" target="_blank" rel="noopener">Schermo intero ↗</a></figcaption></figure>
-    <figure class="cam"><div class="camf"><iframe src="https://sellaneveavalle.panomax.com/" title="Webcam Sella Nevea a valle" loading="lazy" allowfullscreen></iframe></div>
-      <figcaption><b>A valle · 1140 m</b><span>Campo scuola, Sella Nevea</span><a href="https://sellaneveavalle.panomax.com/" target="_blank" rel="noopener">Schermo intero ↗</a></figcaption></figure>
-  </div>
-  <p class="note">Webcam © Panomax / PromoTurismoFVG.</p>
-</section>
-
-<section id="sicurezza" class="rv alt">
+<section id="sicurezza" class="rv">
   <div class="head">
     <span class="eyebrow">Prima di partire</span>
     <h2 class="title">Pericolo valanghe</h2>
@@ -642,6 +626,21 @@ footer a{color:var(--ice)}
   </div>
   <div class="links" id="safety"></div>
   <p class="disc" id="disclaimer"></p>
+</section>
+
+<section id="webcam" class="rv alt">
+  <div class="head">
+    <span class="eyebrow">Guarda adesso</span>
+    <h2 class="title">Webcam</h2>
+    <p class="intro">Panorami a 360° aggiornati ogni pochi minuti. Trascina per girare la vista.</p>
+  </div>
+  <div class="cams">
+    <figure class="cam"><div class="camf"><iframe src="https://sellanevea.panomax.com/" title="Webcam Sella Nevea in quota (1870 m)" loading="lazy" allowfullscreen></iframe></div>
+      <figcaption><b>In quota · 1870 m</b><span>Canin, arrivo cabinovia</span><a href="https://sellanevea.panomax.com/" target="_blank" rel="noopener">Schermo intero ↗</a></figcaption></figure>
+    <figure class="cam"><div class="camf"><iframe src="https://sellaneveavalle.panomax.com/" title="Webcam Sella Nevea a valle" loading="lazy" allowfullscreen></iframe></div>
+      <figcaption><b>A valle · 1140 m</b><span>Campo scuola, Sella Nevea</span><a href="https://sellaneveavalle.panomax.com/" target="_blank" rel="noopener">Schermo intero ↗</a></figcaption></figure>
+  </div>
+  <p class="note">Webcam © Panomax / PromoTurismoFVG.</p>
 </section>
 
 <section id="discese" class="rv">
