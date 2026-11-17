@@ -62,7 +62,7 @@ p{margin:0}
 .top{position:sticky;top:0;z-index:1150;background:rgba(0,0,0,.88);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 .top .wrap{display:flex;align-items:center;gap:14px;height:62px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.brand img{width:40px;height:40px;border-radius:50%;background:#fff}
+.brand img{width:40px;height:40px;border-radius:50%}
 .brand span{font-family:var(--display);font-weight:700;font-size:1.15rem;letter-spacing:.06em;text-transform:uppercase;line-height:1}
 .brand small{display:block;white-space:nowrap;color:var(--ice);font-size:.78rem;letter-spacing:.14em}
 .menu{display:flex;gap:2px;margin-left:auto}
@@ -484,13 +484,14 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .disc{font-size:.85rem;color:var(--muted);margin-top:14px}
 
 .comm{background:linear-gradient(135deg,#0f2a3a,#0b0b0b);border:1px solid var(--line);padding:34px;display:flex;gap:28px;align-items:center;flex-wrap:wrap}
-.comm img{width:140px;height:140px;border-radius:50%;background:#fff}
+.comm img{width:140px;height:140px;border-radius:50%}
 .comm .t{flex:1;min-width:240px}
 .soc{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
 
 footer{margin-top:80px;border-top:1px solid var(--line);padding:34px 0 50px;text-align:center;color:var(--muted);font-size:.85rem}
 .flogos{display:flex;gap:20px;justify-content:center;align-items:center;margin-bottom:16px}
 .flogos img{height:96px;width:auto;background:#fff;border-radius:50%;padding:4px}
+.flogos img:first-child{background:none;padding:0}
 .flogos img.sq{border-radius:10px}
 .flogos img.snme{height:96px;padding:6px}
 .flogos a{display:block;line-height:0}
@@ -896,7 +897,7 @@ else{var c=document.createElement("div");c.className="sic";c.style.setProperty("
 const CONFIG = {
   title: "Sella Nevea Freeride Arena",
   tagline: "La community freeride del Canin",
-  logo: "logo.png",
+  logo: "logo-hero.png",
   logo2: "logo-classic.jpg",
   hero: "hero.jpg",
   hero2: "hero2.jpg",
