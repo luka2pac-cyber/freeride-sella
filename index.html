@@ -309,6 +309,34 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .intro{color:var(--muted);max-width:60ch;margin-top:12px}
 .head{margin-bottom:20px}
 
+/* ===== Navigazione rapida (?nav=a|b|c) ===== */
+.qn{position:fixed;z-index:60;font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;transition:transform .25s,opacity .25s}
+.qn a{color:var(--ink);text-decoration:none;white-space:nowrap}
+.qn.hid{opacity:0;pointer-events:none}
+/* a: barra in alto sotto l'header */
+.qn.a{top:62px;left:0;right:0;background:rgba(0,0,0,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;gap:6px;overflow-x:auto;padding:7px 10px;scrollbar-width:none}
+.qn.a::-webkit-scrollbar{display:none}
+.qn.a.hid{transform:translateY(-100%)}
+.qn.a a{flex:0 0 auto;font-size:.82rem;font-weight:700;padding:5px 11px;border:1px solid var(--line);border-radius:999px;background:var(--bg-2)}
+.qn.a a.on{background:var(--ice-deep);border-color:var(--ice-deep);color:#fff}
+.nav-a{scroll-padding-top:112px}
+/* b: barra in basso stile app */
+.qn.b{left:0;right:0;bottom:0;background:rgba(0,0,0,.94);backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;overflow-x:auto;scrollbar-width:none;padding:4px 4px calc(4px + env(safe-area-inset-bottom))}
+.qn.b::-webkit-scrollbar{display:none}
+.qn.b.hid{transform:translateY(100%)}
+.qn.b a{flex:1 0 64px;display:flex;flex-direction:column;align-items:center;gap:1px;font-size:.66rem;font-weight:600;color:var(--muted);padding:4px 2px;border-radius:10px}
+.qn.b a .e{font-size:1.25rem}
+.qn.b a.on{color:var(--ice);background:rgba(94,200,242,.1)}
+.nav-b body{padding-bottom:64px}
+/* c: pulsante flottante + menu */
+.qn.c{right:16px;bottom:calc(18px + env(safe-area-inset-bottom))}
+.qn.c .fab{width:56px;height:56px;border-radius:50%;border:0;background:var(--ice-deep);color:#fff;font-size:1.5rem;box-shadow:0 6px 22px rgba(0,0,0,.5);cursor:pointer}
+.qn.c .menu{position:absolute;right:0;bottom:66px;background:#141414;border:1px solid var(--line);border-radius:16px;padding:8px;min-width:210px;box-shadow:0 10px 30px rgba(0,0,0,.6);display:none}
+.qn.c.open .menu{display:block}
+.qn.c .menu a{display:flex;gap:10px;align-items:center;padding:9px 12px;border-radius:10px;font-weight:700;font-size:.95rem}
+.qn.c .menu a.on{background:rgba(94,200,242,.14);color:var(--ice)}
+.qn.c .menu a .e{width:24px;text-align:center}
+
 /* ===== Postaje po višini (?ch=a|b|c) ===== */
 .st3{margin:20px auto 0;max-width:620px;font-family:var(--display);text-transform:uppercase;letter-spacing:.04em}
 .st3 .grp{background:rgba(0,0,0,.6);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:8px;text-align:left}
@@ -1527,6 +1555,31 @@ function renderSlo(){
   if(i.ser.length) draw("chSloB",[{label:tr("Neve")+" cm",data:i.ser.map(x=>({t:x.t,v:x.snow})),color:"#9b8cff",fill:true}],{suggestedMin:0});
 }
 loadKanin();
+
+/* ===== Navigazione rapida (?nav=a|b|c) ===== */
+(function(){
+  var v=new URLSearchParams(location.search).get("nav"); if(!/^[abc]$/.test(v||"")) return;
+  document.documentElement.classList.add("nav-"+v);
+  var S=[["top","⬆️","Top"],["neve","❄️","Neve"],["meteo","🌤️","Meteo"],["sicurezza","⚠️","Valanghe"],["webcam","📷","Webcam"],["discese","🗺️","Discese"],["video","🎬","Video"],["corsi","🎿","Corsi"],["community","👥","Community"]];
+  if(v!=="c") S=S.slice(1);
+  var links=S.map(function(x){return '<a href="#'+x[0]+'" data-id="'+x[0]+'"><span class="e">'+x[1]+'</span>'+(v==="a"?" ":"")+'<span>'+x[2]+'</span></a>'}).join("");
+  var el=document.createElement("nav"); el.className="qn "+v+" hid"; el.setAttribute("aria-label","Sezioni");
+  el.innerHTML = v==="c" ? '<div class="menu">'+links+'</div><button class="fab" aria-label="Menu sezioni">☰</button>' : links;
+  document.body.appendChild(el);
+  if(v==="c"){ var fab=el.querySelector(".fab");
+    fab.onclick=function(e){e.stopPropagation();el.classList.toggle("open");fab.textContent=el.classList.contains("open")?"✕":"☰";};
+    el.querySelector(".menu").onclick=function(){el.classList.remove("open");fab.textContent="☰";};
+    document.addEventListener("click",function(e){if(!el.contains(e.target)){el.classList.remove("open");fab.textContent="☰";}});
+  }
+  var hero=document.querySelector(".hero")||document.querySelector("header"), as=el.querySelectorAll("a[data-id]");
+  function upd(){
+    var lim=(hero?hero.offsetTop+hero.offsetHeight:500)-200;
+    el.classList.toggle("hid", scrollY<lim);
+    var cur=null; S.forEach(function(x){var t=document.getElementById(x[0]); if(t&&x[0]!=="top"&&t.getBoundingClientRect().top<160) cur=x[0];});
+    as.forEach(function(a){var on=a.dataset.id===cur; a.classList.toggle("on",on); if(on&&v!=="c"&&a._on!==true){el.scrollTo({left:a.offsetLeft-el.clientWidth/2+a.offsetWidth/2,behavior:"smooth"});} a._on=on;});
+  }
+  addEventListener("scroll",upd,{passive:true}); upd();
+})();
 
 /* ===== Postaje po višini (?ch=a|b|c) ===== */
 (function(){
