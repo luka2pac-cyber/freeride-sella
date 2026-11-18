@@ -436,7 +436,27 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .rstats div{border-left:3px solid var(--line);padding-left:8px}
 .rstats span{display:block;font-family:var(--display);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .rstats b{font-family:var(--display);font-size:1.3rem}
-.rg li .hv{font-size:.85em;opacity:.85;margin-left:-4px}
+.rg li .hv{flex:none;margin-left:6px;background:#EE1C25;color:#fff;font:700 .68rem/1 var(--display);letter-spacing:.06em;text-transform:uppercase;padding:4px 7px;border-radius:999px;box-shadow:0 0 0 0 #ee1c2580;animation:hvp 2.4s infinite}
+@keyframes hvp{0%{box-shadow:0 0 0 0 #ee1c2570}70%{box-shadow:0 0 0 7px #ee1c2500}100%{box-shadow:0 0 0 0 #ee1c2500}}
+.vcall{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,#3a0d10,#1c1c1c);border:1px solid #EE1C2566;border-radius:12px;padding:10px 14px;margin-bottom:10px;font-size:.92rem}
+.vcall .ic{flex:none;width:34px;height:34px;border-radius:50%;background:#EE1C25;display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff}
+.vcall b{font-family:var(--display);letter-spacing:.04em}
+.vcall:empty{display:none}
+.fbtn.vf{display:none;color:#fff;border-color:#EE1C25}
+.fbtn.vf.on{background:#EE1C25;border-color:#EE1C25}
+.vh-b .fbtn.vf{display:inline-block}
+.pin .vb{position:absolute;right:-7px;top:-7px;width:14px;height:14px;border-radius:50%;background:#EE1C25;border:1.5px solid #fff;font-size:7px;line-height:11px;text-align:center;color:#fff}
+.pin{position:relative}
+.vstrip{display:none;margin:12px 0 14px}
+.vh-c .vstrip{display:block}
+.vstrip h4{font-family:var(--display);font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.vstrip .row{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory}
+.vstrip .vc{flex:none;width:200px;scroll-snap-align:start;cursor:pointer;background:var(--bg-2);border:1px solid var(--line);border-radius:12px;overflow:hidden;text-align:left;color:inherit;padding:0}
+.vstrip .vc .t{position:relative;aspect-ratio:16/9;background:#000 center/cover}
+.vstrip .vc .t i{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:42px;height:30px;border-radius:8px;background:#EE1C25;color:#fff;font-style:normal;display:flex;align-items:center;justify-content:center}
+.vstrip .vc .t .n{position:absolute;left:6px;top:6px;width:24px;height:24px;border-radius:50%;border:2px solid #fff;color:#fff;font:700 11px/20px var(--body);text-align:center}
+.vstrip .vc .c{padding:7px 9px;font:600 .85rem/1.25 var(--body)}
+.vstrip .vc .c span{display:block;color:var(--muted);font-weight:500;font-size:.75rem}
 .rvid{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
 .rvid h4{font-family:var(--display);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
 .rvt{position:relative;display:block;width:100%;aspect-ratio:16/9;background:#000 center/cover no-repeat;border:0;padding:0;cursor:pointer;border-radius:10px;overflow:hidden}
@@ -734,9 +754,12 @@ footer a{color:var(--ice)}
     <button class="fbtn" data-f="1">Facili</button>
     <button class="fbtn" data-f="2">Medie</button>
     <button class="fbtn" data-f="3">Difficili</button>
+    <button class="fbtn vf" data-f="v">▶ Con video</button>
     <button class="fbtn loc" id="locBtn">📍 Dove sono</button>
   </div>
+  <div class="vcall" id="vcall"></div>
   <div class="mapwrap"><div id="map"></div></div>
+  <div class="vstrip" id="vstrip"></div>
   <div class="rinfo" id="rinfo"></div>
   <div class="rgroups" id="routes"></div>
   <div class="head" style="margin-top:30px"><span class="eyebrow">Cartelli e panorami</span></div>
@@ -870,7 +893,7 @@ var I18N={
 "Webcam Sella Nevea in quota (1870 m)":"Sella Nevea webcam up the mountain (1870 m)","Webcam Sella Nevea a valle":"Sella Nevea webcam in the valley","Neve fresca a Sella Nevea":"Fresh snow in Sella Nevea",
 "Precedenti":"Previous","Successivi":"Next","Neve cm":"Snow cm","Vento":"Wind","Raffica":"Gust",
 "Posizione non disponibile su questo dispositivo.":"Location not available on this device.","Non riesco a leggere la posizione. Controlla i permessi del browser.":"Could not read your location. Check the browser permissions.",
-"Apri il menu del browser":"Open the browser menu","Scegli":"Choose","o":"or","Conferma":"Confirm","Tocca":"Tap","in Safari":"in Safari","⬆️ in Safari":"⬆️ in Safari","Aggiungi":"Add","Condividi":"Share","Installa app":"Install app","🎬 Video della linea":"🎬 Videos of this line","dall'inizio":"from the start","Aggiungi a schermata Home":"Add to Home screen"
+"Apri il menu del browser":"Open the browser menu","Scegli":"Choose","o":"or","Conferma":"Confirm","Tocca":"Tap","in Safari":"in Safari","⬆️ in Safari":"⬆️ in Safari","Aggiungi":"Add","Condividi":"Share","Installa app":"Install app","▶ Con video":"▶ With video","▶ Video":"▶ Video","🎬 Le linee in video":"🎬 The lines on video","🎬 Video della linea":"🎬 Videos of this line","dall'inizio":"from the start","Aggiungi a schermata Home":"Add to Home screen"
 };
 var I18R=[
 [/^di (.+)$/,"by $1"],[/^Guarda (.+)$/,"Watch $1"],[/^(\d+) video · scorri ⇆$/,"$1 videos · swipe ⇆"],[/^(\d+) video$/,"$1 videos"],
@@ -878,7 +901,7 @@ var I18R=[
 [/^sopra (\d+) m/,"above $1 m"],[/^sotto (\d+) m/,"below $1 m"],[/^Nessun bollettino valido oggi \(fuori stagione\?\)\.$/,"No valid bulletin today (off season?)."],
 [/Apertura invernale prevista per (.+?)\./,"Winter opening planned for $1."],[/fonte PromoTurismoFVG/,"source PromoTurismoFVG"],[/: chiuso$/,": closed"],[/: aperto$/,": open"],[/: stato n\.d\.$/,": status n/a"],[/^agg\. /,"upd. "],[/ · agg\. /," · upd. "],
 [/Dalla cresta (\d+) varianti in discesa \(tratteggio corto\) verso il Piano del Prevala\./,"From the ridge, $1 descent variants (short dashes) towards the Prevala plateau."],
-[/^\+(\d+) cm · POWDER!$/,"+$1 cm · POWDER!"],[/^da (\d+:\d\d)$/,"from $1"]
+[/^\+(\d+) cm · POWDER!$/,"+$1 cm · POWDER!"],[/^da (\d+:\d\d)$/,"from $1"],[/^(\d+) linee con video$/,"$1 lines with video"],[/^ – tocca una linea con $/," – tap a line with "],[/^ nell'elenco(.*) per vederla girata\.$/," in the list to watch it on video."],[/^(\d+) video$/,"$1 videos"]
 ];
 var IT_DAYS={sabato:"Saturday",domenica:"Sunday",lunedì:"Monday",martedì:"Tuesday",mercoledì:"Wednesday",giovedì:"Thursday",venerdì:"Friday"};
 var IT_MON={gennaio:"January",febbraio:"February",marzo:"March",aprile:"April",maggio:"May",giugno:"June",luglio:"July",agosto:"August",settembre:"September",ottobre:"October",novembre:"November",dicembre:"December"};
@@ -999,6 +1022,7 @@ const CONFIG = {
 };
 /* ========================================================== */
 
+const VH=(()=>{const v=new URLSearchParams(location.search).get("vh")||"a";return /^[abc]$/.test(v)?v:"a"})();
 const $ = id => document.getElementById(id);
 const diffTxt = {1:["facile","d1"],2:["media","d2"],3:["medio-difficile","d3"]};
 const zoneCol = {Golovec:"#2f9fd0",Forato:"#2fa35c"};
@@ -1020,10 +1044,16 @@ function initStatic(){
     const lb=$("lb"); lb.querySelector("img").src=g.src; lb.querySelector("p").textContent=g.t+" · "+g.credit; lb.classList.add("on");
   });
   $("lb").addEventListener("click",()=>$("lb").classList.remove("on"));
+  document.documentElement.classList.add("vh-"+VH);
+  { const vr=CONFIG.routes.filter(r=>r.vids);
+    $("vcall").innerHTML=`<span class="ic">▶</span><span><b>${vr.length} linee con video</b> – tocca una linea con <b style="color:#ff6b6b">▶ VIDEO</b> nell'elenco${VH==="b"?" o il filtro «Con video»":VH==="c"?" o un video qui sotto la mappa":""} per vederla girata.</span>`;
+    $("vstrip").innerHTML=`<h4>🎬 Le linee in video</h4><div class="row">${vr.map(r=>{const v=r.vids[0];return `<button class="vc" data-n="${r.n}"><div class="t" style="background-image:url(https://i.ytimg.com/vi/${v.id}/mqdefault.jpg)"><span class="n" style="background:${zoneCol[r.zone]}">${r.n}</span><i>▶</i></div><div class="c">${r.name}<span>${r.vids.length} video</span></div></button>`}).join("")}</div>`;
+    $("vstrip").onclick=e=>{const b=e.target.closest(".vc"); if(!b||!MAP) return; selectRoute(+b.dataset.n); const ri=$("rinfo").querySelector(".rvid"); (ri||$("rinfo")).scrollIntoView({behavior:"smooth",block:"center"});};
+  }
   const zones=[...new Set(CONFIG.routes.map(r=>r.zone))];
   $("routes").innerHTML = zones.map(z=>`<div class="rg" style="--c:${zoneCol[z]||'#777'}"><h3>Freeride ${z}</h3><ol>`+
     CONFIG.routes.filter(r=>r.zone===z).map(r=>{const [t,c]=diffTxt[r.d];
-      return `<li data-n="${r.n}"><span class="num">${r.n}</span>${r.name}${r.vids?'<span class="hv" title="Video">🎬</span>':""}<span class="diff ${c}">${t}</span></li>`}).join("")+`</ol></div>`).join("");
+      return `<li data-n="${r.n}"><span class="num">${r.n}</span>${r.name}${r.vids?'<span class="hv">▶ Video</span>':""}<span class="diff ${c}">${t}</span></li>`}).join("")+`</ol></div>`).join("");
   $("cvideos").innerHTML = CONFIG.communityVideos.map(v=>
     `<div class="cv"><button class="th" data-id="${v.id}" data-s="${v.s||0}" aria-label="Guarda ${v.t}" style="background-image:url(https://i.ytimg.com/vi/${v.id}/hqdefault.jpg)"></button>
      <div class="ct"><b>${v.t}</b><span>di ${v.a}</span> · <a href="https://www.youtube.com/watch?v=${v.id}${v.s?"&t="+v.s+"s":""}" target="_blank" rel="noopener">YouTube ↗</a></div></div>`).join("");
@@ -1158,7 +1188,7 @@ function initMap(){
     const halo=L.polyline(g.p,{color:"#000",weight:7,opacity:.5});
     const line=L.polyline(g.p,{color:col,weight:4,opacity:.95,dashArray:"8 6"});
     const hit=L.polyline(g.p,{color:col,weight:22,opacity:0});
-    const start=L.marker(g.p[0],{icon:L.divIcon({className:"",html:`<div class="pin" style="background:${zc}">${r.n}</div>`,iconSize:[22,22],iconAnchor:[11,11]})});
+    const start=L.marker(g.p[0],{icon:L.divIcon({className:"",html:`<div class="pin" style="background:${zc}">${r.n}${VH==="b"&&r.vids?'<span class="vb">▶</span>':""}</div>`,iconSize:[22,22],iconAnchor:[11,11]})});
     const end=L.marker(g.p[g.p.length-1],{icon:L.divIcon({className:"",html:`<div class="pin end">${r.n}</div>`,iconSize:[22,22],iconAnchor:[11,11]})});
     const extra=(g.v||[]).flatMap(v=>[L.polyline(v,{color:"#000",weight:5,opacity:.45}),L.polyline(v,{color:col,weight:3,opacity:.95,dashArray:"4 5"}),
       L.circleMarker(v[v.length-1],{radius:3,color:col,fillColor:col,fillOpacity:1,weight:1})]);
@@ -1209,11 +1239,11 @@ function bindRouteVids(el,r){
 function clearSel(){ Object.values(LAYERS).forEach(x=>x.line.setStyle({weight:4,opacity:.95})); $("rinfo").classList.remove("on"); document.querySelectorAll(".rg li").forEach(li=>li.classList.remove("sel")); }
 function applyFilter(f){
   Object.values(LAYERS).forEach(x=>{
-    const ok=f==="all"||String(x.r.d)===f;
+    const ok=f==="all"||(f==="v"?!!x.r.vids:String(x.r.d)===f);
     ok?x.grp.addTo(MAP):x.grp.remove();
   });
   document.querySelectorAll(".rg li").forEach(li=>{const r=CONFIG.routes.find(x=>String(x.n)===li.dataset.n);
-    li.style.display=(f==="all"||String(r.d)===f)?"":"none";});
+    li.style.display=(f==="all"||(f==="v"?!!r.vids:String(r.d)===f))?"":"none";});
   clearSel();
 }
 function initMapUI(){
