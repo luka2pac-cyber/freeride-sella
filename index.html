@@ -964,7 +964,9 @@ const CONFIG = {
   communityVideos: [
     { id:"VMe2FjuWMxk", t:"Sella Nevea, Italy – Almost Live S6 E3 (TGR)", a:"Teton Gravity Research" },
     { id:"kMLg38qNOn4", t:"Sella Nevea freeride 2023/24 lines", a:"Domen Gabrijelcic" },
+    { id:"g4yPDLJLYKo", t:"My paradise, Kanin, Sella Nevea - freeride", a:"TenSen - Kred", s:82 },
     { id:"gI11gKdgchs", t:"31springs - Freeride Sella Nevea", a:"Peter Bijuklič" },
+    { id:"JXKQob7dbjM", t:"Kanin, Sella Nevea, freeride - škrbina powder", a:"TenSen - Kred" },
     { id:"mgxtmfLWsO0", t:"360° freeriding Kanin-Sella Nevea", a:"Ivica Kostelić" },
     { id:"FczSvciWCq8", t:"Skiing from Okno Prestreljenik Window - Foro del Monte Forato", a:"Philipp Troschl - FIT for LIFE!" },
     { id:"GQbXrFhf8xg", t:"Season mix 2016 – Sella Nevea Mountain Experience", a:"Livio Sadoch" },
@@ -1016,14 +1018,14 @@ function initStatic(){
   $("videos").innerHTML = CONFIG.videos.map(v=>
     `<div><div class="vid"><iframe src="https://www.youtube-nocookie.com/embed/${v.id}" title="${v.t}" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div><p class="vt">${v.t}</p></div>`).join("");
   $("cvideos").innerHTML = CONFIG.communityVideos.map(v=>
-    `<div class="cv"><button class="th" data-id="${v.id}" aria-label="Guarda ${v.t}" style="background-image:url(https://i.ytimg.com/vi/${v.id}/hqdefault.jpg)"></button>
-     <div class="ct"><b>${v.t}</b><span>di ${v.a}</span> · <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">YouTube ↗</a></div></div>`).join("");
+    `<div class="cv"><button class="th" data-id="${v.id}" data-s="${v.s||0}" aria-label="Guarda ${v.t}" style="background-image:url(https://i.ytimg.com/vi/${v.id}/hqdefault.jpg)"></button>
+     <div class="ct"><b>${v.t}</b><span>di ${v.a}</span> · <a href="https://www.youtube.com/watch?v=${v.id}${v.s?"&t="+v.s+"s":""}" target="_blank" rel="noopener">YouTube ↗</a></div></div>`).join("");
   $("cvcount").textContent = `${CONFIG.communityVideos.length} video · scorri ⇆`;
   document.querySelectorAll(".cvnav").forEach(b=>b.onclick=()=>{const g=$("cvideos");g.scrollBy({left:+b.dataset.d*g.clientWidth*.9,behavior:"smooth"})});
   $("cvall").onclick=()=>{const g=$("cvideos"),on=g.classList.toggle("all");$("cvall").textContent=on?"Mostra meno":"Mostra tutti";
     $("cvcount").textContent=`${CONFIG.communityVideos.length} video`+(on?"":" · scorri ⇆"); if(!on) $("video").scrollIntoView({behavior:"smooth"});};
   $("cvideos").addEventListener("click",e=>{const b=e.target.closest(".th[data-id]"); if(!b) return;
-    b.outerHTML=`<div class="th"><iframe src="https://www.youtube-nocookie.com/embed/${b.dataset.id}?autoplay=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`;});
+    b.outerHTML=`<div class="th"><iframe src="https://www.youtube-nocookie.com/embed/${b.dataset.id}?autoplay=1${+b.dataset.s?"&start="+b.dataset.s:""}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`;});
   $("safety").innerHTML = CONFIG.safety.filter(x=>x.url).map(x=>`<a href="${x.url}" target="_blank" rel="noopener"><b>${x.t}</b><span>${x.s}</span></a>`).join("");
   $("social").innerHTML = CONFIG.social.filter(x=>x.url).map(x=>`<a class="btn btn-line" href="${x.url}" target="_blank" rel="noopener">${ICON[x.t]||""}${x.t}</a>`).join("");
   $("disclaimer").textContent = CONFIG.disclaimer;
