@@ -436,7 +436,8 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .rstats div{border-left:3px solid var(--line);padding-left:8px}
 .rstats span{display:block;font-family:var(--display);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .rstats b{font-family:var(--display);font-size:1.3rem}
-.rg li .hv{flex:none;margin-left:6px;background:#EE1C25;color:#fff;font:700 .68rem/1 var(--display);letter-spacing:.06em;text-transform:uppercase;padding:4px 7px;border-radius:999px;box-shadow:0 0 0 0 #ee1c2580;animation:hvp 2.4s infinite}
+.rg li .nm{flex:1;min-width:0}
+.rg li .hv{display:table;margin-top:4px;background:#EE1C25;color:#fff;font:700 .68rem/1 var(--display);letter-spacing:.06em;text-transform:uppercase;padding:4px 7px;border-radius:999px;box-shadow:0 0 0 0 #ee1c2580;animation:hvp 2.4s infinite}
 @keyframes hvp{0%{box-shadow:0 0 0 0 #ee1c2570}70%{box-shadow:0 0 0 7px #ee1c2500}100%{box-shadow:0 0 0 0 #ee1c2500}}
 .vcall{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,#3a0d10,#1c1c1c);border:1px solid #EE1C2566;border-radius:12px;padding:10px 14px;margin-bottom:10px;font-size:.92rem}
 .vcall .ic{flex:none;width:34px;height:34px;border-radius:50%;background:#EE1C25;display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff}
@@ -1053,7 +1054,7 @@ function initStatic(){
   const zones=[...new Set(CONFIG.routes.map(r=>r.zone))];
   $("routes").innerHTML = zones.map(z=>`<div class="rg" style="--c:${zoneCol[z]||'#777'}"><h3>Freeride ${z}</h3><ol>`+
     CONFIG.routes.filter(r=>r.zone===z).map(r=>{const [t,c]=diffTxt[r.d];
-      return `<li data-n="${r.n}"><span class="num">${r.n}</span>${r.name}${r.vids?'<span class="hv">▶ Video</span>':""}<span class="diff ${c}">${t}</span></li>`}).join("")+`</ol></div>`).join("");
+      return `<li data-n="${r.n}"><span class="num">${r.n}</span><span class="nm">${r.name}${r.vids?'<span class="hv">▶ Video</span>':""}</span><span class="diff ${c}">${t}</span></li>`}).join("")+`</ol></div>`).join("");
   $("cvideos").innerHTML = CONFIG.communityVideos.map(v=>
     `<div class="cv"><button class="th" data-id="${v.id}" data-s="${v.s||0}" aria-label="Guarda ${v.t}" style="background-image:url(https://i.ytimg.com/vi/${v.id}/hqdefault.jpg)"></button>
      <div class="ct"><b>${v.t}</b><span>di ${v.a}</span> · <a href="https://www.youtube.com/watch?v=${v.id}${v.s?"&t="+v.s+"s":""}" target="_blank" rel="noopener">YouTube ↗</a></div></div>`).join("");
