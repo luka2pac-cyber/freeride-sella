@@ -301,6 +301,8 @@ a.chip:hover{border-color:var(--ice)}
 .mtH .c{cursor:default}.mtH .hd.nt,.mtH .ic.nt{background:rgba(255,255,255,.035)}
 .mtH .r.sn{height:44px}
 .bmap{display:block;margin:10px auto 8px;max-width:520px}.bmap img{width:100%;border-radius:10px;display:block}
+.mtA .r.ob{height:34px}.mtA .obtn{display:block;width:calc(100% - 4px);padding:6px 0;border:1px solid var(--ice);color:var(--ice);border-radius:8px;font-family:var(--display);font-weight:700;font-size:.78rem;letter-spacing:.04em;text-transform:uppercase}.mtA .col-on .obtn{background:var(--ice);color:#0b0b0b}
+.mtA .c[data-i]:hover{background-color:rgba(94,200,242,.08)}
 .mt-leg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.74rem;color:var(--muted);margin:8px 4px 0}
 .mt-tip{font-size:.78rem;color:var(--ice);text-align:center;margin:8px 0 4px;font-family:var(--display);letter-spacing:.05em;text-transform:uppercase}
 
@@ -1514,6 +1516,7 @@ function renderMT(){
       row("",["💨 "+L2("Vento","Wind"),L2("km/h · raff.","km/h · gust")],x=>({h:`<span class="v" style="font-size:.95rem">${x.w}<span style="opacity:.6">/</span>${x.g}</span><small>${x.arr} ${x.dir}</small>`,st:`background:${windCol(x.g)}`}))+
       row("sm",["☀️ "+L2("Sole","Sun"),L2("ore","hours")],x=>({h:`<span class="v" style="font-size:.95rem;color:${x.sun?"#1b1b1b":"#777"}">${x.sun} h</span>`,st:x.sun?`background:rgba(216,179,58,${(.35+.65*Math.min(1,x.sun/8)).toFixed(2)})`:""}))+
       row("sm",["0 °C",L2("quota m","level m")],x=>({h:`<span class="v" style="font-size:.9rem">${x.fz??"–"}</span>`}))+
+      row("ob",["",""],x=>({h:`<span class="obtn">${x.i===FSEL?"▲":"▼"} ${L2("Ore","Hours")}</span>`}))+
       `</div><div class="mt-tip">👆 ${L2("Tocca un giorno per la previsione oraria","Tap a day for the hourly forecast")}</div>`;
     el.querySelectorAll(".c[data-i]").forEach(c=>c.onclick=()=>mtSel(+c.dataset.i));
   }
