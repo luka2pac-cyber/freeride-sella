@@ -284,6 +284,66 @@ a.chip:hover{border-color:var(--ice)}
 .fh-leg{display:flex;gap:14px;flex-wrap:wrap;padding:8px 16px 0;font-size:.75rem;color:var(--muted)}
 .fh-leg i{display:inline-block;width:10px;height:10px;margin-right:5px;vertical-align:-1px}
 .fh-rows{display:grid;grid-template-columns:auto;}
+/* ===== Meteo varianti ?mt=a|b|c (18. 11. 2026) ===== */
+.mtA{background:var(--bg-2);border:1px solid var(--line);border-radius:14px;padding:8px 6px;display:grid;grid-template-columns:62px repeat(5,minmax(0,1fr));column-gap:3px;font-size:.8rem}
+.mtA .ml{color:var(--muted);font-size:.68rem;line-height:1.15;display:flex;flex-direction:column;justify-content:center;padding-left:4px}
+.mtA .ml b{color:var(--ink);font-weight:600;font-size:.74rem}
+.mtA .c{display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;line-height:1.1;border-radius:6px;min-width:0;overflow:hidden;cursor:pointer}
+.mtA .r{height:40px;margin:1.5px 0}.mtA .r.hd{height:38px}.mtA .r.ic{height:34px;font-size:1.6rem}.mtA .r.sn{height:50px}.mtA .r.sm{height:26px}
+.mtA .v{font-family:var(--display);font-weight:700;font-size:1.05rem;color:#fff}
+.mtA .sn .v{font-size:1.3rem}
+.mtA small{font-size:.64rem;color:rgba(255,255,255,.72)}
+.mtA .hd .v{font-size:.9rem;text-transform:uppercase;letter-spacing:.04em}
+.mtA .col-on{box-shadow:inset 0 0 0 2px var(--ice)}
+.mtA .tmx{color:#ffb39a}.mtA .tmn{color:#9fd6f5}
+.mt-leg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.74rem;color:var(--muted);margin:8px 4px 0}
+.mt-tip{font-size:.78rem;color:var(--ice);text-align:center;margin:8px 0 4px;font-family:var(--display);letter-spacing:.05em;text-transform:uppercase}
+
+.mtB{display:flex;flex-direction:column;gap:8px}
+.mtB .row{background:var(--bg-2);border:1px solid var(--line);border-radius:14px;padding:10px 12px;cursor:pointer;transition:border-color .15s}
+.mtB .row.on{border-color:var(--ice);box-shadow:0 0 0 1px var(--ice) inset}
+.mtB .tp{display:grid;grid-template-columns:58px 34px 1fr 62px;align-items:center;gap:8px}
+.mtB .dn{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:.98rem;line-height:1}
+.mtB .dd{font-size:.7rem;color:var(--muted)}
+.mtB .wi{font-size:1.7rem;text-align:center}
+.mtB .snb{position:relative;height:26px;background:#161b20;border-radius:7px;overflow:hidden}
+.mtB .snb i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#2f80c8,#5ec8f2);border-radius:7px}
+.mtB .snb u{position:absolute;top:50%;height:2px;margin-top:-1px;background:rgba(255,255,255,.55)}
+.mtB .snb u:before,.mtB .snb u:after{content:"";position:absolute;top:-5px;width:2px;height:12px;background:rgba(255,255,255,.7)}
+.mtB .snb u:before{left:0}.mtB .snb u:after{right:0}
+.mtB .snb b{position:absolute;left:8px;top:0;line-height:26px;font-family:var(--display);font-size:1.05rem;color:#fff;text-shadow:0 1px 3px #000;z-index:2}
+.mtB .tt{text-align:right;font-family:var(--display);font-weight:700;font-size:1.05rem;line-height:1.05}
+.mtB .tt span{display:block;color:#9fd6f5;font-size:.9rem}
+.mtB .sub{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:8px;font-size:.74rem;color:var(--muted)}
+.mtB .sub span{background:rgba(255,255,255,.05);border-radius:20px;padding:3px 8px;white-space:nowrap}
+.mtB .sub b{color:var(--ink);font-weight:600}
+.mtB .sub .wd{color:#fff}
+.mtB .fhours{margin:10px -6px 0;cursor:default}
+
+.mtC .chart{background:var(--bg-2);border:1px solid var(--line);border-radius:14px;padding:12px 8px 8px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.mtC .bc{display:flex;flex-direction:column;align-items:center;cursor:pointer;border-radius:10px;padding:4px 0 6px;min-width:0}
+.mtC .bc.on{background:rgba(94,200,242,.13);box-shadow:inset 0 0 0 1px rgba(94,200,242,.6)}
+.mtC .val{font-family:var(--display);font-weight:700;font-size:1.05rem;color:#fff;height:22px}
+.mtC .val small{font-size:.7rem;color:var(--muted)}
+.mtC .plot{position:relative;width:100%;height:110px;border-bottom:1px solid var(--line)}
+.mtC .plot i{position:absolute;bottom:0;left:22%;right:22%;background:linear-gradient(180deg,#5ec8f2,#2f80c8);border-radius:5px 5px 0 0}
+.mtC .plot u{position:absolute;left:50%;width:2px;margin-left:-1px;background:rgba(255,255,255,.6)}
+.mtC .plot u:before,.mtC .plot u:after{content:"";position:absolute;left:-5px;width:12px;height:2px;background:rgba(255,255,255,.75)}
+.mtC .plot u:before{top:0}.mtC .plot u:after{bottom:0}
+.mtC .wi{font-size:1.4rem;margin-top:4px}
+.mtC .dn{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:.85rem;letter-spacing:.04em}
+.mtC .dd{font-size:.66rem;color:var(--muted)}
+.mtC .det{margin-top:10px;background:var(--bg-2);border:1px solid var(--line);border-radius:14px;padding:12px}
+.mtC .det h3{font-family:var(--display);text-transform:uppercase;letter-spacing:.05em;font-size:1.1rem;margin:0 0 10px}
+.mtC .det h3 span{color:var(--muted);font-weight:500;font-size:.85rem;text-transform:none;letter-spacing:0}
+.mtC .tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.mtC .tile{background:var(--bg-3);border-radius:12px;padding:8px 10px;min-width:0}
+.mtC .tile .k{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.mtC .tile .n{font-family:var(--display);font-weight:700;font-size:1.35rem;line-height:1.15;color:#fff}
+.mtC .tile .s{font-size:.72rem;color:var(--muted);line-height:1.25}
+.mtC .tile.snow{background:linear-gradient(160deg,#164466,#10283a)}
+.mtC .hbtn{display:block;width:100%;margin-top:10px;background:none;border:1px solid var(--ice);color:var(--ice);border-radius:10px;padding:9px;font-family:var(--display);font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+@media(max-width:600px){.mtC .tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.fcol .wi{font-size:1.9rem}.fcol .dn{font-size:.9rem}.fcol .tt{font-size:1.05rem;height:60px}.fcol .snw{font-size:1.05rem}.fcol .ex{font-size:.66rem}}
 .day{background:var(--bg-2);border:1px solid var(--line);padding:16px 14px;text-align:center;position:relative}
 .day.snowy{border-color:var(--ice);background:linear-gradient(180deg,#0f2f42,#121212 70%)}
@@ -1401,6 +1461,7 @@ function snowCol(cm,rain,scale){ // scale: cm that gives full colour
 function dirTxt(d){ if(d==null) return ""; const a=LANG==="en"?["N","NE","E","SE","S","SW","W","NW"]:["N","NE","E","SE","S","SO","O","NO"]; return a[Math.round((d%360)/45)%8]; }
 function wIcon(c,day){ if(!day&&(c===0||c===1)) return "🌙"; if(!day&&c===2) return "☁️"; return (WMO[c]||["❔"])[0]; }
 function renderStrip(){
+  if(MT==="a"||MT==="b"||MT==="c") return renderMT();
   const d=FC.daily, h=FC.hourly, n=d.time.length, el=$("fstrip");
   const cols=d.time.map((t,i)=>{
     const dt=new Date(t+"T12:00"), sn=d.snowfall_sum[i]||0, sun=(d.sunshine_duration[i]||0)/3600, pr=d.precipitation_probability_max[i]||0;
@@ -1456,7 +1517,75 @@ function renderHours(){
   box.hidden=false;
   const sc=box.querySelector(".fh-scroll"); if(FSEL===0){const now=new Date().getHours(); sc.scrollLeft=Math.max(0,(now-1)*60);}
 }
-window.addEventListener("resize",()=>{if(FC&&FCV==="new")renderStrip();});
+/* ===== Meteo varianti ?mt=a|b|c ===== */
+const MT=(new URLSearchParams(location.search).get("mt")||"").toLowerCase();
+function mtDay(i){
+  const d=FC.daily,h=FC.hourly,t=d.time[i],dt=new Date(t+"T12:00"),sn=d.snowfall_sum[i]||0,pr=d.precipitation_sum[i]||0;
+  const fz=h.time.map((x,k)=>[x,h.freezing_level_height[k]]).filter(([x])=>x.startsWith(t)&&+x.slice(11,13)>=6&&+x.slice(11,13)<=18).map(a=>a[1]);
+  const e=FC.ens&&FC.ens.days[i];
+  return {i,dt,name:i===0?L2("Oggi","Today"):i===1?L2("Domani","Tmrw"):dt.toLocaleDateString(LOC,{weekday:"short"}).replace(".",""),
+    date:dt.toLocaleDateString(LOC,{day:"numeric",month:"short"}),wc:d.weather_code[i],ic:(WMO[d.weather_code[i]]||["❔"])[0],
+    tx:Math.round(d.temperature_2m_max[i]),tn:Math.round(d.temperature_2m_min[i]),sn,snT:sn>=1?String(Math.round(sn)):sn>0?"<1":"0",
+    rng:e&&Math.round(e.min)!==Math.round(e.max)?[Math.round(e.min),Math.round(e.max)]:null,rngMax:e?e.max:sn,
+    mm:pr,rain:d.rain_sum?d.rain_sum[i]:Math.max(0,pr-sn/0.7),prob:d.precipitation_probability_max[i]||0,
+    w:Math.round(d.wind_speed_10m_max[i]),g:Math.round(d.wind_gusts_10m_max[i]),dirD:d.wind_direction_10m_dominant[i],
+    dir:dirTxt(d.wind_direction_10m_dominant[i]),arr:DIRA[Math.round(((d.wind_direction_10m_dominant[i]||0)%360)/45)%8],
+    sun:Math.round((d.sunshine_duration[i]||0)/3600),fz:fz.length?Math.round(Math.max(...fz)/50)*50:null};
+}
+function mtSel(i){ $("fstrip").after($("fhours")); FSEL=FSEL===i?-1:i; renderMT(); renderHours(); if(MT==="b"&&FSEL>=0){const r=document.querySelector(`.mtB .row[data-i="${FSEL}"]`); if(r) r.appendChild($("fhours"));} }
+function renderMT(){
+  const el=$("fstrip"), n=FC.daily.time.length, D=[...Array(n).keys()].map(mtDay);
+  el.style.cssText="display:block;background:none;border:0;padding:0"; el.className="mt"+MT.toUpperCase();
+  const scale=Math.max(10,...D.map(x=>Math.max(x.sn,x.rngMax||0)));
+  if(MT==="a"){
+    const lab=(a,b,cls)=>`<div class="ml r ${cls}"><b>${a}</b>${b?b:""}</div>`;
+    const row=(cls,lb,f)=>lab(...lb,cls)+D.map(x=>`<div class="c r ${cls}${x.i===FSEL?" col-on":""}" data-i="${x.i}" ${f(x).st?`style="${f(x).st}"`:""}>${f(x).h}</div>`).join("");
+    el.innerHTML=`<div class="mtA">`+
+      row("hd",["",""],x=>({h:`<span class="v">${x.name}</span><small>${x.date}</small>`}))+
+      row("ic",["",""],x=>({h:x.ic}))+
+      row("",["🌡️ °C","max min"],x=>({h:`<span class="v"><span class="tmx">${x.tx}°</span> <span class="tmn">${x.tn}°</span></span>`}))+
+      row("sn",["❄️ "+L2("Neve","Snow"),L2("nuova, cm","new, cm")],x=>({h:`<span class="v">${x.snT}</span><small>cm</small>`,st:`background:${snowCol(x.sn,x.rain,1)}`}))+
+      row("sm",[L2("Modelli","Models"),"min–max"],x=>({h:`<small style="color:#9cc7ea">${x.rng?x.rng[0]+"–"+x.rng[1]:"–"}</small>`}))+
+      row("",["💧 "+L2("Precip.","Precip."),L2("mm · prob.","mm · prob.")],x=>({h:`<span class="v" style="font-size:.95rem">${x.mm.toFixed(x.mm<10?1:0)}</span><small>${x.prob}%</small>`}))+
+      row("",["💨 "+L2("Vento","Wind"),L2("km/h · raff.","km/h · gust")],x=>({h:`<span class="v" style="font-size:.95rem">${x.w}<span style="opacity:.6">/</span>${x.g}</span><small>${x.arr} ${x.dir}</small>`,st:`background:${windCol(x.g)}`}))+
+      row("sm",["☀️ "+L2("Sole","Sun"),L2("ore","hours")],x=>({h:`<span class="v" style="font-size:.95rem;color:${x.sun?"#1b1b1b":"#777"}">${x.sun} h</span>`,st:x.sun?`background:rgba(216,179,58,${(.35+.65*Math.min(1,x.sun/8)).toFixed(2)})`:""}))+
+      row("sm",["0 °C",L2("quota m","level m")],x=>({h:`<span class="v" style="font-size:.9rem">${x.fz??"–"}</span>`}))+
+      `</div><div class="mt-tip">👆 ${L2("Tocca un giorno per la previsione oraria","Tap a day for the hourly forecast")}</div>`;
+    el.querySelectorAll(".c[data-i]").forEach(c=>c.onclick=()=>mtSel(+c.dataset.i));
+  } else if(MT==="b"){
+    el.innerHTML=`<div class="mtB">`+D.map(x=>{
+      const w=Math.min(100,x.sn/scale*100), r=x.rng?`<u style="left:${x.rng[0]/scale*100}%;width:${Math.max(1,(x.rng[1]-x.rng[0])/scale*100)}%"></u>`:"";
+      return `<div class="row${x.i===FSEL?" on":""}" data-i="${x.i}"><div class="tp">
+        <div><div class="dn">${x.name}</div><div class="dd">${x.date}</div></div><div class="wi">${x.ic}</div>
+        <div class="snb"><i style="width:${w}%"></i>${r}<b>❄️ ${x.snT} cm</b></div>
+        <div class="tt">${x.tx}°<span>${x.tn}°</span></div></div>
+        <div class="sub">${x.rng?`<span>${L2("modelli","models")} <b>${x.rng[0]}–${x.rng[1]} cm</b></span>`:""}
+          <span class="wd" style="background:${windCol(x.g)}">💨 <b>${x.w}</b> km/h · ${L2("raffiche","gusts")} <b>${x.g}</b> ${x.arr}${x.dir}</span>
+          <span>☀️ <b>${x.sun} h</b></span><span>💧 <b>${x.mm.toFixed(1)} mm</b> · ${x.prob}%</span>${x.fz?`<span>0 °C <b>${x.fz} m</b></span>`:""}</div></div>`;}).join("")+
+      `</div><div class="mt-leg"><span>❄️ ${L2("barra = neve nuova (ECMWF)","bar = new snow (ECMWF)")}</span><span>├─┤ ${L2("min–max di 6 modelli","min–max of 6 models")}</span><span>👆 ${L2("tocca per le ore","tap for hours")}</span></div>`;
+    el.querySelectorAll(".row").forEach(c=>c.onclick=e=>{ if(e.target.closest(".fhours")) return; mtSel(+c.dataset.i); });
+  } else {
+    if(FSEL<0) FSEL=D.reduce((b,x)=>x.sn>D[b].sn?x.i:b,0);
+    const x=D[FSEL], H=110;
+    el.innerHTML=`<div class="mtC"><div class="chart">`+D.map(y=>{
+      const bh=Math.round(Math.min(1,y.sn/scale)*H), r=y.rng?`<u style="bottom:${y.rng[0]/scale*H}px;height:${Math.max(2,(y.rng[1]-y.rng[0])/scale*H)}px"></u>`:"";
+      return `<div class="bc${y.i===FSEL?" on":""}" data-i="${y.i}"><div class="val">${y.snT}<small> cm</small></div><div class="plot"><i style="height:${bh}px"></i>${r}</div>
+        <div class="wi">${y.ic}</div><div class="dn">${y.name}</div><div class="dd">${y.date}</div></div>`;}).join("")+`</div>
+      <div class="mt-leg"><span>▮ ${L2("neve nuova (ECMWF)","new snow (ECMWF)")}</span><span>┃ ${L2("min–max di 6 modelli","min–max of 6 models")}</span><span>👆 ${L2("tocca un giorno","tap a day")}</span></div>
+      <div class="det"><h3>${x.i===0?L2("Oggi","Today"):x.i===1?L2("Domani","Tomorrow"):x.dt.toLocaleDateString(LOC,{weekday:"long"})} <span>· ${x.dt.toLocaleDateString(LOC,{day:"numeric",month:"long"})} · 1837 m</span></h3>
+      <div class="tiles">
+        <div class="tile snow"><div class="k">❄️ ${L2("Neve nuova","New snow")}</div><div class="n">${x.snT} cm</div><div class="s">${x.rng?L2("modelli: ","models: ")+x.rng[0]+"–"+x.rng[1]+" cm":"ECMWF"}</div></div>
+        <div class="tile"><div class="k">🌡️ ${L2("Temperatura","Temperature")}</div><div class="n">${x.tx}° / ${x.tn}°</div><div class="s">max / min</div></div>
+        <div class="tile" style="background:${windCol(x.g)}"><div class="k">💨 ${L2("Vento","Wind")}</div><div class="n">${x.w} <small style="font-size:.8rem">km/h</small></div><div class="s" style="color:#eee">${L2("raffiche","gusts")} ${x.g} · ${L2("da","from")} ${x.dir} ${x.arr}</div></div>
+        <div class="tile"><div class="k">💧 ${L2("Precipitazioni","Precipitation")}</div><div class="n">${x.mm.toFixed(1)} <small style="font-size:.8rem">mm</small></div><div class="s">${L2("probabilità","probability")} ${x.prob}%${x.rain>0.3?" · "+L2("pioggia ","rain ")+x.rain.toFixed(1)+" mm":""}</div></div>
+        <div class="tile"${x.sun?` style="background:rgba(216,179,58,${(.2+.5*Math.min(1,x.sun/8)).toFixed(2)})"`:""}><div class="k">☀️ ${L2("Sole","Sun")}</div><div class="n">${x.sun} h</div><div class="s">${L2("ore di sole","sunshine hours")}</div></div>
+        <div class="tile"><div class="k">0 °C ${L2("Zero termico","Freezing level")}</div><div class="n">${x.fz??"–"} <small style="font-size:.8rem">m</small></div><div class="s">${L2("quota massima di giorno","daytime max")}</div></div>
+      </div><button class="hbtn" id="mtH">${$("fhours").hidden?"▼ "+L2("Previsione ora per ora","Hour-by-hour forecast"):"▲ "+L2("Chiudi ore","Close hours")}</button></div></div>`;
+    el.querySelectorAll(".bc").forEach(c=>c.onclick=()=>{FSEL=+c.dataset.i; const op=!$("fhours").hidden; renderMT(); if(op) renderHours();});
+    $("mtH").onclick=()=>{ if($("fhours").hidden){renderHours();} else $("fhours").hidden=true; renderMT(); };
+  }
+}
+window.addEventListener("resize",()=>{if(FC&&FCV==="new"&&!MT)renderStrip();});
 
 function median(a){const s=[...a].sort((x,y)=>x-y);return s.length?s[Math.floor(s.length/2)]:null}
 function newSnow24(snow){
