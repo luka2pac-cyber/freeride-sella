@@ -978,6 +978,7 @@ const CONFIG = {
     bergfex: "https://www.bergfex.com/sella-nevea/wetter/berg/",
     // multi-model (alta risoluzione per le Alpi) solo per precipitazioni/neve
     ens: "https://api.open-meteo.com/v1/forecast?latitude=46.3743&longitude=13.4703&elevation=1837&hourly=temperature_2m,precipitation&models=ecmwf_ifs,dwd_icon_d2_native,italia_meteo_arpae_icon_2i,meteoswiss_icon_ch2,dmi_harmonie_arome_europe,dwd_icon_eu_native&timezone=Europe%2FRome&forecast_days=5",
+    ensMain: "ecmwf_ifs", // glavni model (Luka: najbližje bergfexu); ostali = razpon
     ensNames: {ecmwf_ifs:"ECMWF 9 km",dwd_icon_d2_native:"ICON-D2 2 km",italia_meteo_arpae_icon_2i:"ICON-2I 2 km",meteoswiss_icon_ch2:"ICON-CH2 2 km",dmi_harmonie_arome_europe:"HARMONIE 2 km",dwd_icon_eu_native:"ICON-EU 7 km"}
   },
   powderThreshold: 15,            // cm di neve fresca in 24 h per il "Powder alert"
@@ -1369,12 +1370,16 @@ function applyEns(j,e){
     const vs=Object.values(by);
     if(vs.length<2){ days.push(null); sn.push(d.snowfall_sum[i]); pr.push(d.precipitation_sum[i]); rn.push(Math.max(0,(d.precipitation_sum[i]||0)-(d.snowfall_sum[i]||0)/0.7)); return; }
     days.push({by,min:Math.min(...vs),max:Math.max(...vs),n:vs.length});
-    sn.push(medA(vs)); pr.push(medA(Object.values(byP))); rn.push(medA(Object.values(byR)));
+    const M=CONFIG.forecast.ensMain, useM=by[M]!=null;
+    days[days.length-1].main=useM?M:null;
+    sn.push(useM?by[M]:medA(vs)); pr.push(useM?byP[M]:medA(Object.values(byP))); rn.push(useM?byR[M]:medA(Object.values(byR)));
   });
   // orario: mediana per ora, poi riscalata perché la somma del giorno = mediana del giorno
   const hs=[],hp=[],hm=[];
   h.time.forEach((t,k)=>{ const ke=idxE[t]; const v=ke==null?[]:models.map(m=>per[m][ke]).filter(Boolean);
     if(v.length<2){ hs.push(h.snowfall[k]||0); hp.push(h.precipitation[k]||0); hm.push((h.snowfall[k]||0)/0.7); return; }
+    const xm=per[CONFIG.forecast.ensMain]&&per[CONFIG.forecast.ensMain][ke];
+    if(xm){ hs.push(xm.s); hp.push(xm.p); hm.push(xm.smm); return; }
     hs.push(medA(v.map(x=>x.s))); hp.push(medA(v.map(x=>x.p))); hm.push(medA(v.map(x=>x.smm))); });
   d.time.forEach((day,i)=>{ if(!days[i]) return; const ks=h.time.map((t,k)=>t.startsWith(day)?k:-1).filter(k=>k>=0);
     const fit=(arr,target)=>{const sum=ks.reduce((a,k)=>a+arr[k],0); if(sum>0) ks.forEach(k=>arr[k]*=target/sum); else if(target>0) ks.forEach(k=>arr[k]=target/ks.length);};
@@ -1382,7 +1387,7 @@ function applyEns(j,e){
     fit(hp,pr[i]); fit(hs,sn[i]); if(ss>0) ks.forEach(k=>hm[k]*=sn[i]/ss); });
   d.snowfall_sum=sn; d.precipitation_sum=pr; d.rain_sum=rn; h.snowfall=hs; h.precipitation=hp; h.snow_mm=hm;
   j.ens={models,days};
-  const nt=$("fcNote"); if(nt) nt.textContent=L2(`Neve e precipitazioni: mediana di ${models.length} modelli (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}), quota 1837 m; sotto il valore l'intervallo min–max dei modelli. Vento, sole e temperatura: Open-Meteo best match. Stima indicativa.`,`Snow and precipitation: median of ${models.length} models (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}), elevation 1837 m; below the value the min–max range of the models. Wind, sun and temperature: Open-Meteo best match. Indicative estimate.`);
+  const nt=$("fcNote"); if(nt) nt.textContent=L2(`Neve e precipitazioni: modello ECMWF (se manca: mediana dei modelli), quota 1837 m; sotto il valore ↕ l'intervallo min–max di ${models.length} modelli (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}). Vento, sole e temperatura: Open-Meteo best match. Stima indicativa.`,`Snow and precipitation: ECMWF model (if missing: median of the models), elevation 1837 m; below the value ↕ the min–max range of ${models.length} models (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}). Wind, sun and temperature: Open-Meteo best match. Indicative estimate.`);
 }
 function ensRg(j,i){ const x=j&&j.ens&&j.ens.days[i]; if(!x) return ""; const a=Math.round(x.min),b=Math.round(x.max); return a===b?"":`${a}–${b} cm`; }
 let FC=null, FSEL=-1;
@@ -1446,7 +1451,7 @@ function renderHours(){
   const lab=`<div class="fh-c" style="text-align:left;position:sticky;left:0;background:var(--bg-2);z-index:2;padding-right:4px"><div class="h">Ora</div><div class="i">&nbsp;</div><div class="t">°C</div><div class="bar" style="justify-content:flex-start;align-items:center">mm</div><div class="flb">Neve/pioggia<small style="display:block">Prob.</small></div><div class="flb">Vento<small style="display:block">km/h</small></div><div class="flb">Sole<small style="display:block">min</small></div><div>0° m</div></div>`;
   box.innerHTML=`<div class="fh-head"><b>${FSEL===0?"Oggi":FSEL===1?"Domani":dt.toLocaleDateString(LOC,{weekday:"long"})} · ${dt.toLocaleDateString(LOC,{day:"numeric",month:"long"})}</b><span>Previsione oraria a 1837 m · vento in km/h</span></div>
     <div class="fh-scroll"><div class="fh-grid" style="grid-template-columns:76px">${lab}${cells}</div></div>
-    ${FC.ens&&FC.ens.days[FSEL]?`<div class="fh-ens">${L2("Neve per modello","Snow by model")}: ${Object.entries(FC.ens.days[FSEL].by).map(([m,v])=>`<span>${CONFIG.forecast.ensNames[m]||m} <b>${Math.round(v)} cm</b></span>`).join("")}</div>`:""}
+    ${FC.ens&&FC.ens.days[FSEL]?`<div class="fh-ens">${L2("Neve per modello","Snow by model")}: ${Object.entries(FC.ens.days[FSEL].by).map(([m,v])=>`<span${m===CONFIG.forecast.ensMain?' style="color:#fff"':""}>${m===CONFIG.forecast.ensMain?"★ ":""}${CONFIG.forecast.ensNames[m]||m} <b>${Math.round(v)} cm</b></span>`).join("")}</div>`:""}
     <div class="fh-leg"><span><i style="background:#5ec8f2"></i>Neve</span><span><i style="background:#4f7cff"></i>Pioggia</span><span><i style="background:#c8302e"></i>Vento (più rosso = più forte)</span><span><i style="background:#d8b33a"></i>Sole</span></div>`;
   box.hidden=false;
   const sc=box.querySelector(".fh-scroll"); if(FSEL===0){const now=new Date().getHours(); sc.scrollLeft=Math.max(0,(now-1)*60);}
