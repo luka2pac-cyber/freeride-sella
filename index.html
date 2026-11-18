@@ -471,6 +471,12 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .leaflet-container{font-family:var(--body)}
 .pin{width:22px;height:22px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font:700 11px/1 var(--body);color:#fff;box-shadow:0 1px 4px #0008}
 .pin.end{border-radius:3px;background:#111!important}
+.pdot{width:12px;height:12px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px #0008;box-sizing:border-box}
+.pdot.end{width:10px;height:10px;border-radius:2px;background:#111}
+.pin.lbl{width:22px;height:22px;cursor:pointer}
+.pin .dir{position:absolute;left:50%;top:50%;width:38px;height:0;margin-left:-19px;pointer-events:none}
+.pin .dir::after{content:"";position:absolute;right:-1px;top:-5px;border-left:8px solid #fff;border-top:5px solid transparent;border-bottom:5px solid transparent;filter:drop-shadow(0 0 1px #000)}
+
 .stpin{background:#fff;color:#0b0b0b;font:700 12px/1.1 var(--body);padding:3px 6px;border:2px solid var(--ice-deep);white-space:nowrap;box-shadow:0 1px 4px #0008}
 @media(max-width:900px){.rstats{grid-template-columns:1fr 1fr}.fbtn.loc{margin-left:0}}
 #discese .vids{max-width:860px}
@@ -882,7 +888,7 @@ var I18N={
 "Tutte":"All","Facili":"Easy","Medie":"Intermediate","Difficili":"Difficult","📍 Dove sono":"📍 Where am I","📍 Cerco…":"📍 Locating…","Topografica":"Topographic",
 "Difficoltà":"Difficulty","facile":"easy","media":"intermediate","medio-difficile":"advanced","Zona":"Area","Quota ≈":"Elevation ≈","Lunghezza ≈":"Length ≈",
 "Prima parte come la Livinallunc Classica, poi traverso verso la mulattiera del Poviz e giù lungo la mulattiera fino a Sella Nevea.":"First part as the Livinallunc Classica, then traverse to the Poviz mule track and down along the track to Sella Nevea.",
-"● cerchio = partenza · ■ quadrato = arrivo. Valori approssimativi, tracciato non preciso.":"● circle = start · ■ square = finish. Approximate values, track not precise.",
+"● cerchio = partenza · ■ quadrato = arrivo · numero sul tracciato. Valori approssimativi, tracciato non preciso.":"● circle = start · ■ square = finish · number on the track. Approximate values, track not precise.",
 "Le linee in video":"The lines on video","Cartelli e panorami":"Signs and panoramas",
 "Cartello ufficiale con pendenze (sul cartello n. 1–5 = qui n. 2–6, n. 6–11 = qui n. 8–13)":"Official sign with slopes (on the sign no. 1–5 = here no. 2–6, no. 6–11 = here no. 8–13)",
 "Fonte: cartello ufficiale freeride Sella Nevea, cartografia © Casa Editrice Tabacco":"Source: official Sella Nevea freeride sign, cartography © Casa Editrice Tabacco",
@@ -1036,6 +1042,7 @@ const CONFIG = {
 /* ========================================================== */
 
 const VH="b";
+const PN=(new URLSearchParams(location.search).get("pn")||"a");
 const $ = id => document.getElementById(id);
 const diffTxt = {1:["facile","d1"],2:["media","d2"],3:["medio-difficile","d3"]};
 const zoneCol = {Golovec:"#2f9fd0",Forato:"#2fa35c"};
@@ -1187,7 +1194,7 @@ const DCOLOR={1:"#7ee08f",2:"#ffc65c",3:"#ff6b6b"};
 let MAP=null, LAYERS={}, locMarker=null;
 function initMap(){
   if(!window.L) return;
-  MAP=L.map("map",{scrollWheelZoom:false,tap:true}).setView([46.3705,13.4715],14);
+  MAP=L.map("map",{scrollWheelZoom:false,tap:true,zoomSnap:.25,zoomDelta:.5}).setView([46.3705,13.4715],14);
   const topo=L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",{maxZoom:17,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, SRTM | © <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)'}).addTo(MAP);
   const sat=L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:18,attribution:"Imagery © Esri"});
   L.control.layers({"Topografica":topo,"Satellite":sat},null,{position:"topright"}).addTo(MAP);
@@ -1199,19 +1206,49 @@ function initMap(){
     const halo=L.polyline(g.p,{color:"#000",weight:7,opacity:.5});
     const line=L.polyline(g.p,{color:col,weight:4,opacity:.95,dashArray:"8 6"});
     const hit=L.polyline(g.p,{color:col,weight:22,opacity:0});
-    const start=L.marker(g.p[0],{icon:L.divIcon({className:"",html:`<div class="pin" style="background:${zc}">${r.n}${VH==="b"&&r.vids?'<span class="vb">▶</span>':""}</div>`,iconSize:[22,22],iconAnchor:[11,11]})});
-    const end=L.marker(g.p[g.p.length-1],{icon:L.divIcon({className:"",html:`<div class="pin end">${r.n}</div>`,iconSize:[22,22],iconAnchor:[11,11]})});
+    const vb=VH==="b"&&r.vids?'<span class="vb">▶</span>':"";
+    const start=L.marker(g.p[0],{icon:PN==="x"?L.divIcon({className:"",html:`<div class="pin" style="background:${zc}">${r.n}${vb}</div>`,iconSize:[22,22],iconAnchor:[11,11]}):L.divIcon({className:"",html:`<div class="pdot" style="background:${zc}"></div>`,iconSize:[12,12],iconAnchor:[6,6]})});
+    const end=L.marker(g.p[g.p.length-1],{icon:PN==="x"?L.divIcon({className:"",html:`<div class="pin end">${r.n}</div>`,iconSize:[22,22],iconAnchor:[11,11]}):L.divIcon({className:"",html:`<div class="pdot end"></div>`,iconSize:[10,10],iconAnchor:[5,5]})});
+    const lbl=PN==="x"?null:L.marker(g.p[0],{zIndexOffset:500,icon:L.divIcon({className:"",html:`<div class="pin lbl" style="background:${zc}">${r.n}${vb}${PN==="b"?'<i class="dir"></i>':""}</div>`,iconSize:[22,22],iconAnchor:[11,11]})});
     const extra=(g.v||[]).flatMap(v=>[L.polyline(v,{color:"#000",weight:5,opacity:.45}),L.polyline(v,{color:col,weight:3,opacity:.95,dashArray:"4 5"}),
       L.circleMarker(v[v.length-1],{radius:3,color:col,fillColor:col,fillOpacity:1,weight:1})]);
-    const grp=L.featureGroup([halo,line,hit,...extra,start,end]).addTo(MAP);
+    const grp=L.featureGroup([halo,line,hit,...extra,start,end].concat(lbl?[lbl]:[])).addTo(MAP);
     grp.on("click",()=>selectRoute(r.n));
-    LAYERS[r.n]={grp,line,r}; all.push(...g.p);
+    LAYERS[r.n]={grp,line,r,lbl}; all.push(...g.p);
   });
   // punti di riferimento
   L.marker([46.37434,13.47033],{icon:L.divIcon({className:"",html:`<div class="stpin" id="stPin">📡 Livinal Lunc</div>`,iconSize:null,iconAnchor:[50,12]})}).addTo(MAP).on("click",()=>location.hash="neve");
   L.marker([46.37167,13.46126],{icon:L.divIcon({className:"",html:`<div class="stpin">🏠 Rif. Gilberti</div>`,iconSize:null,iconAnchor:[45,12]})}).addTo(MAP);
   if(all.length) MAP.fitBounds(L.latLngBounds(all),{padding:[20,20]});
+  if(PN!=="x"){ placeLabels(); MAP.on("zoomend",placeLabels); }
   MAP.on("click",e=>{ if(e.originalEvent.target.id==="map") clearSel(); });
+}
+/* numeri delle linee: sul tracciato (~1/3), distanziati tra loro e lontani dai tratti in comune */
+function placeLabels(){
+  const P=ll=>MAP.latLngToLayerPoint(ll), R=Object.values(LAYERS).filter(o=>o.lbl);
+  const px={}; R.forEach(o=>px[o.r.n]=CONFIG.geo[o.r.n].p.map(P));
+  const segD=(q,a,b)=>{const dx=b.x-a.x,dy=b.y-a.y,l=dx*dx+dy*dy;let t=l?((q.x-a.x)*dx+(q.y-a.y)*dy)/l:0;t=Math.max(0,Math.min(1,t));return Math.hypot(q.x-a.x-t*dx,q.y-a.y-t*dy)};
+  const lineD=(q,pts)=>{let m=1e9;for(let i=1;i<pts.length;i++)m=Math.min(m,segD(q,pts[i-1],pts[i]));return m};
+  const at=(pts,f)=>{const c=[0];for(let i=1;i<pts.length;i++)c.push(c[i-1]+pts[i].distanceTo(pts[i-1]));const D=c[c.length-1]*f;
+    let i=1;while(i<c.length-1&&c[i]<D)i++;const k=c[i]>c[i-1]?(D-c[i-1])/(c[i]-c[i-1]):0;
+    return {x:pts[i-1].x+k*(pts[i].x-pts[i-1].x),y:pts[i-1].y+k*(pts[i].y-pts[i-1].y),i}};
+  const ends=[];R.forEach(o=>{const q=px[o.r.n];ends.push(q[0],q[q.length-1])});
+  const box=[...document.querySelectorAll("#map .stpin")].map(e=>{const r=e.getBoundingClientRect(),m=MAP.getContainer().getBoundingClientRect(),c=MAP.containerPointToLayerPoint(L.point(r.left-m.left+r.width/2,r.top-m.top+r.height/2));return {x:c.x,y:c.y,w:r.width/2+13,h:r.height/2+13}});
+  const inBox=c=>box.some(b=>Math.abs(c.x-b.x)<b.w&&Math.abs(c.y-b.y)<b.h);
+  const FR=[.33,.4,.27,.47,.2,.55,.62,.7,.15,.78,.85];
+  const placed=[];
+  R.slice().sort((a,b)=>CONFIG.geo[a.r.n].len-CONFIG.geo[b.r.n].len).forEach(o=>{
+    const q=px[o.r.n]; let best=null,bs=-1e9;
+    for(const f of FR){const c=at(q,f); if(!c) continue;
+      const dl=placed.length?Math.min(...placed.map(p=>Math.hypot(p.x-c.x,p.y-c.y))):99;
+      const de=Math.min(...ends.map(p=>Math.hypot(p.x-c.x,p.y-c.y)));
+      const dn=Math.min(99,...R.filter(x=>x!==o).map(x=>lineD(c,px[x.r.n])));
+      const ib=inBox(c); const ok=dl>=26&&de>=14&&dn>=11&&!ib; const sc=(ok?1000:0)-(ib?60:0)+Math.min(dl,40)+Math.min(dn,20)*.8+Math.min(de,20)*.5-Math.abs(f-.33)*10;
+      if(sc>bs){bs=sc;best={c,f}} if(ok) break;}
+    placed.push(best.c); o.lbl.setLatLng(MAP.layerPointToLatLng(L.point(best.c.x,best.c.y)));
+    if(PN==="b"){const j=Math.min(q.length-1,best.c.i+1),a=q[Math.max(0,best.c.i-1)],ang=Math.atan2(q[j].y-a.y,q[j].x-a.x)*180/Math.PI;
+      const d=o.lbl.getElement()&&o.lbl.getElement().querySelector(".dir"); if(d) d.style.transform=`rotate(${ang}deg)`;}
+  });
 }
 function setStationPin(cm){ const el=document.getElementById("stPin"); if(el) el.textContent=`📡 Livinal Lunc · ${cm} cm`; }
 function selectRoute(n){
@@ -1225,7 +1262,7 @@ function selectRoute(n){
     <div><span>Zona</span><b>Freeride ${r.zone}</b></div>
     <div><span>Quota ≈</span><b>${g.top} → ${g.bot} m</b></div>
     <div><span>Lunghezza ≈</span><b>${g.len} km</b></div></div>
-    ${r.note?`<p class="meta">${r.note}</p>`:""}${g.v?`<p class="meta">Dalla cresta ${g.v.length} varianti in discesa (tratteggio corto) verso il Piano del Prevala.</p>`:""}<p class="meta">● cerchio = partenza · ■ quadrato = arrivo. Valori approssimativi, tracciato non preciso.</p>${routeVids(r)}`;
+    ${r.note?`<p class="meta">${r.note}</p>`:""}${g.v?`<p class="meta">Dalla cresta ${g.v.length} varianti in discesa (tratteggio corto) verso il Piano del Prevala.</p>`:""}<p class="meta">● cerchio = partenza · ■ quadrato = arrivo · numero sul tracciato. Valori approssimativi, tracciato non preciso.</p>${routeVids(r)}`;
   bindRouteVids(el,r);
   document.querySelectorAll(".rg li").forEach(li=>li.classList.toggle("sel",li.dataset.n===String(n)));
 }
