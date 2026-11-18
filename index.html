@@ -532,6 +532,7 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 
 .comm{background:linear-gradient(135deg,#0f2a3a,#0b0b0b);border:1px solid var(--line);padding:34px;display:flex;gap:28px;align-items:center;flex-wrap:wrap}
 .comm img{width:140px;height:140px;border-radius:50%}
+.comm img.hlogo{object-fit:contain;padding:26px;background:#0b0b0b;border:1px solid var(--line)}
 .comm .t{flex:1;min-width:240px}
 .soc{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
 
@@ -818,14 +819,15 @@ footer a{color:var(--ice)}
   </div>
 </section>
 
-<section id="dormire" class="rv stay">
-  <div class="stw">
-    <span class="stl">🛏️ <b>Dove dormire</b></span>
-    <a class="stc" href="https://hotelcanin.it/" target="_blank" rel="noopener">
-      <img src="https://hotelcanin.it/wp-content/uploads/2019/05/LogoSmall.png" alt="Hotel Canin" loading="lazy">
-      <span class="stt"><b>Hotel Canin</b><small>Ski &amp; Spa Resort · sulle piste, 1190 m</small></span>
-      <span class="stg">Sito ↗</span>
-    </a>
+<section id="dormire" class="rv">
+  <div class="comm">
+    <a href="https://hotelcanin.it/" target="_blank" rel="noopener"><img class="hlogo" src="https://hotelcanin.it/wp-content/uploads/2019/05/LogoSmall.png" alt="Hotel Canin" loading="lazy"></a>
+    <div class="t">
+      <span class="eyebrow">Dove dormire</span>
+      <h2 class="title">Hotel Canin</h2>
+      <p class="intro">Ski &amp; Spa Resort a 1190 m, direttamente sulle piste accanto agli impianti.</p>
+      <div class="soc"><a class="btn btn-line" href="https://hotelcanin.it/" target="_blank" rel="noopener">Sito web ↗</a></div>
+    </div>
   </div>
 </section>
 
@@ -893,7 +895,7 @@ var I18N={
 "Vuoi imparare a leggere la neve o scoprire le linee con qualcuno che conosce il Canin da sempre?":"Want to learn to read the snow or discover the lines with someone who has always known Canin?",
 "Livio Sadoch · maestro di sci":"Livio Sadoch · ski instructor",
 "Livio vive a Sella Nevea dal 2008 ed è maestro di sci dal 2013. Accompagna piccoli gruppi fuoripista sul Canin, tra Sella Nevea e Bovec, alla ricerca della neve migliore. Nei corsi si impara anche a leggere la neve e il terreno e a usare ARTVA, pala e sonda.":"Livio has lived in Sella Nevea since 2008 and has been a ski instructor since 2013. He takes small groups off-piste on the Canin, between Sella Nevea and Bovec, looking for the best snow. In the courses you also learn to read the snow and terrain and to use a transceiver, shovel and probe.",
-"Sito web":"Website","Unisciti a noi":"Join us","Dove dormire":"Where to stay","Ski & Spa Resort · sulle piste, 1190 m":"Ski & Spa Resort · on the slopes, 1190 m","Sito ↗":"Website ↗","La community":"The community",
+"Sito web":"Website","Unisciti a noi":"Join us","Dove dormire":"Where to stay","Ski & Spa Resort a 1190 m, direttamente sulle piste accanto agli impianti.":"Ski & Spa Resort at 1190 m, right on the slopes next to the lifts.","Sito web ↗":"Website ↗","La community":"The community",
 "Uscite di gruppo, foto, video e condizioni in tempo reale dai rider di Sella Nevea.":"Group outings, photos, videos and real-time conditions from the Sella Nevea riders.",
 "Dati meteo:":"Weather data:","Protezione Civile della Regione FVG":"FVG Region Civil Protection",
 "(CC BY 4.0) · Bollettino valanghe: AINEVA / Protezione Civile FVG · Previsioni:":"(CC BY 4.0) · Avalanche bulletin: AINEVA / FVG Civil Protection · Forecast:",
