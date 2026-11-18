@@ -296,6 +296,10 @@ a.chip:hover{border-color:var(--ice)}
 .mtA .hd .v{font-size:.9rem;text-transform:uppercase;letter-spacing:.04em}
 .mtA .col-on{box-shadow:inset 0 0 0 2px var(--ice)}
 .mtA .tmx{color:#ffb39a}.mtA .tmn{color:#9fd6f5}
+.fhours .fh-scroll{padding-left:0}.mtH{border:0;border-radius:0;padding:0 0 4px;background:none;width:max-content}
+.mtH .ml{position:sticky;left:0;z-index:2;background:var(--bg-2);padding-left:6px}
+.mtH .c{cursor:default}.mtH .hd.nt,.mtH .ic.nt{background:rgba(255,255,255,.035)}
+.mtH .r.sn{height:44px}
 .mt-leg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.74rem;color:var(--muted);margin:8px 4px 0}
 .mt-tip{font-size:.78rem;color:var(--ice);text-align:center;margin:8px 0 4px;font-family:var(--display);letter-spacing:.05em;text-transform:uppercase}
 
@@ -1447,30 +1451,33 @@ function renderStrip(){
   });
   el.querySelectorAll(".fcol").forEach(c=>c.onclick=()=>{const i=+c.dataset.i; FSEL=FSEL===i?-1:i; renderStrip(); renderHours();});
 }
+function pIcon(snMm,rnMm,fallback){ const p=snMm+rnMm; if(p<0.1) return fallback; return snMm>=rnMm?(snMm>=1.5?"❄️":"🌨️"):(rnMm>=1.5?"🌧️":"🌦️"); }
 function renderHours(){
   const box=$("fhours"); if(FSEL<0){box.hidden=true;return;}
   const d=FC.daily, h=FC.hourly, day=d.time[FSEL], dt=new Date(day+"T12:00");
   const idx=h.time.map((x,k)=>x.startsWith(day)?k:-1).filter(k=>k>=0);
-  const maxP=Math.max(2,...idx.map(k=>(h.precipitation[k]||0)));
-  const cells=idx.map(k=>{
-    const hr=h.time[k].slice(11,16), sn=h.snowfall[k]||0, pr=h.precipitation[k]||0;
-    const snMm=h.snow_mm?Math.min(pr,h.snow_mm[k]||0):Math.min(pr,sn/0.7), rnMm=Math.max(0,pr-snMm);
-    const hs=Math.round(snMm/maxP*46), hrn=Math.round(rnMm/maxP*46);
-    const dir=h.wind_direction_10m[k], arr=DIRA[Math.round(((dir%360)/45))%8];
-    return `<div class="fh-c${h.is_day[k]?"":" night"}"><div class="h">${hr.slice(0,2)}</div><div class="i">${wIcon(h.weather_code[k],h.is_day[k])}</div>
-      <div class="t">${Math.round(h.temperature_2m[k])}°</div>
-      <div class="bar">${hs?`<i class="s" style="height:${hs}px"></i>`:""}${hrn?`<i class="r" style="height:${hrn}px"></i>`:""}</div>
-      <div class="bx s" style="background:${snowCol(sn,rnMm,0.15)}">${sn>0?(sn<1?sn.toFixed(1):sn.toFixed(1))+"cm":pr>0?pr.toFixed(1)+"mm":"–"}<small>${h.precipitation_probability[k]??"–"}%</small></div>
-      <div class="bx" style="background:${windCol(h.wind_gusts_10m[k])}">${Math.round(h.wind_speed_10m[k])}-${Math.round(h.wind_gusts_10m[k])}<small>${dirTxt(dir)}</small></div>
-      <div class="bx sun" style="background:rgba(216,179,58,${(.08+.92*Math.min(1,(h.sunshine_duration?.[k]||0)/3600)).toFixed(2)})">${Math.round((h.sunshine_duration?.[k]||0)/60)}′</div>
-      <div>${Math.round(h.freezing_level_height[k]/50)*50}</div></div>`;}).join("");
-  const lab=`<div class="fh-c" style="text-align:left;position:sticky;left:0;background:var(--bg-2);z-index:2;padding-right:4px"><div class="h">Ora</div><div class="i">&nbsp;</div><div class="t">°C</div><div class="bar" style="justify-content:flex-start;align-items:center">mm</div><div class="flb">Neve/pioggia<small style="display:block">Prob.</small></div><div class="flb">Vento<small style="display:block">km/h</small></div><div class="flb">Sole<small style="display:block">min</small></div><div>0° m</div></div>`;
-  box.innerHTML=`<div class="fh-head"><b>${FSEL===0?"Oggi":FSEL===1?"Domani":dt.toLocaleDateString(LOC,{weekday:"long"})} · ${dt.toLocaleDateString(LOC,{day:"numeric",month:"long"})}</b><span>Previsione oraria a 1837 m · vento in km/h</span></div>
-    <div class="fh-scroll"><div class="fh-grid" style="grid-template-columns:76px">${lab}${cells}</div></div>
-    ${FC.ens&&FC.ens.days[FSEL]?`<div class="fh-ens">${L2("Neve per modello","Snow by model")}: ${Object.entries(FC.ens.days[FSEL].by).map(([m,v])=>`<span${m===CONFIG.forecast.ensMain?' style="color:#fff"':""}>${m===CONFIG.forecast.ensMain?"★ ":""}${CONFIG.forecast.ensNames[m]||m} <b>${Math.round(v)} cm</b></span>`).join("")}</div>`:""}
-    <div class="fh-leg"><span><i style="background:#5ec8f2"></i>Neve</span><span><i style="background:#4f7cff"></i>Pioggia</span><span><i style="background:#c8302e"></i>Vento (più rosso = più forte)</span><span><i style="background:#d8b33a"></i>Sole</span></div>`;
+  const H=idx.map(k=>{ const sn=h.snowfall[k]||0, pr=h.precipitation[k]||0;
+    const snMm=h.snow_mm?Math.min(pr,h.snow_mm[k]||0):Math.min(pr,sn/0.7), rn=Math.max(0,pr-snMm), dir=h.wind_direction_10m[k];
+    return {k,hr:h.time[k].slice(11,13),day:!!h.is_day[k],ic:pIcon(snMm,rn,wIcon(h.weather_code[k],h.is_day[k])),t:Math.round(h.temperature_2m[k]),sn,rn,
+      prob:h.precipitation_probability[k],w:Math.round(h.wind_speed_10m[k]),g:Math.round(h.wind_gusts_10m[k]),dir:dirTxt(dir),arr:DIRA[Math.round(((dir||0)%360)/45)%8],
+      sun:Math.round((h.sunshine_duration?.[k]||0)/60),fz:Math.round(h.freezing_level_height[k]/50)*50};});
+  const lab=(a,b,cls)=>`<div class="ml r ${cls}"><b>${a}</b>${b||""}</div>`;
+  const row=(cls,lb,f)=>lab(...lb,cls)+H.map(x=>{const o=f(x);return `<div class="c r ${cls}${x.day?"":" nt"}"${o.st?` style="${o.st}"`:""}>${o.h}</div>`}).join("");
+  const nd=`<span class="v" style="font-size:.9rem;color:#666">–</span>`;
+  const grid=row("hd",[L2("Ora","Hour"),""],x=>({h:`<span class="v">${x.hr}</span>`}))+
+    row("ic",["",""],x=>({h:x.ic}))+
+    row("",["🌡️ °C",""],x=>({h:`<span class="v" style="color:${x.t>0?"#ffb39a":"#9fd6f5"}">${x.t}°</span>`}))+
+    row("sn",["❄️ "+L2("Neve","Snow"),"cm"],x=>({h:x.sn>=0.05?`<span class="v" style="font-size:1rem">${x.sn.toFixed(1)}</span><small>cm</small>`:nd,st:x.sn>=0.05?`background:${snowCol(x.sn,0,0.15)}`:""}))+
+    row("",["🌧️ "+L2("Pioggia","Rain"),"mm"],x=>({h:x.rn>=0.05?`<span class="v" style="font-size:.95rem">${x.rn.toFixed(1)}</span><small>mm</small>`:nd,st:x.rn>=0.05?`background:rgba(60,90,200,${(.35+.6*Math.min(1,x.rn/2)).toFixed(2)})`:""}))+
+    row("sm",["💧 "+L2("Prob.","Prob."),"%"],x=>({h:`<span class="v" style="font-size:.9rem">${x.prob??"–"}%</span>`}))+
+    row("",["💨 "+L2("Vento","Wind"),L2("km/h · raff.","km/h · gust")],x=>({h:`<span class="v" style="font-size:.95rem">${x.w}<span style="opacity:.6">/</span>${x.g}</span><small>${x.arr} ${x.dir}</small>`,st:`background:${windCol(x.g)}`}))+
+    row("sm",["☀️ "+L2("Sole","Sun"),"min"],x=>({h:`<span class="v" style="font-size:.9rem;color:${x.sun?"#1b1b1b":"#777"}">${x.sun}′</span>`,st:x.sun?`background:rgba(216,179,58,${(.3+.7*Math.min(1,x.sun/60)).toFixed(2)})`:""}))+
+    row("sm",["0 °C",L2("quota m","level m")],x=>({h:`<span class="v" style="font-size:.85rem">${x.fz}</span>`}));
+  box.innerHTML=`<div class="fh-head"><b>${FSEL===0?L2("Oggi","Today"):FSEL===1?L2("Domani","Tomorrow"):dt.toLocaleDateString(LOC,{weekday:"long"})} · ${dt.toLocaleDateString(LOC,{day:"numeric",month:"long"})}</b><span>${L2("Ora per ora a 1837 m · scorri ⇆","Hour by hour at 1837 m · swipe ⇆")}</span></div>
+    <div class="fh-scroll"><div class="mtA mtH" style="grid-template-columns:62px repeat(${H.length},52px)">${grid}</div></div>
+    ${FC.ens&&FC.ens.days[FSEL]?`<div class="fh-ens">${L2("Neve per modello","Snow by model")}: ${Object.entries(FC.ens.days[FSEL].by).map(([m,v])=>`<span${m===CONFIG.forecast.ensMain?' style="color:#fff"':""}>${m===CONFIG.forecast.ensMain?"★ ":""}${CONFIG.forecast.ensNames[m]||m} <b>${Math.round(v)} cm</b></span>`).join("")}</div>`:""}`;
   box.hidden=false;
-  const sc=box.querySelector(".fh-scroll"); if(FSEL===0){const now=new Date().getHours(); sc.scrollLeft=Math.max(0,(now-1)*60);}
+  const sc=box.querySelector(".fh-scroll"); sc.scrollLeft=FSEL===0?Math.max(0,(new Date().getHours()-1)*55):7*55;
 }
 /* ===== Meteo varianti ?mt=a|b|c ===== */
 const MT=(new URLSearchParams(location.search).get("mt")||"a").toLowerCase()==="x"?"":"a"; // ?mt=x = stari trak
@@ -1479,13 +1486,14 @@ function mtDay(i){
   const fz=h.time.map((x,k)=>[x,h.freezing_level_height[k]]).filter(([x])=>x.startsWith(t)&&+x.slice(11,13)>=6&&+x.slice(11,13)<=18).map(a=>a[1]);
   const e=FC.ens&&FC.ens.days[i];
   return {i,dt,name:i===0?L2("Oggi","Today"):i===1?L2("Domani","Tmrw"):dt.toLocaleDateString(LOC,{weekday:"short"}).replace(".",""),
-    date:dt.toLocaleDateString(LOC,{day:"numeric",month:"short"}),wc:d.weather_code[i],ic:(WMO[d.weather_code[i]]||["❔"])[0],
+    date:dt.toLocaleDateString(LOC,{day:"numeric",month:"short"}),wc:d.weather_code[i],
     tx:Math.round(d.temperature_2m_max[i]),tn:Math.round(d.temperature_2m_min[i]),sn,snT:sn>=1?String(Math.round(sn)):sn>0?"<1":"0",
     rng:e&&Math.round(e.min)!==Math.round(e.max)?[Math.round(e.min),Math.round(e.max)]:null,rngMax:e?e.max:sn,
     mm:pr,rain:d.rain_sum?d.rain_sum[i]:Math.max(0,pr-sn/0.7),prob:d.precipitation_probability_max[i]||0,
     w:Math.round(d.wind_speed_10m_max[i]),g:Math.round(d.wind_gusts_10m_max[i]),dirD:d.wind_direction_10m_dominant[i],
     dir:dirTxt(d.wind_direction_10m_dominant[i]),arr:DIRA[Math.round(((d.wind_direction_10m_dominant[i]||0)%360)/45)%8],
-    sun:Math.round((d.sunshine_duration[i]||0)/3600),fz:fz.length?Math.round(Math.max(...fz)/50)*50:null};
+    sun:Math.round((d.sunshine_duration[i]||0)/3600),fz:fz.length?Math.round(Math.max(...fz)/50)*50:null,
+    get ic(){const r=this.rain||0;return pIcon(Math.max(0,this.mm-r),r,(WMO[this.wc]||["❔"])[0]);}};
 }
 function mtSel(i){ FSEL=FSEL===i?-1:i; renderMT(); renderHours(); }
 function renderMT(){
