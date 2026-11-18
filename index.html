@@ -300,6 +300,7 @@ a.chip:hover{border-color:var(--ice)}
 .mtH .ml{position:sticky;left:0;z-index:2;background:var(--bg-2);padding-left:6px}
 .mtH .c{cursor:default}.mtH .hd.nt,.mtH .ic.nt{background:rgba(255,255,255,.035)}
 .mtH .r.sn{height:44px}
+.bmap{display:block;margin:10px auto 8px;max-width:520px}.bmap img{width:100%;border-radius:10px;display:block}
 .mt-leg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.74rem;color:var(--muted);margin:8px 4px 0}
 .mt-tip{font-size:.78rem;color:var(--ice);text-align:center;margin:8px 0 4px;font-family:var(--display);letter-spacing:.05em;text-transform:uppercase}
 
@@ -750,7 +751,6 @@ footer a{color:var(--ice)}
     <div><div class="ic">📋</div><b>Bollettino</b><span>letto ogni giorno</span></div>
     <div><div class="ic">👥</div><b>Mai da soli</b><span>uno alla volta sui ripidi · 112</span></div>
   </div>
-  <div class="links" id="safety"></div>
   <p class="disc" id="disclaimer"></p>
 </section>
 
@@ -795,8 +795,8 @@ footer a{color:var(--ice)}
 <section id="video" class="rv alt">
   <div class="head">
     <span class="eyebrow">YouTube</span>
-    <h2 class="title">Video della community</h2>
-    <p class="intro">Video pubblici di altri rider su YouTube, come esempio di linee e condizioni. Tutti i diritti ai rispettivi autori.</p>
+    <h2 class="title">Video</h2>
+    <p class="intro">Video pubblici su YouTube – rider, scuole, TV ed enti turistici – come esempio di linee e condizioni. Tutti i diritti ai rispettivi autori.</p>
   </div>
   <div class="cvwrap"><div class="cvids" id="cvideos"></div>
     <button class="cvnav l" data-d="-1" aria-label="Precedenti">‹</button><button class="cvnav r" data-d="1" aria-label="Successivi">›</button></div>
@@ -913,8 +913,8 @@ var I18N={
 "Fonte: cartello ufficiale freeride Sella Nevea, cartografia © Casa Editrice Tabacco":"Source: official Sella Nevea freeride sign, cartography © Casa Editrice Tabacco",
 "Mappa topografica Golovec e Forato":"Topographic map Golovec and Forato","Fonte: cartello ufficiale freeride Sella Nevea":"Source: official Sella Nevea freeride sign",
 "Panorama – lato Montasio":"Panorama – Montasio side","Panorama – lato Canin":"Panorama – Canin side","Fonte: sellaneveaparco.it":"Source: sellaneveaparco.it","Fonte: TurismoFVG.it":"Source: TurismoFVG.it",
-"Video della community":"Community videos",
-"Video pubblici di altri rider su YouTube, come esempio di linee e condizioni. Tutti i diritti ai rispettivi autori.":"Public videos by other riders on YouTube, as examples of lines and conditions. All rights to their respective authors.",
+"Video":"Video",
+"Video pubblici su YouTube – rider, scuole, TV ed enti turistici – come esempio di linee e condizioni. Tutti i diritti ai rispettivi autori.":"Public YouTube videos – riders, schools, TV and tourism boards – as examples of lines and conditions. All rights to their respective authors.",
 "Mostra tutti":"Show all","Mostra meno":"Show less",
 "Con chi la conosce":"With the locals","Corsi e uscite guidate":"Courses and guided tours",
 "Vuoi imparare a leggere la neve o scoprire le linee con qualcuno che conosce il Canin da sempre?":"Want to learn to read the snow or discover the lines with someone who has always known Canin?",
@@ -1051,11 +1051,6 @@ const CONFIG = {
     { id:"cxdQJZUQw_c", t:"Sella Nevea con Margherita Granbassi", a:"friuliveneziagiulia.turismo" },
     { id:"2iWD3MCejlc", t:"Passing the Virgin Ridge above Prevala (Sella Nevea Freeride)", a:"Luka Filipič" },
   ],
-  safety: [
-    { t:"Bollettino valanghe FVG", s:"Protezione Civile FVG", url:"https://www.protezionecivile.fvg.it/it/bollettino-valanghe" },
-    { t:"Bollettini AINEVA", s:"Tutto l'arco alpino italiano", url:"https://www.aineva.it" },
-    { t:"Livinal Lunc – dati completi", s:"Protezione Civile FVG", url:"https://monitor.protezionecivile.fvg.it/stazione/541" }
-  ],
   social: [
     { t:"Facebook", url:"https://www.facebook.com/share/g/18TUgDUXA9/" },
     { t:"Instagram", url:"https://www.instagram.com/sella_nevea_freeride_arena" },
@@ -1103,7 +1098,7 @@ function initStatic(){
     $("cvcount").textContent=`${CONFIG.communityVideos.length} video`+(on?"":" · scorri ⇆"); if(!on) $("video").scrollIntoView({behavior:"smooth"});};
   $("cvideos").addEventListener("click",e=>{const b=e.target.closest(".th[data-id]"); if(!b) return;
     b.outerHTML=`<div class="th"><iframe src="https://www.youtube-nocookie.com/embed/${b.dataset.id}?autoplay=1${+b.dataset.s?"&start="+b.dataset.s:""}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`;});
-  $("safety").innerHTML = CONFIG.safety.filter(x=>x.url).map(x=>`<a href="${x.url}" target="_blank" rel="noopener"><b>${x.t}</b><span>${x.s}</span></a>`).join("");
+
   $("social").innerHTML = CONFIG.social.filter(x=>x.url).map(x=>`<a class="btn btn-line" href="${x.url}" target="_blank" rel="noopener">${ICON[x.t]||""}${x.t}</a>`).join("");
   $("disclaimer").textContent = CONFIG.disclaimer;
   $("foot").innerHTML = `<div class="flogos"><img src="${CONFIG.logo}" alt="${CONFIG.title}"><img class="sq" src="${CONFIG.logo2}" alt="Freeride Arena Sella Nevea"><a href="https://www.sellaneveamountain.com/" target="_blank" rel="noopener" title="Sella Nevea Mountain Experience"><img class="snme" src="snme-logo.png" alt="Sella Nevea Mountain Experience"></a></div>
@@ -1362,7 +1357,7 @@ async function loadForecast(){
     }).join("");
     FC=j; renderCond(); if(FCV==="new"){ $("days").hidden=true; $("fstrip").hidden=false; renderStrip(); }
     $("mini").innerHTML=d.time.slice(0,4).map((t,i)=>{const dt=new Date(t+"T12:00"),sn=d.snowfall_sum[i]||0;
-      return `<div><span class="md">${i===0?"Oggi":dt.toLocaleDateString(LOC,{weekday:"short"})}</span><br><span class="mi">${(WMO[d.weather_code[i]]||["❔"])[0]}</span><br><span class="ms">${sn>=1?"+"+Math.round(sn):sn>0?"&lt;1":"0"} cm</span><br><span class="mt">${Math.round(d.temperature_2m_max[i])}°/${Math.round(d.temperature_2m_min[i])}°</span></div>`}).join("");
+      return `<div><span class="md">${i===0?"Oggi":dt.toLocaleDateString(LOC,{weekday:"short"})}</span><br><span class="mi">${dayIcon(i)}</span><br><span class="ms">${sn>=1?"+"+Math.round(sn):sn>0?"&lt;1":"0"} cm</span><br><span class="mt">${Math.round(d.temperature_2m_max[i])}°/${Math.round(d.temperature_2m_min[i])}°</span></div>`}).join("");
     $("fcTot").innerHTML=`Neve prevista prossimi 3 giorni: <b>${tot>0&&tot<1?"&lt;1":Math.round(tot)} cm</b>`;
   }catch(e){ console.error(e); $("days").innerHTML=`<p class="meta">Previsioni non disponibili. <a href="${CONFIG.forecast.bergfex}" target="_blank" rel="noopener" style="color:var(--ice)">Vedi su bergfex</a></p>`; }
 }
@@ -1451,14 +1446,20 @@ function renderStrip(){
   });
   el.querySelectorAll(".fcol").forEach(c=>c.onclick=()=>{const i=+c.dataset.i; FSEL=FSEL===i?-1:i; renderStrip(); renderHours();});
 }
-function pIcon(snMm,rnMm,fallback){ const p=snMm+rnMm; if(p<0.1) return fallback; return snMm>=rnMm?(snMm>=1.5?"❄️":"🌨️"):(rnMm>=1.5?"🌧️":"🌦️"); }
+// ikone: padavine iz ECMWF (iste številke kot v celicah), nebo iz sonca/oblačnosti
+function skyCode(c){ return c===45||c===48?"🌫️":c===0?"☀️":c===1?"🌤️":c===2?"⛅":"☁️"; }
+function dayIcon(i){ const d=FC.daily, sn=d.snowfall_sum[i]||0, pr=d.precipitation_sum[i]||0, rn=d.rain_sum?d.rain_sum[i]:Math.max(0,pr-sn/0.7), sun=(d.sunshine_duration[i]||0)/3600, c=d.weather_code[i];
+  if(sn>=1&&sn>=rn) return "🌨️"; if(rn>=1) return sun>=3?"🌦️":"🌧️"; if(sn>=1) return "🌨️";
+  if(c===45||c===48) return "🌫️"; return sun>=7?"☀️":sun>=4?"🌤️":sun>=1.5?"⛅":"☁️"; }
+function hourIcon(sn,rn,c,day,sunMin){ if(sn>=0.1&&sn*1>=rn) return "🌨️"; if(rn>=0.1) return "🌧️"; if(sn>=0.1) return "🌨️";
+  if(c===45||c===48) return "🌫️"; if(!day) return c<=1?"🌙":"☁️"; if(c>3) return sunMin>=30?"⛅":"☁️"; return skyCode(c); }
 function renderHours(){
   const box=$("fhours"); if(FSEL<0){box.hidden=true;return;}
   const d=FC.daily, h=FC.hourly, day=d.time[FSEL], dt=new Date(day+"T12:00");
   const idx=h.time.map((x,k)=>x.startsWith(day)?k:-1).filter(k=>k>=0);
   const H=idx.map(k=>{ const sn=h.snowfall[k]||0, pr=h.precipitation[k]||0;
     const snMm=h.snow_mm?Math.min(pr,h.snow_mm[k]||0):Math.min(pr,sn/0.7), rn=Math.max(0,pr-snMm), dir=h.wind_direction_10m[k];
-    return {k,hr:h.time[k].slice(11,13),day:!!h.is_day[k],ic:pIcon(snMm,rn,wIcon(h.weather_code[k],h.is_day[k])),t:Math.round(h.temperature_2m[k]),sn,rn,
+    return {k,hr:h.time[k].slice(11,13),day:!!h.is_day[k],ic:hourIcon(sn,rn,h.weather_code[k],!!h.is_day[k],(h.sunshine_duration?.[k]||0)/60),t:Math.round(h.temperature_2m[k]),sn,rn,
       prob:h.precipitation_probability[k],w:Math.round(h.wind_speed_10m[k]),g:Math.round(h.wind_gusts_10m[k]),dir:dirTxt(dir),arr:DIRA[Math.round(((dir||0)%360)/45)%8],
       sun:Math.round((h.sunshine_duration?.[k]||0)/60),fz:Math.round(h.freezing_level_height[k]/50)*50};});
   const lab=(a,b,cls)=>`<div class="ml r ${cls}"><b>${a}</b>${b||""}</div>`;
@@ -1493,7 +1494,7 @@ function mtDay(i){
     w:Math.round(d.wind_speed_10m_max[i]),g:Math.round(d.wind_gusts_10m_max[i]),dirD:d.wind_direction_10m_dominant[i],
     dir:dirTxt(d.wind_direction_10m_dominant[i]),arr:DIRA[Math.round(((d.wind_direction_10m_dominant[i]||0)%360)/45)%8],
     sun:Math.round((d.sunshine_duration[i]||0)/3600),fz:fz.length?Math.round(Math.max(...fz)/50)*50:null,
-    get ic(){const r=this.rain||0;return pIcon(Math.max(0,this.mm-r),r,(WMO[this.wc]||["❔"])[0]);}};
+    get ic(){return dayIcon(this.i);}};
 }
 function mtSel(i){ FSEL=FSEL===i?-1:i; renderMT(); renderHours(); }
 function renderMT(){
@@ -1547,7 +1548,8 @@ function parseBulletin(j){
     day:new Date(new Date(b.validTime.startTime).getTime()+12*3600e3).toLocaleDateString(LOC,{weekday:"long",day:"numeric",month:"long"})};
 }
 async function loadBulletin(){
-  const link=`<a href="${CONFIG.bulletin.page}" target="_blank" rel="noopener">Bollettino completo</a>`;
+  const AF="https://bollettini.aineva.it/albina_files/latest/", pdf=AF+"IT-36_"+(LANG==="en"?"en":"it")+".pdf";
+  let link=`<a href="${CONFIG.bulletin.page}" target="_blank" rel="noopener">Bollettino valanghe FVG ↗</a>`;
   const show=(lvl,txt,note,chip)=>{
     document.querySelectorAll(".lights span").forEach(s=>s.classList.toggle("on",+s.dataset.l===lvl));
     $("semLvl").textContent=txt; $("semNote").innerHTML=note;
@@ -1558,7 +1560,8 @@ async function loadBulletin(){
   const b=j&&parseBulletin(j);
   BUL=(b&&!b.expired&&b.level)?b:{level:0}; renderCond();
   if(!b||b.expired||!b.level){ show(0,"Non disponibile",`Nessun bollettino valido oggi (fuori stagione?). ${link}`,"n.d."); return; }
-  show(b.level,b.txt,`${b.elev?b.elev+" · ":""}${b.day}<br>${b.highlights} ${link}`,b.txt.split(" · ")[1]);
+  link=`<a href="${pdf}" target="_blank" rel="noopener">Bollettino valanghe FVG ↗</a>`;
+  show(b.level,b.txt,`${b.elev?b.elev+" · ":""}${b.day}<br>${b.highlights}<a class="bmap" href="${pdf}" target="_blank" rel="noopener"><img src="${AF}fd_IT-36_map.jpg" alt="Mappa pericolo valanghe FVG" loading="lazy" onerror="this.parentNode.remove()"></a>${link}`,b.txt.split(" · ")[1]);
 }
 
 
