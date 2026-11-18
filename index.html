@@ -448,17 +448,7 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .vh-b .fbtn.vf{display:inline-block}
 .pin .vb{position:absolute;right:-7px;top:-7px;width:14px;height:14px;border-radius:50%;background:#EE1C25;border:1.5px solid #fff;font-size:7px;line-height:11px;text-align:center;color:#fff}
 .pin{position:relative}
-.vstrip{display:none;margin:12px 0 14px}
-.vh-c .vstrip{display:block}
-.vstrip h4{font-family:var(--display);font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
-.vstrip .row{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory}
-.vstrip .vc{flex:none;width:200px;scroll-snap-align:start;cursor:pointer;background:var(--bg-2);border:1px solid var(--line);border-radius:12px;overflow:hidden;text-align:left;color:inherit;padding:0}
-.vstrip .vc .t{position:relative;aspect-ratio:16/9;background:#000 center/cover}
-.vstrip .vc .t i{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:42px;height:30px;border-radius:8px;background:#EE1C25;color:#fff;font-style:normal;display:flex;align-items:center;justify-content:center}
-.vstrip .vc .t .n{position:absolute;left:6px;top:6px;width:24px;height:24px;border-radius:50%;border:2px solid #fff;color:#fff;font:700 11px/20px var(--body);text-align:center}
-.vstrip .vc .c{padding:7px 9px;font:600 .85rem/1.25 var(--body)}
-.vstrip .vc .c span{display:block;color:var(--muted);font-weight:500;font-size:.75rem}
-.rvid{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+.vh-c .rvid{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
 .rvid h4{font-family:var(--display);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
 .rvt{position:relative;display:block;width:100%;aspect-ratio:16/9;background:#000 center/cover no-repeat;border:0;padding:0;cursor:pointer;border-radius:10px;overflow:hidden}
 .rvt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -760,7 +750,6 @@ footer a{color:var(--ice)}
   </div>
   <div class="vcall" id="vcall"></div>
   <div class="mapwrap"><div id="map"></div></div>
-  <div class="vstrip" id="vstrip"></div>
   <div class="rinfo" id="rinfo"></div>
   <div class="rgroups" id="routes"></div>
   <div class="head" style="margin-top:30px"><span class="eyebrow">Cartelli e panorami</span></div>
@@ -894,7 +883,7 @@ var I18N={
 "Webcam Sella Nevea in quota (1870 m)":"Sella Nevea webcam up the mountain (1870 m)","Webcam Sella Nevea a valle":"Sella Nevea webcam in the valley","Neve fresca a Sella Nevea":"Fresh snow in Sella Nevea",
 "Precedenti":"Previous","Successivi":"Next","Neve cm":"Snow cm","Vento":"Wind","Raffica":"Gust",
 "Posizione non disponibile su questo dispositivo.":"Location not available on this device.","Non riesco a leggere la posizione. Controlla i permessi del browser.":"Could not read your location. Check the browser permissions.",
-"Apri il menu del browser":"Open the browser menu","Scegli":"Choose","o":"or","Conferma":"Confirm","Tocca":"Tap","in Safari":"in Safari","⬆️ in Safari":"⬆️ in Safari","Aggiungi":"Add","Condividi":"Share","Installa app":"Install app","▶ Con video":"▶ With video","▶ Video":"▶ Video","🎬 Le linee in video":"🎬 The lines on video","🎬 Video della linea":"🎬 Videos of this line","dall'inizio":"from the start","Aggiungi a schermata Home":"Add to Home screen"
+"Apri il menu del browser":"Open the browser menu","Scegli":"Choose","o":"or","Conferma":"Confirm","Tocca":"Tap","in Safari":"in Safari","⬆️ in Safari":"⬆️ in Safari","Aggiungi":"Add","Condividi":"Share","Installa app":"Install app","▶ Con video":"▶ With video","▶ Video":"▶ Video","🎬 Video della linea":"🎬 Videos of this line","dall'inizio":"from the start","Aggiungi a schermata Home":"Add to Home screen"
 };
 var I18R=[
 [/^di (.+)$/,"by $1"],[/^Guarda (.+)$/,"Watch $1"],[/^(\d+) video · scorri ⇆$/,"$1 videos · swipe ⇆"],[/^(\d+) video$/,"$1 videos"],
@@ -1023,7 +1012,7 @@ const CONFIG = {
 };
 /* ========================================================== */
 
-const VH=(()=>{const v=new URLSearchParams(location.search).get("vh")||"a";return /^[abc]$/.test(v)?v:"a"})();
+const VH="b";
 const $ = id => document.getElementById(id);
 const diffTxt = {1:["facile","d1"],2:["media","d2"],3:["medio-difficile","d3"]};
 const zoneCol = {Golovec:"#2f9fd0",Forato:"#2fa35c"};
@@ -1047,9 +1036,7 @@ function initStatic(){
   $("lb").addEventListener("click",()=>$("lb").classList.remove("on"));
   document.documentElement.classList.add("vh-"+VH);
   { const vr=CONFIG.routes.filter(r=>r.vids);
-    $("vcall").innerHTML=`<span class="ic">▶</span><span><b>${vr.length} linee con video</b> – tocca una linea con <b style="color:#ff6b6b">▶ VIDEO</b> nell'elenco${VH==="b"?" o il filtro «Con video»":VH==="c"?" o un video qui sotto la mappa":""} per vederla girata.</span>`;
-    $("vstrip").innerHTML=`<h4>🎬 Le linee in video</h4><div class="row">${vr.map(r=>{const v=r.vids[0];return `<button class="vc" data-n="${r.n}"><div class="t" style="background-image:url(https://i.ytimg.com/vi/${v.id}/mqdefault.jpg)"><span class="n" style="background:${zoneCol[r.zone]}">${r.n}</span><i>▶</i></div><div class="c">${r.name}<span>${r.vids.length} video</span></div></button>`}).join("")}</div>`;
-    $("vstrip").onclick=e=>{const b=e.target.closest(".vc"); if(!b||!MAP) return; selectRoute(+b.dataset.n); const ri=$("rinfo").querySelector(".rvid"); (ri||$("rinfo")).scrollIntoView({behavior:"smooth",block:"center"});};
+    $("vcall").innerHTML=`<span class="ic">▶</span><span><b>${vr.length} linee con video</b> – tocca una linea con <b style="color:#ff6b6b">▶ VIDEO</b> nell'elenco o il filtro «Con video» per vederla girata.</span>`;
   }
   const zones=[...new Set(CONFIG.routes.map(r=>r.zone))];
   $("routes").innerHTML = zones.map(z=>`<div class="rg" style="--c:${zoneCol[z]||'#777'}"><h3>Freeride ${z}</h3><ol>`+
