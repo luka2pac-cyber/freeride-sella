@@ -362,6 +362,9 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .qn.b a .e{font-size:1.25rem}
 .qn.b a.on{color:var(--ice);background:rgba(94,200,242,.1)}
 .nav-b body{padding-bottom:64px}
+/* ≤1100 px: samo spodnji meni (viden takoj), brez gumbov v heroju; računalnik: samo zgornji meni v vrstici */
+@media(max-width:1100px){.nav-b .hero-btns{display:none}}
+@media(min-width:1101px){.nav-b .qn.b{display:none}.nav-b body{padding-bottom:0}}
 /* c: pulsante flottante + menu */
 .qn.c{right:16px;bottom:calc(18px + env(safe-area-inset-bottom))}
 .qn.c .fab{width:56px;height:56px;border-radius:50%;border:0;background:var(--ice-deep);color:#fff;font-size:1.5rem;box-shadow:0 6px 22px rgba(0,0,0,.5);cursor:pointer}
@@ -1892,7 +1895,7 @@ loadKanin();
   var hero=document.querySelector(".hero")||document.querySelector("header"), as=el.querySelectorAll("a[data-id]");
   function upd(){
     var lim=(hero?hero.offsetTop+hero.offsetHeight:500)-200;
-    el.classList.toggle("hid", scrollY<lim);
+    el.classList.toggle("hid", v!=="b" && scrollY<lim);
     var cur=null; S.forEach(function(x){var t=document.getElementById(x[0]); if(t&&x[0]!=="top"&&t.getBoundingClientRect().top<160) cur=x[0];});
     as.forEach(function(a){var on=a.dataset.id===cur; a.classList.toggle("on",on); if(on&&v!=="c"&&a._on!==true){el.scrollTo({left:a.offsetLeft-el.clientWidth/2+a.offsetWidth/2,behavior:"smooth"});} a._on=on;});
   }
