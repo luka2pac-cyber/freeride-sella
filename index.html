@@ -1209,7 +1209,7 @@ const RV=(()=>{const v=new URLSearchParams(location.search).get("rv")||"a";retur
 function vMeta(id){const c=CONFIG.communityVideos.find(x=>x.id===id); if(c) return {t:c.t,a:c.a};
   const o=CONFIG.videos.find(x=>x.id===id); return o?{t:o.t,a:"Luka Filipič"}:{t:"YouTube",a:""};}
 const fmtT=s=>Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
-const vEmbed=(v,auto)=>`https://www.youtube-nocookie.com/embed/${v.id}?${auto?"autoplay=1&":""}start=${v.s||0}`;
+const vEmbed=(v,auto)=>`https://www.youtube-nocookie.com/embed/${v.id}?autoplay=${auto?1:0}${v.s?"&start="+v.s:""}`;
 function routeVids(r){
   if(!r.vids||!r.vids.length) return "";
   const th=v=>`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`, ts=v=>`<span class="ts">${v.s?"da "+fmtT(v.s):"dall'inizio"}</span>`;
@@ -1224,7 +1224,7 @@ function routeVids(r){
 function bindRouteVids(el,r){
   const box=el.querySelector(".rvid"); if(!box) return;
   box.onclick=e=>{const b=e.target.closest("[data-i]"); if(!b) return; const v=r.vids[+b.dataset.i];
-    if(RV==="a"){ b.innerHTML=`<iframe src="${vEmbed(v,true)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`; b.removeAttribute("data-i"); b.style.cursor="default"; }
+    if(RV==="a"){ b.outerHTML=`<div class="rvt"><iframe src="${vEmbed(v,true)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`; }
     else if(RV==="b"){ const m=vMeta(v.id), d=document.createElement("div"); d.className="vmod";
       d.innerHTML=`<div class="in"><button class="x">✕ Chiudi</button><div class="fr"><iframe src="${vEmbed(v,true)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div><div class="vc"><b>${m.t}</b> · ${m.a}</div></div>`;
       d.onclick=ev=>{if(ev.target===d||ev.target.closest(".x")) d.remove();}; document.body.appendChild(d); }
