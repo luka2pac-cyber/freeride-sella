@@ -500,6 +500,10 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .rg li{cursor:pointer}
 .rg li:hover,.rg li.sel{color:var(--ice)}
 .leaflet-container{font-family:var(--body)}
+.bmsw{display:flex;overflow:hidden;border-radius:10px;background:rgba(0,0,0,.82)!important;border:1px solid rgba(255,255,255,.35)!important}
+.bmsw button{font:700 .78rem/1 var(--display);letter-spacing:.04em;text-transform:uppercase;color:#fff;background:transparent;border:0;padding:11px 12px;min-height:40px;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.bmsw button.on{background:var(--ice-deep);color:#fff}
+
 .radar{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}
 .rd-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;font-size:.95rem}.rd-h span{background:#ffd34d;color:#0b0b0b;font-weight:800;font-size:1.15rem;padding:4px 12px;border-radius:10px;font-variant-numeric:tabular-nums;white-space:nowrap;box-shadow:0 0 12px rgba(255,211,77,.35)}
 #rdMap{height:300px;border-radius:12px;overflow:hidden;background:#0d1117}
@@ -1259,7 +1263,21 @@ function initMap(){
   MAP=L.map("map",{scrollWheelZoom:false,tap:true,zoomSnap:.25,zoomDelta:.5}).setView([46.3705,13.4715],14);
   const topo=L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",{maxZoom:17,attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, SRTM | © <a href="https://opentopomap.org">OpenTopoMap</a> (CC-BY-SA)'}).addTo(MAP);
   const sat=L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:18,attribution:"Imagery © Esri"});
-  L.control.layers({"Topografica":topo,"Satellite":sat},null,{position:"topright"}).addTo(MAP);
+  /* preklop podlage: dva stalna gumba (brez spustnega menija – v Instagram/WebView dotik na Leafletovem kontrolniku ni zanesljiv) */
+  const BM=L.control({position:"topright"});
+  BM.onAdd=function(){
+    const d=L.DomUtil.create("div","bmsw leaflet-bar");
+    d.innerHTML='<button type="button" class="on" data-b="topo">Topo</button><button type="button" data-b="sat">Satellite</button>';
+    L.DomEvent.disableClickPropagation(d); L.DomEvent.disableScrollPropagation(d);
+    const set=function(k){
+      if(k==="sat"){ if(MAP.hasLayer(topo)) MAP.removeLayer(topo); if(!MAP.hasLayer(sat)) sat.addTo(MAP); }
+      else { if(MAP.hasLayer(sat)) MAP.removeLayer(sat); if(!MAP.hasLayer(topo)) topo.addTo(MAP); }
+      d.querySelectorAll("button").forEach(function(b){b.classList.toggle("on",b.dataset.b===k)});
+    };
+    d.addEventListener("click",function(e){var b=e.target.closest("button"); if(b) set(b.dataset.b);});
+    return d;
+  };
+  BM.addTo(MAP);
   L.control.scale({imperial:false}).addTo(MAP);
   const all=[];
   CONFIG.routes.forEach(r=>{
@@ -1937,7 +1955,8 @@ loadKanin();
 
 /* ===== Navigazione rapida (?nav=a|b|c) ===== */
 (function(){
-  var v=new URLSearchParams(location.search).get("nav")||"b"; if(!/^[abc]$/.test(v)) return;
+  var inF=false; try{inF=window.self!==window.top}catch(e){inF=true}
+  var v=new URLSearchParams(location.search).get("nav")||(inF?"a":"b"); if(!/^[abc]$/.test(v)) return;
   document.documentElement.classList.add("nav-"+v);
   var S=[["top","⬆️","Top"],["neve","❄️","Neve"],["meteo","🌤️","Meteo"],["sicurezza","⚠️","Valanghe"],["webcam","📷","Webcam"],["discese","🗺️","Discese"],["video","🎬","Video"],["corsi","🎿","Corsi"],["community","👥","Community"]];
   if(v!=="c") S=S.slice(1);
@@ -1953,7 +1972,7 @@ loadKanin();
   var hero=document.querySelector(".hero")||document.querySelector("header"), as=el.querySelectorAll("a[data-id]");
   function upd(){
     var lim=(hero?hero.offsetTop+hero.offsetHeight:500)-200;
-    el.classList.toggle("hid", v!=="b" && scrollY<lim);
+    el.classList.toggle("hid", v!=="b" && !inF && scrollY<lim);
     var cur=null; S.forEach(function(x){var t=document.getElementById(x[0]); if(t&&x[0]!=="top"&&t.getBoundingClientRect().top<160) cur=x[0];});
     as.forEach(function(a){var on=a.dataset.id===cur; a.classList.toggle("on",on); if(on&&v!=="c"&&a._on!==true){el.scrollTo({left:a.offsetLeft-el.clientWidth/2+a.offsetWidth/2,behavior:"smooth"});} a._on=on;});
   }
