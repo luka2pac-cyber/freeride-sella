@@ -496,6 +496,15 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .rg li{cursor:pointer}
 .rg li:hover,.rg li.sel{color:var(--ice)}
 .leaflet-container{font-family:var(--body)}
+.radar{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}
+.rd-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px;font-size:.95rem}.rd-h span{color:var(--muted);font-size:.8rem}
+#rdMap{height:300px;border-radius:12px;overflow:hidden;background:#0d1117}
+.rd-ctl{display:flex;align-items:center;gap:10px;margin:8px 0 2px}.rd-ctl button{background:var(--bg-2);border:1px solid var(--line);color:#fff;border-radius:8px;width:38px;height:32px;font-size:1rem;cursor:pointer}
+.rd-ctl input{flex:1;accent-color:#5ec8f2}.rd-leg{font-size:.72rem;color:var(--muted);white-space:nowrap}.rd-leg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 2px 0 6px;vertical-align:-1px}
+.rd-crop{position:relative;width:100%;aspect-ratio:360/260;overflow:hidden;border-radius:12px;background:#fff}
+.rd-crop img{position:absolute;width:228.06%;left:-16.67%;top:-61.5%;image-rendering:pixelated}
+.rd-pin{position:absolute;left:42.2%;top:46.2%;transform:translate(-50%,-100%);font-size:22px;filter:drop-shadow(0 1px 2px #000)}
+.rdpin{font-size:22px;line-height:1;filter:drop-shadow(0 1px 2px #000)}
 .pin{width:22px;height:22px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font:700 11px/1 var(--body);color:#fff;box-shadow:0 1px 4px #0008}
 .pin.end{border-radius:3px;background:#111!important}
 .pdot{width:12px;height:12px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 3px #0008;box-sizing:border-box}
@@ -736,6 +745,14 @@ footer a{color:var(--ice)}
     <p class="meta" id="fcNote">Modello: Open-Meteo (best match per l'Europa), quota 1837 m. Le previsioni di neve sono indicative.</p>
     <a class="btn btn-line" id="bfLink" target="_blank" rel="noopener">Confronta su bergfex</a>
   </div>
+  <div class="radar" id="radar">
+    <div class="rd-h"><b>📡 Radar precipitazioni</b><span id="rdT">–</span></div>
+    <div class="rd-a" id="rdA" hidden><div id="rdMap"></div>
+      <div class="rd-ctl"><button id="rdPlay" aria-label="Play/Pausa">⏸</button><input type="range" id="rdSl" min="0" max="0" value="0" aria-label="Ora"><span class="rd-leg"><i style="background:#88ddee"></i>Neve <i style="background:#00a3e0"></i><i style="background:#ffaa00"></i>Pioggia</span></div>
+      <p class="meta">Ultime 2 ore, ogni 10 min · 📍 Sella Nevea · radar © <a href="https://www.rainviewer.com" target="_blank" rel="noopener">RainViewer</a>. In montagna il radar può non vedere le precipitazioni basse (ostacolato dai rilievi).</p></div>
+    <div class="rd-b" id="rdB" hidden><div class="rd-crop"><img id="rdGif" alt="Radar ARSO" loading="lazy"><span class="rd-pin" title="Sella Nevea">📍</span></div>
+      <p class="meta">Animazione ultima ora · 📍 Sella Nevea · radar © <a href="https://meteo.arso.gov.si/met/sl/weather/observ/radar/" target="_blank" rel="noopener">ARSO</a> (mm/h: blu debole → rosso forte). In montagna il radar può non vedere le precipitazioni basse.</p></div>
+  </div>
 </section>
 
 <section id="sicurezza" class="rv">
@@ -894,7 +911,7 @@ var I18N={
 "Pioggia debole":"Light rain","Pioggia":"Rain","Pioggia forte":"Heavy rain","Neve debole":"Light snow","Neve forte":"Heavy snow","Nevischio":"Snow grains",
 "Rovesci":"Showers","Rovesci forti":"Heavy showers","Rovesci di neve":"Snow showers","Rovesci di neve forti":"Heavy snow showers","Temporale":"Thunderstorm",
 "Modello: Open-Meteo (best match per l'Europa), quota 1837 m. Le previsioni di neve sono indicative.":"Model: Open-Meteo (best match for Europe), elevation 1837 m. Snow forecasts are indicative.",
-"Confronta su bergfex":"Compare on bergfex","Prima di partire":"Before you go","⚠ Bollettino valanghe · Canin":"⚠ Avalanche bulletin · Canin","Pericolo valanghe":"Avalanche danger",
+"Confronta su bergfex":"Compare on bergfex","📡 Radar precipitazioni":"📡 Precipitation radar","Prima di partire":"Before you go","⚠ Bollettino valanghe · Canin":"⚠ Avalanche bulletin · Canin","Pericolo valanghe":"Avalanche danger",
 "Carico…":"Loading…","Non disponibile":"Not available","n.d.":"n/a","Bollettino completo":"Full bulletin",
 "Debole":"Low","Moderato":"Moderate","Marcato":"Considerable","Forte":"High","Molto forte":"Very high",
 "1 · Debole":"1 · Low","2 · Moderato":"2 · Moderate","3 · Marcato":"3 · Considerable","4 · Forte":"4 · High","5 · Molto forte":"5 · Very high",
@@ -1409,6 +1426,27 @@ function applyEns(j,e){
   const nt=$("fcNote"); if(nt) nt.textContent=L2(`Neve e precipitazioni: modello ECMWF (se manca: mediana dei modelli), quota 1837 m; sotto il valore ↕ l'intervallo min–max di ${models.length} modelli (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}). Vento, sole e temperatura: Open-Meteo best match. Stima indicativa.`,`Snow and precipitation: ECMWF model (if missing: median of the models), elevation 1837 m; below the value ↕ the min–max range of ${models.length} models (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}). Wind, sun and temperature: Open-Meteo best match. Indicative estimate.`);
 }
 function ensRg(j,i){ const x=j&&j.ens&&j.ens.days[i]; if(!x) return ""; const a=Math.round(x.min),b=Math.round(x.max); return a===b?"":`${a}–${b} cm`; }
+// Radar: ?rd=a RainViewer (privzeto), ?rd=b ARSO
+const RDV=new URLSearchParams(location.search).get("rd")==="b"?"b":"a";
+function initRadar(){
+  const tFmt=d=>d.toLocaleTimeString(LOC,{hour:"2-digit",minute:"2-digit",timeZone:"Europe/Rome"});
+  if(RDV==="b"){ $("rdB").hidden=false; const im=$("rdGif"); im.src="https://meteo.arso.gov.si/uploads/probase/www/observ/radar/si0-rm-anim.gif?t="+Math.floor(Date.now()/3e5);
+    $("rdT").textContent=L2("ARSO · ultima ora","ARSO · last hour"); im.onerror=()=>{$("rdT").textContent=L2("non disponibile","not available");}; return; }
+  $("rdA").hidden=false;
+  const map=L.map("rdMap",{zoomControl:true,attributionControl:true,scrollWheelZoom:false,dragging:!L.Browser.mobile,tap:false}).setView([46.33,13.45],8);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{maxZoom:10,subdomains:"abcd",attribution:"© OpenStreetMap © CARTO"}).addTo(map);
+  L.marker([46.3743,13.4703],{icon:L.divIcon({className:"rdpin",html:"📍",iconSize:[22,22],iconAnchor:[11,22]})}).addTo(map);
+  fetch("https://api.rainviewer.com/public/weather-maps.json").then(r=>r.json()).then(j=>{
+    const fr=(j.radar&&j.radar.past)||[]; if(!fr.length) throw 0;
+    const lay=fr.map(f=>L.tileLayer(`${j.host}${f.path}/256/{z}/{x}/{y}/2/1_1.png`,{maxNativeZoom:7,maxZoom:10,opacity:0,zIndex:5}).addTo(map));
+    const sl=$("rdSl"); sl.max=fr.length-1; let i=fr.length-1, play=true, tm=null;
+    const show=k=>{ lay.forEach((l,n)=>l.setOpacity(n===k?.75:0)); i=k; sl.value=k; const d=new Date(fr[k].time*1000); $("rdT").textContent=tFmt(d)+(k===fr.length-1?" · "+L2("ultimo","latest"):""); };
+    const step=()=>{ show(i>=fr.length-1?0:i+1); tm=setTimeout(step,i===fr.length-1?1800:600); };
+    show(i); tm=setTimeout(step,1500);
+    $("rdPlay").onclick=()=>{ play=!play; $("rdPlay").textContent=play?"⏸":"▶"; clearTimeout(tm); if(play) step(); };
+    sl.oninput=()=>{ play=false; $("rdPlay").textContent="▶"; clearTimeout(tm); show(+sl.value); };
+  }).catch(()=>{ $("rdT").textContent=L2("non disponibile","not available"); });
+}
 let FC=null, FSEL=-1;
 const FCV=new URLSearchParams(location.search).get("fc")==="classic"?"classic":"new";
 const DIRA=["↓","↙","←","↖","↑","↗","→","↘"];
@@ -1963,7 +2001,7 @@ function initUI(){
   document.querySelectorAll("section[id]").forEach(s=>so.observe(s));
 }
 
-initStatic(); initInstall(); initUI(); initMap(); initMapUI(); loadForecast(); loadBulletin(); load(); loadPast();
+initStatic(); initInstall(); initUI(); initMap(); initMapUI(); loadForecast(); try{initRadar();}catch(e){console.error(e);} loadBulletin(); load(); loadPast();
 setInterval(load,15*60e3);
 setInterval(loadForecast,60*60e3);
 setInterval(loadPast,60*60e3);
