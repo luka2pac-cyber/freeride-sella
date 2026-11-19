@@ -1956,7 +1956,7 @@ loadKanin();
 /* ===== Navigazione rapida (?nav=a|b|c) ===== */
 (function(){
   var inF=false; try{inF=window.self!==window.top}catch(e){inF=true}
-  var v=new URLSearchParams(location.search).get("nav")||(inF?"a":"b"); if(!/^[abc]$/.test(v)) return;
+  var v=new URLSearchParams(location.search).get("nav")||"b"; if(!/^[abc]$/.test(v)) return;
   document.documentElement.classList.add("nav-"+v);
   var S=[["top","⬆️","Top"],["neve","❄️","Neve"],["meteo","🌤️","Meteo"],["sicurezza","⚠️","Valanghe"],["webcam","📷","Webcam"],["discese","🗺️","Discese"],["video","🎬","Video"],["corsi","🎿","Corsi"],["community","👥","Community"]];
   if(v!=="c") S=S.slice(1);
@@ -1972,11 +1972,26 @@ loadKanin();
   var hero=document.querySelector(".hero")||document.querySelector("header"), as=el.querySelectorAll("a[data-id]");
   function upd(){
     var lim=(hero?hero.offsetTop+hero.offsetHeight:500)-200;
-    el.classList.toggle("hid", v!=="b" && !inF && scrollY<lim);
+    el.classList.toggle("hid", v!=="b" && scrollY<lim);
     var cur=null; S.forEach(function(x){var t=document.getElementById(x[0]); if(t&&x[0]!=="top"&&t.getBoundingClientRect().top<160) cur=x[0];});
     as.forEach(function(a){var on=a.dataset.id===cur; a.classList.toggle("on",on); if(on&&v!=="c"&&a._on!==true){el.scrollTo({left:a.offsetLeft-el.clientWidth/2+a.offsetWidth/2,behavior:"smooth"});} a._on=on;});
   }
   addEventListener("scroll",upd,{passive:true}); upd();
+  /* v iframu (sport-fit.org) je iframe lahko višji od vidnega dela (Chromova vrstica) → spodnji trak dvignemo na spodnji rob VIDNEGA dela.
+     IntersectionObserver v iframu tuje domene poroča presek z zaslonom. */
+  if(inF && v==="b" && window.IntersectionObserver){
+    var vh0=innerHeight, ph=Math.max(16,Math.ceil(vh0/200)), n=Math.ceil(vh0/ph), vis=[], last=-1;
+    var wrap=document.createElement("div"); wrap.setAttribute("aria-hidden","true");
+    wrap.style.cssText="position:fixed;left:0;top:0;width:2px;height:100vh;pointer-events:none;visibility:hidden";
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(e){vis[e.target._i]=e.intersectionRatio;});
+      var m=-1; for(var k=vis.length-1;k>=0;k--){ if(vis[k]>0){m=k;break;} }
+      var off=m<0?0:Math.max(0,Math.round(innerHeight-Math.min(innerHeight,m*ph+vis[m]*ph)));
+      if(off!==last){last=off; el.style.bottom=off+"px";}
+    },{threshold:[0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1]});
+    for(var q=0;q<n;q++){ var d=document.createElement("div"); d._i=q; d.style.cssText="position:absolute;left:0;width:2px;top:"+(q*ph)+"px;height:"+ph+"px"; wrap.appendChild(d); io.observe(d); }
+    document.body.appendChild(wrap);
+  }
 })();
 
 /* ===== Postaje po višini (?ch=a|b|c) ===== */
