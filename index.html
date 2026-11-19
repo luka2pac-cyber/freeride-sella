@@ -391,6 +391,7 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .st3 .xtra b{color:var(--ice)}
 .st3 .xtra .pwA{background:linear-gradient(135deg,#5ec8f2,#2f6fff);color:#04121c;border:0;border-radius:12px;padding:9px 16px;font-size:1.1rem;white-space:nowrap;animation:pwG 1.8s ease-in-out infinite}
 .st3 .xtra .pwA b{color:#fff;font-size:1.3em}
+.st3 .xtra .pwA small{display:block;text-align:center;font-size:.75em;color:#04121c;opacity:.85;margin-top:2px}
 @keyframes pwG{0%,100%{box-shadow:0 0 10px rgba(94,200,242,.5)}50%{box-shadow:0 0 28px rgba(94,200,242,1)}}
 /* b: due box affiancati */
 .st3.b .cols{display:grid;grid-template-columns:1.6fr 1fr;gap:8px}
@@ -959,7 +960,7 @@ var I18R=[
 [/^sopra (\d+) m/,"above $1 m"],[/^sotto (\d+) m/,"below $1 m"],[/^Nessun bollettino valido oggi \(fuori stagione\?\)\.$/,"No valid bulletin today (off season?)."],
 [/Apertura invernale prevista per (.+?)\./,"Winter opening planned for $1."],[/fonte PromoTurismoFVG/,"source PromoTurismoFVG"],[/: chiuso$/,": closed"],[/: aperto$/,": open"],[/: stato n\.d\.$/,": status n/a"],[/^agg\. /,"upd. "],[/ · agg\. /," · upd. "],
 [/Dalla cresta (\d+) varianti in discesa \(tratteggio corto\) verso il Piano del Prevala\./,"From the ridge, $1 descent variants (short dashes) towards the Prevala plateau."],
-[/^\+(\d+) cm · POWDER!$/,"+$1 cm · POWDER!"],[/^Nuova 24 h $/,"New 24 h "],[/^da (\d+:\d\d)$/,"from $1"],[/^(\d+) linee con video$/,"$1 lines with video"],[/^ – tocca una linea con $/," – tap a line with "],[/^ nell'elenco(.*) per vederla girata\.$/," in the list to watch it on video."],[/^(\d+) video$/,"$1 videos"]
+[/^\+(\d+) cm · POWDER!$/,"+$1 cm · POWDER!"],[/^\(poca base · (\d+) cm\)$/,"(little base · $1 cm)"],[/^Nuova 24 h $/,"New 24 h "],[/^da (\d+:\d\d)$/,"from $1"],[/^(\d+) linee con video$/,"$1 lines with video"],[/^ – tocca una linea con $/," – tap a line with "],[/^ nell'elenco(.*) per vederla girata\.$/," in the list to watch it on video."],[/^(\d+) video$/,"$1 videos"]
 ];
 var IT_DAYS={sabato:"Saturday",domenica:"Sunday",lunedì:"Monday",martedì:"Tuesday",mercoledì:"Wednesday",giovedì:"Thursday",venerdì:"Friday"};
 var IT_MON={gennaio:"January",febbraio:"February",marzo:"March",aprile:"April",maggio:"May",giugno:"June",luglio:"July",agosto:"August",settembre:"September",ottobre:"October",novembre:"November",dicembre:"December"};
@@ -1952,7 +1953,9 @@ loadKanin();
   function pwX(n24){
     var ce=$("chNew"), on=ce&&ce.classList.contains("powder"), cm=(n24.match(/\+?\d+ cm/)||[n24])[0];
     if(!on) return '<div class="xtra"><span>Nuova 24 h <b>'+n24+'</b></span></div>';
-    return '<div class="xtra"><span class="pwA">❄️ POWDER! <b>'+cm+'</b> · 24 h</span></div>';
+    var bs=(typeof DATA!=="undefined"&&DATA&&DATA.snow&&DATA.snow.length)?Math.round(DATA.snow[DATA.snow.length-1].v):null;
+    var low=bs!=null&&bs<50?'<small>(poca base · '+bs+' cm)</small>':'';
+    return '<div class="xtra"><span class="pwA">❄️ POWDER! <b>'+cm+'</b> · 24 h'+low+'</span></div>';
   }
   function draw3(){
     var K=SLO||{}, kS=K.snow!=null?Math.round(K.snow)+" cm":"–", kT=K.t!=null?fix1(K.t)+"°":"–",
