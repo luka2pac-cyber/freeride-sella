@@ -500,7 +500,7 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .rd-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px;font-size:.95rem}.rd-h span{color:var(--muted);font-size:.8rem}
 #rdMap{height:300px;border-radius:12px;overflow:hidden;background:#0d1117}
 .rd-ctl{display:flex;align-items:center;gap:10px;margin:8px 0 2px}.rd-ctl button{background:var(--bg-2);border:1px solid var(--line);color:#fff;border-radius:8px;width:38px;height:32px;font-size:1rem;cursor:pointer}
-.rd-ctl input{flex:1;accent-color:#5ec8f2}.rd-leg{font-size:.72rem;color:var(--muted);white-space:nowrap}.rd-leg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 2px 0 6px;vertical-align:-1px}
+.rd-ctl input{flex:1;accent-color:#5ec8f2}.rd-leg{font-size:.72rem;color:var(--muted);white-space:nowrap}.rd-leg b{display:inline-block;width:28px;height:9px;border-radius:2px;margin:0 3px 0 8px;vertical-align:0}
 .rd-crop{position:relative;width:100%;aspect-ratio:360/260;overflow:hidden;border-radius:12px;background:#fff}
 .rd-crop img{position:absolute;width:228.06%;left:-16.67%;top:-61.5%;image-rendering:pixelated}
 .rd-pin{position:absolute;left:42.2%;top:46.2%;transform:translate(-50%,-100%);font-size:22px;filter:drop-shadow(0 1px 2px #000)}
@@ -748,7 +748,7 @@ footer a{color:var(--ice)}
   <div class="radar" id="radar">
     <div class="rd-h"><b>📡 Radar precipitazioni</b><span id="rdT">–</span></div>
     <div class="rd-a" id="rdA" hidden><div id="rdMap"></div>
-      <div class="rd-ctl"><button id="rdPlay" aria-label="Play/Pausa">⏸</button><input type="range" id="rdSl" min="0" max="0" value="0" aria-label="Ora"><span class="rd-leg"><i style="background:#88ddee"></i>Neve <i style="background:#00a3e0"></i><i style="background:#ffaa00"></i>Pioggia</span></div>
+      <div class="rd-ctl"><button id="rdPlay" aria-label="Play/Pausa">⏸</button><input type="range" id="rdSl" min="0" max="0" value="0" aria-label="Ora"><span class="rd-leg"><b style="background:linear-gradient(90deg,#cfffff,#7fbfff,#2f6fff)"></b>Neve <b style="background:linear-gradient(90deg,#d6c88f,#00a3e0,#ffaa00,#c10000)"></b>Pioggia</span></div>
       <p class="meta">Ultime 2 ore, ogni 10 min · 📍 Sella Nevea · radar © <a href="https://www.rainviewer.com" target="_blank" rel="noopener">RainViewer</a>. In montagna il radar può non vedere le precipitazioni basse (ostacolato dai rilievi).</p></div>
     <div class="rd-b" id="rdB" hidden><div class="rd-crop"><img id="rdGif" alt="Radar ARSO" loading="lazy"><span class="rd-pin" title="Sella Nevea">📍</span></div>
       <p class="meta">Animazione ultima ora · 📍 Sella Nevea · radar © <a href="https://meteo.arso.gov.si/met/sl/weather/observ/radar/" target="_blank" rel="noopener">ARSO</a> (mm/h: blu debole → rosso forte). In montagna il radar può non vedere le precipitazioni basse.</p></div>
@@ -1434,7 +1434,8 @@ function initRadar(){
     $("rdT").textContent=L2("ARSO · ultima ora","ARSO · last hour"); im.onerror=()=>{$("rdT").textContent=L2("non disponibile","not available");}; return; }
   $("rdA").hidden=false;
   const map=L.map("rdMap",{zoomControl:true,attributionControl:true,scrollWheelZoom:false,dragging:!L.Browser.mobile,tap:false}).setView([46.33,13.45],8);
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{maxZoom:10,subdomains:"abcd",attribution:"© OpenStreetMap © CARTO"}).addTo(map);
+  L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",{maxZoom:10,attribution:"Tiles © Esri"}).addTo(map);
+  L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}",{maxZoom:10,zIndex:20,pane:"overlayPane"}).addTo(map);
   L.marker([46.3743,13.4703],{icon:L.divIcon({className:"rdpin",html:"📍",iconSize:[22,22],iconAnchor:[11,22]})}).addTo(map);
   fetch("https://api.rainviewer.com/public/weather-maps.json").then(r=>r.json()).then(j=>{
     const fr=(j.radar&&j.radar.past)||[]; if(!fr.length) throw 0;
