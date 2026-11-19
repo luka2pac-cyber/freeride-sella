@@ -392,14 +392,6 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .st3 .xtra .pwA{background:linear-gradient(135deg,#5ec8f2,#2f6fff);color:#04121c;border:0;border-radius:12px;padding:9px 16px;font-size:1.1rem;white-space:nowrap;animation:pwG 1.8s ease-in-out infinite}
 .st3 .xtra .pwA b{color:#fff;font-size:1.3em}
 @keyframes pwG{0%,100%{box-shadow:0 0 10px rgba(94,200,242,.5)}50%{box-shadow:0 0 28px rgba(94,200,242,1)}}
-.st3 .pwB{display:block;margin-top:8px;border-radius:14px;padding:10px 12px;text-align:center;color:#fff;background:linear-gradient(110deg,#0f3a52 0%,#1f6fb8 40%,#9fe3ff 50%,#1f6fb8 60%,#0f3a52 100%);background-size:250% 100%;animation:pwS 3s linear infinite;border:1px solid #9fe3ff;box-shadow:0 0 22px rgba(94,200,242,.55)}
-.st3 .pwB .t1{font-size:1.5rem;font-weight:800;letter-spacing:.08em;text-shadow:0 2px 6px #0009}
-.st3 .pwB .t2{font-size:.95rem;font-weight:700}.st3 .pwB .t2 b{font-size:1.25em;color:#fff}
-@keyframes pwS{0%{background-position:100% 0}100%{background-position:-150% 0}}
-.st3 .xtra .pwC{border-color:#ff3b3b}
-.st3 .xtra .pwC b{font-size:1.25em}
-.st3 .xtra .pwC i{font-style:normal;display:inline-block;margin-left:8px;background:#e11d1d;color:#fff;border-radius:6px;padding:2px 8px;font-size:.85em;animation:pwR 1.1s ease-in-out infinite}
-@keyframes pwR{0%,100%{opacity:1}50%{opacity:.35}}
 /* b: due box affiancati */
 .st3.b .cols{display:grid;grid-template-columns:1.6fr 1fr;gap:8px}
 .st3.b .grp{margin-top:0}
@@ -1957,12 +1949,9 @@ loadKanin();
     draw3();
   })();
   var txt=function(id){var e=$(id);return e?e.textContent.trim():"–"};
-  var PW=new URLSearchParams(location.search).get("pw")||"a";
   function pwX(n24){
     var ce=$("chNew"), on=ce&&ce.classList.contains("powder"), cm=(n24.match(/\+?\d+ cm/)||[n24])[0];
     if(!on) return '<div class="xtra"><span>Nuova 24 h <b>'+n24+'</b></span></div>';
-    if(PW==="b") return '<div class="pwB"><div class="t1">❄️ POWDER ALERT ❄️</div><div class="t2">Nuova 24 h <b>'+cm+'</b></div></div>';
-    if(PW==="c") return '<div class="xtra"><span class="pwC">Nuova 24 h <b>'+cm+'</b><i>● POWDER</i></span></div>';
     return '<div class="xtra"><span class="pwA">❄️ POWDER! <b>'+cm+'</b> · 24 h</span></div>';
   }
   function draw3(){
