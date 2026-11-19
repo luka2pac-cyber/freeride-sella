@@ -911,6 +911,12 @@ var LANG=(function(){var q=null;try{q=new URLSearchParams(location.search).get("
 var LOC=LANG==="en"?"en-GB":"it-IT";
 document.documentElement.lang=LANG;
 var I18N={
+"Previsioni non disponibili.":"Forecast not available.","Vedi su bergfex":"See on bergfex","Bollettino valanghe FVG ↗":"FVG avalanche bulletin ↗","Corsi":"Courses",
+"(CC BY 4.0) · Bollettino valanghe: AINEVA / Protezione Civile FVG · Kanin SLO:":"(CC BY 4.0) · Avalanche bulletin: AINEVA / FVG Civil Protection · Kanin SLO:","· Previsioni:":"· Forecast:",
+"Ultime 2 ore, ogni 10 min · 📍 Sella Nevea · radar ©":"Last 2 hours, every 10 min · 📍 Sella Nevea · radar ©",
+". In montagna il radar può non vedere le precipitazioni basse (ostacolato dai rilievi).":". In the mountains the radar may miss low precipitation (blocked by the terrain).",
+"Gruppo di un corso freeride a Sella Nevea":"Group on a freeride course in Sella Nevea","Livio Sadoch, maestro di sci":"Livio Sadoch, ski instructor",
+"Lingua":"Language","Play/Pausa":"Play/Pause","Rosa dei venti":"Wind rose","Sezioni":"Sections",
 "Neve":"Snow","Meteo":"Weather","Sicurezza":"Safety","Discese":"Runs","Installa":"Install",
 "La community freeride del Canin":"The Canin freeride community","❄ Neve":"❄ Snow","Nuova 24 h":"New 24 h","In quota":"Up high","A valle":"Valley","Vento km/h":"Wind km/h","Valanghe":"Avalanche",
 "Oggi":"Today","Domani":"Tomorrow","Previsioni 4 giorni · tocca per i dettagli":"4-day forecast · tap for details","Neve live":"Live snow",
@@ -977,7 +983,7 @@ var I18R=[
 [/^sopra (\d+) m/,"above $1 m"],[/^sotto (\d+) m/,"below $1 m"],[/^Nessun bollettino valido oggi \(fuori stagione\?\)\.$/,"No valid bulletin today (off season?)."],
 [/Apertura invernale prevista per (.+?)\./,"Winter opening planned for $1."],[/fonte PromoTurismoFVG/,"source PromoTurismoFVG"],[/: chiuso$/,": closed"],[/: aperto$/,": open"],[/: stato n\.d\.$/,": status n/a"],[/^agg\. /,"upd. "],[/ · agg\. /," · upd. "],
 [/Dalla cresta (\d+) varianti in discesa \(tratteggio corto\) verso il Piano del Prevala\./,"From the ridge, $1 descent variants (short dashes) towards the Prevala plateau."],
-[/^\+(\d+) cm · POWDER!$/,"+$1 cm · POWDER!"],[/^\(poca base · (\d+) cm\)$/,"(little base · $1 cm)"],[/^Nuova 24 h $/,"New 24 h "],[/^da (\d+:\d\d)$/,"from $1"],[/^(\d+) linee con video$/,"$1 lines with video"],[/^ – tocca una linea con $/," – tap a line with "],[/^ nell'elenco(.*) per vederla girata\.$/," in the list to watch it on video."],[/^(\d+) video$/,"$1 videos"]
+[/^\+(\d+) cm · POWDER!$/,"+$1 cm · POWDER!"],[/^\(poca base · (\d+) cm\)$/,"(little base · $1 cm)"],[/^Nuova 24 h $/,"New 24 h "],[/^da (\d+:\d\d)$/,"from $1"],[/^(\d+) linee con video$/,"$1 lines with video"],[/^ ?– tocca una linea con ?$/,"– tap a line with"],[/^ ?nell'elenco o il filtro «Con video» per vederla girata\.$/,"in the list or the «With video» filter to watch it on video."],[/^(\d+) video$/,"$1 videos"]
 ];
 var IT_DAYS={sabato:"Saturday",domenica:"Sunday",lunedì:"Monday",martedì:"Tuesday",mercoledì:"Wednesday",giovedì:"Thursday",venerdì:"Friday"};
 var IT_MON={gennaio:"January",febbraio:"February",marzo:"March",aprile:"April",maggio:"May",giugno:"June",luglio:"July",agosto:"August",settembre:"September",ottobre:"October",novembre:"November",dicembre:"December"};
