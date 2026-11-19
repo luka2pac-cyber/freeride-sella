@@ -389,6 +389,17 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .st3 .xtra{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
 .st3 .xtra span{background:rgba(0,0,0,.6);border:1px solid var(--line);padding:5px 10px;font-weight:700;font-size:.9rem}
 .st3 .xtra b{color:var(--ice)}
+.st3 .xtra .pwA{background:linear-gradient(135deg,#5ec8f2,#2f6fff);color:#04121c;border:0;border-radius:12px;padding:9px 16px;font-size:1.1rem;white-space:nowrap;animation:pwG 1.8s ease-in-out infinite}
+.st3 .xtra .pwA b{color:#fff;font-size:1.3em}
+@keyframes pwG{0%,100%{box-shadow:0 0 10px rgba(94,200,242,.5)}50%{box-shadow:0 0 28px rgba(94,200,242,1)}}
+.st3 .pwB{display:block;margin-top:8px;border-radius:14px;padding:10px 12px;text-align:center;color:#fff;background:linear-gradient(110deg,#0f3a52 0%,#1f6fb8 40%,#9fe3ff 50%,#1f6fb8 60%,#0f3a52 100%);background-size:250% 100%;animation:pwS 3s linear infinite;border:1px solid #9fe3ff;box-shadow:0 0 22px rgba(94,200,242,.55)}
+.st3 .pwB .t1{font-size:1.5rem;font-weight:800;letter-spacing:.08em;text-shadow:0 2px 6px #0009}
+.st3 .pwB .t2{font-size:.95rem;font-weight:700}.st3 .pwB .t2 b{font-size:1.25em;color:#fff}
+@keyframes pwS{0%{background-position:100% 0}100%{background-position:-150% 0}}
+.st3 .xtra .pwC{border-color:#ff3b3b}
+.st3 .xtra .pwC b{font-size:1.25em}
+.st3 .xtra .pwC i{font-style:normal;display:inline-block;margin-left:8px;background:#e11d1d;color:#fff;border-radius:6px;padding:2px 8px;font-size:.85em;animation:pwR 1.1s ease-in-out infinite}
+@keyframes pwR{0%,100%{opacity:1}50%{opacity:.35}}
 /* b: due box affiancati */
 .st3.b .cols{display:grid;grid-template-columns:1.6fr 1fr;gap:8px}
 .st3.b .grp{margin-top:0}
@@ -497,7 +508,7 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .rg li:hover,.rg li.sel{color:var(--ice)}
 .leaflet-container{font-family:var(--body)}
 .radar{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}
-.rd-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:8px;font-size:.95rem}.rd-h span{color:var(--muted);font-size:.8rem}
+.rd-h{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;font-size:.95rem}.rd-h span{background:#ffd34d;color:#0b0b0b;font-weight:800;font-size:1.15rem;padding:4px 12px;border-radius:10px;font-variant-numeric:tabular-nums;white-space:nowrap;box-shadow:0 0 12px rgba(255,211,77,.35)}
 #rdMap{height:300px;border-radius:12px;overflow:hidden;background:#0d1117}
 .rd-ctl{display:flex;align-items:center;gap:10px;margin:8px 0 2px}.rd-ctl button{background:var(--bg-2);border:1px solid var(--line);color:#fff;border-radius:8px;width:38px;height:32px;font-size:1rem;cursor:pointer}
 .rd-ctl input{flex:1;accent-color:#5ec8f2}.rd-leg{font-size:.72rem;color:var(--muted);white-space:nowrap}.rd-leg b{display:inline-block;width:28px;height:9px;border-radius:2px;margin:0 3px 0 8px;vertical-align:0}
@@ -956,7 +967,7 @@ var I18R=[
 [/^sopra (\d+) m/,"above $1 m"],[/^sotto (\d+) m/,"below $1 m"],[/^Nessun bollettino valido oggi \(fuori stagione\?\)\.$/,"No valid bulletin today (off season?)."],
 [/Apertura invernale prevista per (.+?)\./,"Winter opening planned for $1."],[/fonte PromoTurismoFVG/,"source PromoTurismoFVG"],[/: chiuso$/,": closed"],[/: aperto$/,": open"],[/: stato n\.d\.$/,": status n/a"],[/^agg\. /,"upd. "],[/ · agg\. /," · upd. "],
 [/Dalla cresta (\d+) varianti in discesa \(tratteggio corto\) verso il Piano del Prevala\./,"From the ridge, $1 descent variants (short dashes) towards the Prevala plateau."],
-[/^\+(\d+) cm · POWDER!$/,"+$1 cm · POWDER!"],[/^da (\d+:\d\d)$/,"from $1"],[/^(\d+) linee con video$/,"$1 lines with video"],[/^ – tocca una linea con $/," – tap a line with "],[/^ nell'elenco(.*) per vederla girata\.$/," in the list to watch it on video."],[/^(\d+) video$/,"$1 videos"]
+[/^\+(\d+) cm · POWDER!$/,"+$1 cm · POWDER!"],[/^Nuova 24 h $/,"New 24 h "],[/^da (\d+:\d\d)$/,"from $1"],[/^(\d+) linee con video$/,"$1 lines with video"],[/^ – tocca una linea con $/," – tap a line with "],[/^ nell'elenco(.*) per vederla girata\.$/," in the list to watch it on video."],[/^(\d+) video$/,"$1 videos"]
 ];
 var IT_DAYS={sabato:"Saturday",domenica:"Sunday",lunedì:"Monday",martedì:"Tuesday",mercoledì:"Wednesday",giovedì:"Thursday",venerdì:"Friday"};
 var IT_MON={gennaio:"January",febbraio:"February",marzo:"March",aprile:"April",maggio:"May",giugno:"June",luglio:"July",agosto:"August",settembre:"September",ottobre:"October",novembre:"November",dicembre:"December"};
@@ -1946,6 +1957,14 @@ loadKanin();
     draw3();
   })();
   var txt=function(id){var e=$(id);return e?e.textContent.trim():"–"};
+  var PW=new URLSearchParams(location.search).get("pw")||"a";
+  function pwX(n24){
+    var ce=$("chNew"), on=ce&&ce.classList.contains("powder"), cm=(n24.match(/\+?\d+ cm/)||[n24])[0];
+    if(!on) return '<div class="xtra"><span>Nuova 24 h <b>'+n24+'</b></span></div>';
+    if(PW==="b") return '<div class="pwB"><div class="t1">❄️ POWDER ALERT ❄️</div><div class="t2">Nuova 24 h <b>'+cm+'</b></div></div>';
+    if(PW==="c") return '<div class="xtra"><span class="pwC">Nuova 24 h <b>'+cm+'</b><i>● POWDER</i></span></div>';
+    return '<div class="xtra"><span class="pwA">❄️ POWDER! <b>'+cm+'</b> · 24 h</span></div>';
+  }
   function draw3(){
     var K=SLO||{}, kS=K.snow!=null?Math.round(K.snow)+" cm":"–", kT=K.t!=null?fix1(K.t)+"°":"–",
         AR=function(d){return d==null?"":'<i class="wa" style="transform:rotate('+Math.round((d+180)%360)+'deg)" aria-hidden="true">↑</i>'},
@@ -1955,9 +1974,9 @@ loadKanin();
     var I1=v==="c"?"":"❄ ",I2=v==="c"?"":"🌡 ",I3=v==="c"?"":"💨 ";var R=function(e,nm,sub,sn,t,w){return '<div class="row">'+(v==="c"?'<span class="e">'+e+'</span>':'')+'<span class="nm">'+nm+'<small>'+sub+'</small></span><span class="v">'+I1+'<b>'+sn+'</b></span><span class="v t">'+I2+'<b>'+t+'</b></span>'+(w!==undefined?'<span class="v w">'+I3+'<b>'+w+'</b></span>':(v==="b"?'':'<span class="v w"></span>'))+'</div>'};
     var r1=R("🏔️","Kanin SLO","2260 m",kS,kT,kW), r2=R("⛰️","Canin IT","1837 m",lS,lT,lW+(lW!=="–"?AR(ldd):"")), r3=R("🌲","Sella Nevea","1180 m",vS,vT);
     var x='<div class="xtra"><span>Nuova 24 h <b>'+n24+'</b></span><span>💨 km/h · 1837 m</span></div>';
-    if(v==="a") box.innerHTML='<div class="grp"><div class="gh"><span class="e">⛰️</span>In quota</div>'+r1+r2+'</div><div class="grp"><div class="gh"><span class="e">🌲</span>A valle</div>'+r3+'</div><div class="xtra"><span>Nuova 24 h <b>'+n24+'</b></span></div>';
-    else if(v==="b") box.innerHTML='<div class="cols"><div class="grp"><div class="gh"><span class="e">⛰️</span>In quota</div>'+r1+r2+'</div><div class="grp"><div class="gh"><span class="e">🌲</span>A valle</div>'+r3+'</div></div><div class="xtra"><span>Nuova 24 h <b>'+n24+'</b></span></div>';
-    else box.innerHTML='<div class="grp"><div class="hd"><span></span><span>Neve</span><span>Temp.</span><span>Vento km/h</span></div>'+r1+r2+'<div class="sep"></div>'+r3.replace('class="row"','class="row" style="border-top:0"')+'</div><div class="xtra"><span>Nuova 24 h <b>'+n24+'</b></span></div>';
+    if(v==="a") box.innerHTML='<div class="grp"><div class="gh"><span class="e">⛰️</span>In quota</div>'+r1+r2+'</div><div class="grp"><div class="gh"><span class="e">🌲</span>A valle</div>'+r3+'</div>'+pwX(n24);
+    else if(v==="b") box.innerHTML='<div class="cols"><div class="grp"><div class="gh"><span class="e">⛰️</span>In quota</div>'+r1+r2+'</div><div class="grp"><div class="gh"><span class="e">🌲</span>A valle</div>'+r3+'</div></div>'+pwX(n24);
+    else box.innerHTML='<div class="grp"><div class="hd"><span></span><span>Neve</span><span>Temp.</span><span>Vento km/h</span></div>'+r1+r2+'<div class="sep"></div>'+r3.replace('class="row"','class="row" style="border-top:0"')+'</div>'+pwX(n24);
   }
   new MutationObserver(function(){clearTimeout(draw3.t);draw3.t=setTimeout(draw3,150)}).observe(chips,{subtree:true,childList:true,characterData:true});
   setTimeout(draw3,3000);
