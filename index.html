@@ -501,9 +501,6 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 #rdMap{height:300px;border-radius:12px;overflow:hidden;background:#0d1117}
 .rd-ctl{display:flex;align-items:center;gap:10px;margin:8px 0 2px}.rd-ctl button{background:var(--bg-2);border:1px solid var(--line);color:#fff;border-radius:8px;width:38px;height:32px;font-size:1rem;cursor:pointer}
 .rd-ctl input{flex:1;accent-color:#5ec8f2}.rd-leg{font-size:.72rem;color:var(--muted);white-space:nowrap}.rd-leg b{display:inline-block;width:28px;height:9px;border-radius:2px;margin:0 3px 0 8px;vertical-align:0}
-.rd-crop{position:relative;width:100%;aspect-ratio:360/260;overflow:hidden;border-radius:12px;background:#fff}
-.rd-crop img{position:absolute;max-width:none;height:auto;width:228.06%;left:-16.67%;top:-61.5%;image-rendering:pixelated}
-.rd-pin{position:absolute;left:42.2%;top:46.2%;transform:translate(-50%,-100%);font-size:22px;filter:drop-shadow(0 1px 2px #000)}
 .rdpin{font-size:22px;line-height:1;filter:drop-shadow(0 1px 2px #000)}
 .pin{width:22px;height:22px;border-radius:50%;border:2px solid #fff;display:flex;align-items:center;justify-content:center;font:700 11px/1 var(--body);color:#fff;box-shadow:0 1px 4px #0008}
 .pin.end{border-radius:3px;background:#111!important}
@@ -747,11 +744,9 @@ footer a{color:var(--ice)}
   </div>
   <div class="radar" id="radar">
     <div class="rd-h"><b>📡 Radar precipitazioni</b><span id="rdT">–</span></div>
-    <div class="rd-a" id="rdA" hidden><div id="rdMap"></div>
+    <div class="rd-a" id="rdA"><div id="rdMap"></div>
       <div class="rd-ctl"><button id="rdPlay" aria-label="Play/Pausa">⏸</button><input type="range" id="rdSl" min="0" max="0" value="0" aria-label="Ora"><span class="rd-leg"><b style="background:linear-gradient(90deg,#cfffff,#7fbfff,#2f6fff)"></b>Neve <b style="background:linear-gradient(90deg,#d6c88f,#00a3e0,#ffaa00,#c10000)"></b>Pioggia</span></div>
       <p class="meta">Ultime 2 ore, ogni 10 min · 📍 Sella Nevea · radar © <a href="https://www.rainviewer.com" target="_blank" rel="noopener">RainViewer</a>. In montagna il radar può non vedere le precipitazioni basse (ostacolato dai rilievi).</p></div>
-    <div class="rd-b" id="rdB" hidden><div class="rd-crop"><img id="rdGif" alt="Radar ARSO" loading="lazy"><span class="rd-pin" title="Sella Nevea">📍</span></div>
-      <p class="meta">Animazione ultima ora · 📍 Sella Nevea · radar © <a href="https://meteo.arso.gov.si/met/sl/weather/observ/radar/" target="_blank" rel="noopener">ARSO</a> (mm/h: blu debole → rosso forte). In montagna il radar può non vedere le precipitazioni basse.</p></div>
   </div>
 </section>
 
@@ -1426,13 +1421,9 @@ function applyEns(j,e){
   const nt=$("fcNote"); if(nt) nt.textContent=L2(`Neve e precipitazioni: modello ECMWF (se manca: mediana dei modelli), quota 1837 m; sotto il valore ↕ l'intervallo min–max di ${models.length} modelli (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}). Vento, sole e temperatura: Open-Meteo best match. Stima indicativa.`,`Snow and precipitation: ECMWF model (if missing: median of the models), elevation 1837 m; below the value ↕ the min–max range of ${models.length} models (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}). Wind, sun and temperature: Open-Meteo best match. Indicative estimate.`);
 }
 function ensRg(j,i){ const x=j&&j.ens&&j.ens.days[i]; if(!x) return ""; const a=Math.round(x.min),b=Math.round(x.max); return a===b?"":`${a}–${b} cm`; }
-// Radar: ?rd=a RainViewer (privzeto), ?rd=b ARSO
-const RDV=new URLSearchParams(location.search).get("rd")==="b"?"b":"a";
+// Radar padavin: RainViewer (Luka izbral A, 19. 11. 2026)
 function initRadar(){
   const tFmt=d=>d.toLocaleTimeString(LOC,{hour:"2-digit",minute:"2-digit",timeZone:"Europe/Rome"});
-  if(RDV==="b"){ $("rdB").hidden=false; const im=$("rdGif"); im.src="https://meteo.arso.gov.si/uploads/probase/www/observ/radar/si0-rm-anim.gif?t="+Math.floor(Date.now()/3e5);
-    $("rdT").textContent=L2("ARSO · ultima ora","ARSO · last hour"); im.onerror=()=>{$("rdT").textContent=L2("non disponibile","not available");}; return; }
-  $("rdA").hidden=false;
   const map=L.map("rdMap",{zoomControl:true,attributionControl:true,scrollWheelZoom:false,dragging:!L.Browser.mobile,tap:false}).setView([46.33,13.45],8);
   L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",{maxZoom:10,attribution:"Tiles © Esri"}).addTo(map);
   L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}",{maxZoom:10,zIndex:20,pane:"overlayPane"}).addTo(map);
