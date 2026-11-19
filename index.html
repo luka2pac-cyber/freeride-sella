@@ -1001,7 +1001,8 @@ function trNode(root){
   var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),n,list=[];
   while(n=w.nextNode()){var p=n.parentElement;if(p&&!p.closest("script,style"))list.push(n);}
   list.forEach(function(t){var v=tr(t.nodeValue);if(v!==t.nodeValue)t.nodeValue=v;});
-  var els=root.querySelectorAll?root.querySelectorAll("[aria-label],[title],[alt]"):[];
+  var els=root.querySelectorAll?Array.prototype.slice.call(root.querySelectorAll("[aria-label],[title],[alt]")):[];
+  if(root.nodeType===1&&root!==document.body)els.push(root);
   Array.prototype.forEach.call(els,function(e){["aria-label","title","alt"].forEach(function(a){var v=e.getAttribute(a);if(v){var t=tr(v);if(t!==v)e.setAttribute(a,t);}});});
 }
 function setLang(l){window.frSetLang(l);}
