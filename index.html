@@ -604,6 +604,13 @@ footer a{color:var(--ice)}
 .lbz{position:absolute;right:14px;top:64px;z-index:2;display:flex;flex-direction:column;gap:8px}
 .lbz button{background:rgba(40,40,40,.85);color:#fff;border:0;font:600 22px/1 var(--body,sans-serif);width:42px;height:42px;border-radius:50%;cursor:pointer}
 .lbz button:hover,.lb .lbx:hover{background:rgba(80,80,80,.95)}
+.lbz button,.lb .lbx{width:48px;height:48px;font-weight:700;box-shadow:0 2px 10px rgba(0,0,0,.6);transition:transform .15s}
+.lbz{top:70px}.lbz button:active,.lb .lbx:active{transform:scale(.92)}
+.zb-a .lbz button{background:var(--ice-deep);color:#fff;border:2px solid #fff}.zb-a .lbz button:hover{background:var(--ice)}
+.zb-a .lb .lbx{background:#fff;color:#111}
+.zb-b .lbz button,.zb-b .lb .lbx{background:#fff;color:#111;border:0}.zb-b .lbz button:hover,.zb-b .lb .lbx:hover{background:#ddd}
+.zb-c .lbz button{background:var(--red);color:#fff;border:2px solid #fff}.zb-c .lbz button:hover{background:#ff3b42}
+.zb-c .lb .lbx{background:#fff;color:#111}
 .ihelp{background:rgba(0,0,0,.7);align-items:flex-end;justify-content:center}
 .ihelp>div{background:var(--bg-3);border-top:4px solid var(--ice);padding:20px 20px 30px;max-width:480px;width:100%}
 .ihelp h3{font-family:var(--display);font-weight:700;letter-spacing:.05em;font-size:1.4rem;margin-bottom:8px}
@@ -1174,6 +1181,7 @@ function initStatic(){
   });
   lbZoom.init();
   document.documentElement.classList.add("vh-"+VH);
+  document.documentElement.classList.add("zb-"+((new URLSearchParams(location.search).get("zb")||"a").replace(/[^abc]/g,"")||"a"));
   { const vr=CONFIG.routes.filter(r=>r.vids);
     $("vcall").innerHTML=`<span class="ic">▶</span><span><b>${vr.length} linee con video</b> – tocca una linea con <b style="color:#ff6b6b">▶ VIDEO</b> nell'elenco o il filtro «Con video» per vederla girata.</span>`;
   }
