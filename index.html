@@ -446,9 +446,10 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .err{display:none;background:#2a1414;border-left:4px solid var(--red);padding:12px 14px;margin-bottom:14px}
 .err a{color:var(--ice)}
 
-.gal{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin-bottom:24px;scrollbar-color:#444 transparent}
-.gal figure{flex:0 0 min(80%,440px);margin:0;scroll-snap-align:start;background:var(--bg-2);border:1px solid var(--line);cursor:zoom-in;overflow:hidden}
-.gal img{width:100%;height:240px;object-fit:cover;display:block;transition:transform .4s}
+.gal{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px}
+.gal figure{margin:0;background:var(--bg-2);border:1px solid var(--line);border-radius:12px;cursor:zoom-in;overflow:hidden;min-width:0}
+.gal img{width:100%;aspect-ratio:4/3;height:auto;object-fit:cover;display:block;transition:transform .4s}
+@media(max-width:600px){.gal{gap:10px}.gal img{aspect-ratio:1/1}.gal figcaption{padding:8px 9px}.gal figcaption b{font-size:.8rem;line-height:1.2}.gal figcaption span{font-size:.68rem;display:block;line-height:1.35;margin-top:3px}}
 .gal figure:hover img{transform:scale(1.05)}
 .gal figcaption{padding:10px 12px}
 .gal figcaption b{display:block;font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
@@ -593,9 +594,16 @@ footer a{color:var(--ice)}
 .lb,.ihelp{position:fixed;inset:0;z-index:2000;display:none}
 .lb{background:rgba(0,0,0,.94);flex-direction:column;align-items:center;justify-content:center;padding:14px}
 .lb.on,.ihelp.on{display:flex}
-.lb img{max-width:100%;max-height:86vh;object-fit:contain}
-.lb p{color:#bbb;font-size:.8rem;margin-top:8px;text-align:center}
-.lb button{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.15);color:#fff;border:0;font-size:22px;width:42px;height:42px;border-radius:50%;cursor:pointer}
+.lb{padding:0}
+.lbs{position:relative;flex:1;width:100%;min-height:0;overflow:hidden;touch-action:none;display:flex;align-items:center;justify-content:center;cursor:zoom-in}
+.lbs.z{cursor:grab}.lbs.z.dr{cursor:grabbing}
+.lb img{max-width:100%;max-height:100%;object-fit:contain;transform-origin:0 0;user-select:none;-webkit-user-select:none;-webkit-user-drag:none;will-change:transform}
+.lb p{color:#bbb;font-size:.8rem;margin:0;padding:6px 12px 10px;text-align:center}
+.lb p small{display:block;color:#888;font-size:.72rem;margin-top:3px}
+.lb .lbx{position:absolute;top:12px;right:14px;z-index:2;background:rgba(40,40,40,.85);color:#fff;border:0;font-size:22px;width:42px;height:42px;border-radius:50%;cursor:pointer}
+.lbz{position:absolute;right:14px;top:64px;z-index:2;display:flex;flex-direction:column;gap:8px}
+.lbz button{background:rgba(40,40,40,.85);color:#fff;border:0;font:600 22px/1 var(--body,sans-serif);width:42px;height:42px;border-radius:50%;cursor:pointer}
+.lbz button:hover,.lb .lbx:hover{background:rgba(80,80,80,.95)}
 .ihelp{background:rgba(0,0,0,.7);align-items:flex-end;justify-content:center}
 .ihelp>div{background:var(--bg-3);border-top:4px solid var(--ice);padding:20px 20px 30px;max-width:480px;width:100%}
 .ihelp h3{font-family:var(--display);font-weight:700;letter-spacing:.05em;font-size:1.4rem;margin-bottom:8px}
@@ -902,7 +910,7 @@ footer a{color:var(--ice)}
 
 <footer><div class="wrap" id="foot"></div></footer>
 
-<div class="lb" id="lb"><button aria-label="Chiudi">✕</button><img alt=""><p></p></div>
+<div class="lb" id="lb"><button class="lbx" aria-label="Chiudi">✕</button><div class="lbz"><button data-z="1" aria-label="Ingrandisci">+</button><button data-z="-1" aria-label="Riduci">−</button><button data-z="0" aria-label="Adatta">⟲</button></div><div class="lbs"><img alt="" draggable="false"></div><p></p></div>
 <div class="ihelp" id="ihelp"><div>
   <h3>Aggiungi alla schermata Home</h3>
   <ol id="ihelpSteps"></ol>
@@ -957,6 +965,7 @@ var I18N={
 "Prima parte come la Livinallunc Classica, poi traverso verso la mulattiera del Poviz e giù lungo la mulattiera fino a Sella Nevea.":"First part as the Livinallunc Classica, then traverse to the Poviz mule track and down along the track to Sella Nevea.",
 "● cerchio = partenza · ■ quadrato = arrivo · numero sul tracciato. Valori approssimativi, tracciato non preciso.":"● circle = start · ■ square = finish · number on the track. Approximate values, track not precise.",
 "Le linee in video":"The lines on video","Cartelli e panorami":"Signs and panoramas",
+"Rotellina o + / − per ingrandire · clic per zoom · trascina per spostare":"Mouse wheel or + / − to zoom · click to zoom · drag to move","Pizzica o tocca per ingrandire · trascina per spostare":"Pinch or tap to zoom · drag to move","Ingrandisci":"Zoom in","Riduci":"Zoom out","Adatta":"Fit",
 "Cartello ufficiale con pendenze (sul cartello n. 1–5 = qui n. 2–6, n. 6–11 = qui n. 8–13)":"Official sign with slopes (on the sign no. 1–5 = here no. 2–6, no. 6–11 = here no. 8–13)",
 "Fonte: cartello ufficiale freeride Sella Nevea, cartografia © Casa Editrice Tabacco":"Source: official Sella Nevea freeride sign, cartography © Casa Editrice Tabacco",
 "Mappa topografica Golovec e Forato":"Topographic map Golovec and Forato","Fonte: cartello ufficiale freeride Sella Nevea":"Source: official Sella Nevea freeride sign",
@@ -1056,10 +1065,10 @@ const CONFIG = {
     page: "https://www.protezionecivile.fvg.it/it/bollettino-valanghe"
   },
   gallery: [
-    { src:"mappa-discese.jpg", t:"Cartello ufficiale con pendenze (sul cartello n. 1–5 = qui n. 2–6, n. 6–11 = qui n. 8–13)", credit:"Fonte: cartello ufficiale freeride Sella Nevea, cartografia © Casa Editrice Tabacco" },
-    { src:"mappa-topo.jpg", t:"Mappa topografica Golovec e Forato", credit:"Fonte: cartello ufficiale freeride Sella Nevea" },
-    { src:"panorama.jpg", t:"Panorama – lato Montasio", credit:"Fonte: sellaneveaparco.it" },
-    { src:"panorama2.jpg", t:"Panorama – lato Canin", credit:"Fonte: TurismoFVG.it" }
+    { src:"map-cartello.jpg", t:"Cartello ufficiale con pendenze (sul cartello n. 1–5 = qui n. 2–6, n. 6–11 = qui n. 8–13)", credit:"Fonte: cartello ufficiale freeride Sella Nevea, cartografia © Casa Editrice Tabacco" },
+    { src:"map-topo.jpg", t:"Mappa topografica Golovec e Forato", credit:"Fonte: cartello ufficiale freeride Sella Nevea" },
+    { src:"map-montasio.jpg", t:"Panorama – lato Montasio", credit:"Fonte: sellaneveaparco.it" },
+    { src:"map-canin.jpg", t:"Panorama – lato Canin", credit:"Fonte: TurismoFVG.it" }
   ],
   // difficoltà: 1 facile, 2 media, 3 medio-difficile · geo: tracciati indicativi (non precisi)
   routes: [
@@ -1118,6 +1127,38 @@ const ICON = {
   Instagram:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>'
 };
 
+const lbZoom={s:1,x:0,y:0,P:new Map(),
+  init(){const L=$("lb"),S=L.querySelector(".lbs"),I=S.querySelector("img");this.L=L;this.S=S;this.I=I;
+    const close=()=>{L.classList.remove("on")};
+    L.querySelector(".lbx").onclick=close;
+    L.querySelectorAll(".lbz button").forEach(b=>b.onclick=e=>{e.stopPropagation();const z=+b.dataset.z,r=S.getBoundingClientRect(),c=[r.left+r.width/2,r.top+r.height/2];z?this.zoomAt(this.s*(z>0?1.6:1/1.6),c):this.reset()});
+    L.addEventListener("click",e=>{if(e.target===L||e.target.tagName==="P")close()});
+    addEventListener("keydown",e=>{if(!L.classList.contains("on"))return;if(e.key==="Escape")close();else if(e.key==="+"||e.key==="=")L.querySelector('[data-z="1"]').click();else if(e.key==="-")L.querySelector('[data-z="-1"]').click();else if(e.key==="0")this.reset()});
+    I.addEventListener("load",()=>this.reset());addEventListener("resize",()=>this.on()&&this.reset());
+    S.addEventListener("wheel",e=>{e.preventDefault();this.zoomAt(this.s*Math.exp(-Math.max(-60,Math.min(60,e.deltaY*(e.deltaMode?30:1)))*.006),[e.clientX,e.clientY])},{passive:false});
+    S.addEventListener("pointerdown",e=>{S.setPointerCapture(e.pointerId);this.P.set(e.pointerId,[e.clientX,e.clientY]);this.mv=0;this.st=this.snap();S.classList.add("dr")});
+    S.addEventListener("pointermove",e=>{if(!this.P.has(e.pointerId))return;this.P.set(e.pointerId,[e.clientX,e.clientY]);const st=this.st,p=[...this.P.values()];
+      if(p.length>=2&&st.p.length>=2){const d=Math.hypot(p[0][0]-p[1][0],p[0][1]-p[1][1]),m=[(p[0][0]+p[1][0])/2,(p[0][1]+p[1][1])/2];
+        const ns=this.cl(st.s*d/(st.d||1)),o=this.org(),k=ns/st.s;this.s=ns;this.x=m[0]-o[0]-(st.m[0]-o[0]-st.x)*k;this.y=m[1]-o[1]-(st.m[1]-o[1]-st.y)*k;this.mv=9;this.apply()}
+      else if(p.length===1&&st.p.length===1){const dx=p[0][0]-st.p[0][0],dy=p[0][1]-st.p[0][1];if(Math.abs(dx)+Math.abs(dy)>4)this.mv=Math.max(this.mv,5);if(this.s>1){this.x=st.x+dx;this.y=st.y+dy;this.apply()}}});
+    const up=e=>{if(!this.P.has(e.pointerId))return;const single=this.P.size===1&&this.st.p.length===1;this.P.delete(e.pointerId);
+      if(single&&this.mv<5&&e.type==="pointerup")this.s>1.05?this.reset():this.zoomAt(2.5,[e.clientX,e.clientY]);
+      this.st=this.snap();if(!this.P.size)S.classList.remove("dr")};
+    S.addEventListener("pointerup",up);S.addEventListener("pointercancel",up);
+  },
+  on(){return this.L.classList.contains("on")},
+  snap(){const p=[...this.P.values()];return{p,s:this.s,x:this.x,y:this.y,d:p.length>1?Math.hypot(p[0][0]-p[1][0],p[0][1]-p[1][1]):0,m:p.length>1?[(p[0][0]+p[1][0])/2,(p[0][1]+p[1][1])/2]:null}},
+  open(src){this.I.src=src;this.reset()},
+  max(){const w=this.I.clientWidth||1;return Math.max(4,(this.I.naturalWidth||w)/w*2.5)},
+  cl(s){return Math.max(1,Math.min(this.max(),s))},
+  org(){const r=this.S.getBoundingClientRect();return[r.left+this.I.offsetLeft,r.top+this.I.offsetTop]},
+  zoomAt(ns,c){ns=this.cl(ns);const o=this.org(),k=ns/this.s;this.x=c[0]-o[0]-(c[0]-o[0]-this.x)*k;this.y=c[1]-o[1]-(c[1]-o[1]-this.y)*k;this.s=ns;this.apply()},
+  reset(){this.s=1;this.x=this.y=0;this.apply()},
+  apply(){const I=this.I,S=this.S,W=S.clientWidth,H=S.clientHeight,w=I.clientWidth*this.s,h=I.clientHeight*this.s,ol=I.offsetLeft,ot=I.offsetTop;
+    this.x=w<=W?(W-w)/2-ol:Math.min(-ol,Math.max(W-ol-w,this.x));this.y=h<=H?(H-h)/2-ot:Math.min(-ot,Math.max(H-ot-h,this.y));
+    if(this.s<=1.001){this.x=this.y=0}
+    I.style.transform=`translate(${this.x}px,${this.y}px) scale(${this.s})`;S.classList.toggle("z",this.s>1.001)}
+};
 function initStatic(){
   $("tagline").textContent = CONFIG.tagline;
   $("logo2h").src = CONFIG.logo2; $("logo").src = "logo-hero.png"; document.querySelector(".hero h1 .emt").prepend($("logo")); $("tlogo").src = $("clogo").src = CONFIG.logo;
@@ -1127,9 +1168,11 @@ function initStatic(){
     `<figure data-i="${i}"><img src="${g.src}" alt="${g.t}" loading="lazy"><figcaption><b>${g.t}</b><span>${g.credit}</span></figcaption></figure>`).join("");
   $("gallery").addEventListener("click",e=>{
     const f=e.target.closest("figure"); if(!f) return; const g=CONFIG.gallery[+f.dataset.i];
-    const lb=$("lb"); lb.querySelector("img").src=g.src; lb.querySelector("p").textContent=g.t+" · "+g.credit; lb.classList.add("on");
+    const lb=$("lb"); lbZoom.open(g.src);
+    lb.querySelector("p").innerHTML=`${g.t} · ${g.credit}<small>${matchMedia("(hover:hover) and (pointer:fine)").matches?"Rotellina o + / − per ingrandire · clic per zoom · trascina per spostare":"Pizzica o tocca per ingrandire · trascina per spostare"}</small>`;
+    lb.classList.add("on");
   });
-  $("lb").addEventListener("click",()=>$("lb").classList.remove("on"));
+  lbZoom.init();
   document.documentElement.classList.add("vh-"+VH);
   { const vr=CONFIG.routes.filter(r=>r.vids);
     $("vcall").innerHTML=`<span class="ic">▶</span><span><b>${vr.length} linee con video</b> – tocca una linea con <b style="color:#ff6b6b">▶ VIDEO</b> nell'elenco o il filtro «Con video» per vederla girata.</span>`;
