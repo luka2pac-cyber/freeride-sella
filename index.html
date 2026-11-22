@@ -1547,6 +1547,7 @@ function fcShow(){
   $("fcEb").textContent=FALT==="low"?L2("Previsioni paese · 1180 m","Forecast village · 1180 m"):L2("Previsioni a 1800 m","Forecast at 1800 m");
   document.querySelectorAll("#fcAlt button").forEach(b=>b.classList.toggle("on",b.dataset.a===FALT));
   if(!FC) return;
+  if(FCV==="new"){ $("days").hidden=true; $("fstrip").hidden=false; }
   const tot=fcTotal(FC); $("fcTot").innerHTML=L2("Neve prevista prossimi 3 giorni","Expected snow next 3 days")+`: <b>${tot>0&&tot<1?"&lt;1":Math.round(tot)} cm</b>`;
   const nt=$("fcNote"); if(nt&&FC.ensNote) nt.textContent=FC.ensNote;
   FSEL=-1; if(FCV==="new") renderStrip(); renderHours();
