@@ -1523,10 +1523,13 @@ function applyEns(j,e,elv){
   const H=e.hourly, d=j.daily, h=j.hourly;
   const models=Object.keys(CONFIG.forecast.ensNames).filter(m=>(H["precipitation_"+m]||[]).some(v=>v!=null)&&(H["temperature_2m_"+m]||[]).some(v=>v!=null));
   if(models.length<2) return;
+  // paese: limite neve ≈ 300 m sotto lo zero termico (fascia di transizione ±150 m) → sotto la quota neve piove anche se T modello ≈ 0 °C (Luka 22. 11.)
+  const FZ={}; if(elv<1837&&h.freezing_level_height) h.time.forEach((t,k)=>FZ[t]=h.freezing_level_height[k]);
+  const fzFrac=t=>{const z=FZ[t]; return z==null?1:Math.max(0,Math.min(1,(elv-(z-450))/300));};
   const idxE={}; H.time.forEach((t,k)=>idxE[t]=k);
   const per={}; // per model: per hour {p,s,smm}
   models.forEach(m=>{ const P=H["precipitation_"+m], T=H["temperature_2m_"+m];
-    per[m]=H.time.map((t,k)=>{ if(P[k]==null||T[k]==null) return null; const smm=P[k]*snowFrac(T[k]); return {p:P[k],smm,s:smm*snowRatio(T[k])}; }); });
+    per[m]=H.time.map((t,k)=>{ if(P[k]==null||T[k]==null) return null; const smm=P[k]*Math.min(snowFrac(T[k]),fzFrac(t)); return {p:P[k],smm,s:smm*snowRatio(T[k])}; }); });
   const days=[]; const sn=[],pr=[],rn=[];
   d.time.forEach((day,i)=>{
     const ks=H.time.map((t,k)=>t.startsWith(day)?k:-1).filter(k=>k>=0);
@@ -1591,9 +1594,10 @@ function fcShow(){
 async function fcSetAlt(a){
   FALT=a; if(a==="top"){ FC=FCTOP; fcShow(); return; }
   if(!FCLOW){ fcShow(); try{ const [j,e]=await Promise.all([fetch(fcLowUrl(CONFIG.forecast.url)).then(r=>r.json()),fetch(fcLowUrl(CONFIG.forecast.ens)).then(r=>r.ok?r.json():null).catch(()=>null)]);
-      if(!j.daily) throw 0; try{ applyEns(j,e,CONFIG.forecast.low.elev); }catch(x){ console.error(x); }
+      if(!j.daily) throw 0;
       // quota 0 °C = proprietà dell'atmosfera, uguale per Canin e paese → prendila dalla previsione di Canin (Luka 22. 11.)
       if(FCTOP&&FCTOP.hourly){ const T={}; FCTOP.hourly.time.forEach((t,k)=>T[t]=FCTOP.hourly.freezing_level_height[k]); j.hourly.freezing_level_height=j.hourly.time.map((t,k)=>T[t]!=null?T[t]:j.hourly.freezing_level_height[k]); }
+      try{ applyEns(j,e,CONFIG.forecast.low.elev); }catch(x){ console.error(x); }
       FCLOW=j; }
     catch(x){ console.error(x); FALT="top"; FC=FCTOP; fcShow(); $("fcTot").insertAdjacentHTML("beforeend",` <small style="color:#ff9e3d">${L2("Previsioni paese non disponibili","Village forecast unavailable")}</small>`); return; } }
   if(FALT==="low"){ FC=FCLOW; fcShow(); }
