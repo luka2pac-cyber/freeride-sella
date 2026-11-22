@@ -194,6 +194,7 @@ html{overflow-x:clip}
 .slo{margin-top:16px;padding:14px 18px;border:1px solid rgba(94,200,242,.45);border-left:4px solid var(--ice);background:linear-gradient(90deg,rgba(94,200,242,.12),rgba(94,200,242,.02));display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;font-size:1rem}
 .slo .big{font-family:var(--display);font-weight:700;font-size:1.6rem;color:#fff;line-height:1}
 .charts.four{grid-template-columns:repeat(2,1fr)}
+.stlow #chWindBox,.stlow #dirBox,.stlow #sloChartBox{display:none!important}@media(min-width:901px){.stlow .charts{grid-template-columns:repeat(2,1fr)}}
 
 .sloMini{margin:8px 0 0;font-size:.85rem;color:var(--muted)}
 .sloMini b{color:#fff;font-weight:600}
@@ -424,7 +425,7 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .toggle{display:inline-flex;border:1px solid var(--line);margin-bottom:14px}
 .toggle button{border:0;background:none;color:var(--muted);padding:7px 16px;font-family:var(--display);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.95rem;cursor:pointer}
 .toggle button.on{background:var(--ice-deep);color:#fff}
-.fcalt{display:flex;width:max-content;max-width:100%;margin:0 auto 12px}.fcalt button{text-transform:none;letter-spacing:.02em;padding:6px 12px}
+.fcalt{display:flex;width:max-content;max-width:100%;margin:0 auto 12px}.fcalt button{text-transform:none;letter-spacing:.02em;padding:6px 12px;white-space:nowrap}
 .charts{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .chart{background:var(--bg-2);border:1px solid var(--line);padding:16px}
 .chart h3{font-family:var(--display);font-weight:700;font-size:1.1rem;letter-spacing:.06em;margin-bottom:8px}
@@ -752,14 +753,15 @@ footer a{color:var(--ice)}
   <div class="head">
     <span class="eyebrow">Dati live</span>
     <h2 class="title">Neve, temperatura e vento</h2>
-    <p class="intro">Stazione automatica della Protezione Civile FVG al Livinal Lunc (1837 m), versante nord del Canin sopra il Rif. Gilberti. Dati ogni 15 minuti, non validati.</p>
+    <p class="intro" id="stIntro">Stazione automatica della Protezione Civile FVG al Livinal Lunc (1837 m), versante nord del Canin sopra il Rif. Gilberti. Dati ogni 15 minuti, non validati.</p>
   </div>
   <div class="err" id="err">Non riesco a caricare i dati in diretta. Guardali sul sito della Protezione Civile: <a id="errlink" target="_blank" rel="noopener">Livinal Lunc</a></div>
+  <div class="toggle fcalt" id="stAlt"><button data-a="top" class="on">📡 Canin 1837 m</button><button data-a="low">🌲 Paese 1180 m</button></div>
   <div class="toggle" id="range"><button data-h="24" class="on">24 ore</button><button data-h="48">48 ore</button></div>
   <div class="charts">
     <div class="chart"><h3>Altezza neve · cm</h3><div class="box"><canvas id="chSnow"></canvas></div><p class="sloMini">Livinal Lunc 1837 m · <a href="https://monitor.protezionecivile.fvg.it/misure/541/23" target="_blank" rel="noopener">PC FVG ↗</a></p></div>
     <div class="chart"><h3>Temperatura · °C</h3><div class="box"><canvas id="chTemp"></canvas></div><p class="sloMini">Livinal Lunc 1837 m · <a href="https://monitor.protezionecivile.fvg.it/misure/541/2" target="_blank" rel="noopener">PC FVG ↗</a></p></div>
-    <div class="chart"><h3>Vento e raffiche · km/h</h3><div class="box"><canvas id="chWind"></canvas></div><p class="sloMini">Livinal Lunc 1837 m · <a href="https://monitor.protezionecivile.fvg.it/misure/541/6" target="_blank" rel="noopener">PC FVG ↗</a></p></div>
+    <div class="chart" id="chWindBox"><h3>Vento e raffiche · km/h</h3><div class="box"><canvas id="chWind"></canvas></div><p class="sloMini">Livinal Lunc 1837 m · <a href="https://monitor.protezionecivile.fvg.it/misure/541/6" target="_blank" rel="noopener">PC FVG ↗</a></p></div>
     <div class="chart" id="dirBox"><h3>Direzione vento</h3><div class="wdir"><svg id="wrose" viewBox="-120 -120 240 240" role="img" aria-label="Rosa dei venti"></svg><div class="wnow" id="wnow"></div></div><div class="wstrip" id="wstrip"></div><div class="wleg" id="wleg"></div><p class="sloMini wdinfo" id="wdInfo"></p><p class="sloMini">Livinal Lunc 1837 m · <a href="https://monitor.protezionecivile.fvg.it/misure/541/5" target="_blank" rel="noopener">PC FVG ↗</a></p></div>
     <div class="chart" id="sloChartBox" hidden><h3>Neve Kanin SLO 2260 m · cm</h3><div class="box"><canvas id="chSloB"></canvas></div><p class="sloMini" id="sloMini"></p></div>
   </div>
@@ -947,7 +949,7 @@ var I18N={
 "Guarda adesso":"Live now","Panorami a 360° aggiornati ogni pochi minuti. Trascina per girare la vista.":"360° panoramas updated every few minutes. Drag to turn the view.",
 "In quota · 1870 m":"Up the mountain · 1870 m","Canin, arrivo cabinovia":"Canin, top of the gondola","Schermo intero ↗":"Full screen ↗",
 "A valle · 1140 m":"Valley · 1140 m","Campo scuola, Sella Nevea":"Ski school area, Sella Nevea",
-"Previsioni a 1800 m":"Forecast at 1800 m","🏘️ Paese 1180 m":"🏘️ Village 1180 m","Meteo e neve prevista":"Weather and expected snow","Neve prevista prossimi 3 giorni:":"Expected snow next 3 days:","Neve prevista 3 giorni:":"Expected snow 3 days:",
+"Previsioni a 1800 m":"Forecast at 1800 m","🏘️ Paese 1180 m":"🏘️ Village 1180 m","🌲 Paese 1180 m":"🌲 Village 1180 m","Meteo e neve prevista":"Weather and expected snow","Neve prevista prossimi 3 giorni:":"Expected snow next 3 days:","Neve prevista 3 giorni:":"Expected snow 3 days:",
 "Precipitazioni":"Precipitation","Raffiche":"Gusts","Zero termico":"Freezing level",
 "Sereno":"Clear","Quasi sereno":"Mostly clear","Parz. nuvoloso":"Partly cloudy","Nuvoloso":"Cloudy","Nebbia":"Fog","Pioviggine":"Drizzle","Pioggia gelata":"Freezing rain",
 "Pioggia debole":"Light rain","Pioggia":"Rain","Pioggia forte":"Heavy rain","Neve debole":"Light snow","Neve forte":"Heavy snow","Nevischio":"Snow grains",
@@ -1208,8 +1210,8 @@ function initStatic(){
 
 const fmtUTC = d => d.toISOString().slice(0,19).replace("T"," ");
 const tLabel = d => d.toLocaleString(LOC,{weekday:"short",hour:"2-digit",minute:"2-digit"});
-async function getSensor(sid, from, to){
-  const u = `${CONFIG.api}/stations/${CONFIG.station.id}/sensors/${sid}/measures?from=${encodeURIComponent(fmtUTC(from))}&to=${encodeURIComponent(fmtUTC(to))}`;
+async function getSensor(sid, from, to, st){
+  const u = `${CONFIG.api}/stations/${st||CONFIG.station.id}/sensors/${sid}/measures?from=${encodeURIComponent(fmtUTC(from))}&to=${encodeURIComponent(fmtUTC(to))}`;
   const r = await fetch(u); if(!r.ok) throw new Error("HTTP "+r.status);
   const j = await r.json(); if(j.result!=="OK") throw new Error("API");
   const seen = new Set();
@@ -1217,6 +1219,39 @@ async function getSensor(sid, from, to){
     .map(m=>({t:new Date(m.dt.replace(" ","T")+"Z"), v:m.value})).sort((a,b)=>a.t-b.t);
 }
 let DATA=null, charts={}, hours=24, STFAIL=false;
+/* Stazione Sella Nevea paese (PC FVG 542: neve 23, temp 2) – preklop v sekciji Neve (Luka 22. 11. 2026) */
+let STV="top", DLOW=null, DLOWT=0;
+const ST_LOW={id:542, snow:23, temp:2};
+function stLinks(){
+  const low=STV==="low", id=low?ST_LOW.id:CONFIG.station.id, nm=low?"Sella Nevea 1180 m":"Livinal Lunc 1837 m";
+  [["chSnow",low?ST_LOW.snow:CONFIG.station.sensors.snow],["chTemp",low?ST_LOW.temp:CONFIG.station.sensors.temp]].forEach(([c,sid])=>{
+    const p=$(c)&&$(c).closest(".chart").querySelector(".sloMini"); if(p) p.innerHTML=`${nm} · <a href="https://monitor.protezionecivile.fvg.it/misure/${id}/${sid}" target="_blank" rel="noopener">PC FVG ↗</a>`;});
+  $("stIntro").textContent=low?L2("Stazione automatica della Protezione Civile FVG a Sella Nevea paese (1180 m), vicino agli impianti. Neve e temperatura ogni 15 minuti, non validati (vento non misurato).","Automatic Protezione Civile FVG station in Sella Nevea village (1180 m), near the lifts. Snow and temperature every 15 minutes, not validated (no wind sensor)."):
+    L2("Stazione automatica della Protezione Civile FVG al Livinal Lunc (1837 m), versante nord del Canin sopra il Rif. Gilberti. Dati ogni 15 minuti, non validati.","Automatic Protezione Civile FVG station at Livinal Lunc (1837 m), north side of the Canin above Rif. Gilberti. Data every 15 minutes, not validated.");
+  $("neve").classList.toggle("stlow",low);
+  document.querySelectorAll("#stAlt button").forEach(b=>b.classList.toggle("on",b.dataset.a===STV));
+}
+function renderLow(){
+  stLinks(); if(!DLOW) return;
+  const cut=new Date(Date.now()-hours*3600e3), f=a=>a.filter(x=>x.t>=cut);
+  draw("chSnow",[{label:tr("Neve cm"),data:f(DLOW.snow),color:"#7ee08f",fill:true}],{suggestedMin:0});
+  draw("chTemp",[{label:"°C",data:f(DLOW.temp),color:"#ff7a59"}],{zero:true});
+  const ls=last(DLOW.snow)||last(DLOW.temp); if(ls) $("updated").textContent=L2(`Ultimo dato Sella Nevea: ${ls.t.toLocaleString(LOC)} (ora locale) · aggiornamento automatico ogni 15 min.`,`Latest Sella Nevea reading: ${ls.t.toLocaleString(LOC)} (local time) · auto-update every 15 min.`);
+}
+async function loadLow(){
+  const to=new Date(), from=new Date(to.getTime()-170*3600e3);
+  const [snow,temp]=await Promise.all([ST_LOW.snow,ST_LOW.temp].map(id=>getSensor(id,from,to,ST_LOW.id).catch(()=>[])));
+  if(!snow.length&&!temp.length) throw new Error("542");
+  DLOW={snow,temp}; DLOWT=Date.now();
+}
+async function stSetAlt(a){
+  STV=a; stLinks();
+  if(a==="top"){ if(DATA) render(); return; }
+  $("err").style.display="none";
+  if(!DLOW||Date.now()-DLOWT>14*60e3){ try{ await loadLow(); }catch(e){ console.error(e); $("updated").textContent=L2("Dati di Sella Nevea paese non disponibili al momento.","Sella Nevea village data not available right now."); return; } }
+  if(STV==="low") renderLow();
+}
+document.addEventListener("click",ev=>{const b=ev.target.closest("#stAlt button"); if(b) stSetAlt(b.dataset.a);});
 async function load(){
   const to=new Date(), from=new Date(to.getTime()-170*3600e3), s=CONFIG.station.sensors;
   try{
@@ -1243,6 +1278,7 @@ function render(){
   if(lw){
     $("chWindV").textContent=`${Math.round(lw.v*3.6)} km/h`+(ld?` ${DIRS[Math.round((ld.v%360)/45)%8]}`:"");
   }
+  if(STV==="low"){ renderLow(); return; }
   draw("chSnow",[{label:tr("Neve cm"),data:f(snow),color:"#5ec8f2",fill:true}],{suggestedMin:0});
   draw("chTemp",[{label:"°C",data:f(temp),color:"#ff7a59"}],{zero:true});
   draw("chWind",[{label:tr("Vento"),data:f(wind).map(x=>({t:x.t,v:x.v*3.6})),color:"#5ec8f2",fill:true},
@@ -1304,7 +1340,7 @@ function draw(id,series,opt){
         y:{suggestedMin:opt.suggestedMin,grid:{color:c=>opt.zero&&c.tick.value===0?"#EE1C25":"rgba(242,241,238,.08)"}}}}});
 }
 $("range").addEventListener("click",e=>{const b=e.target.closest("button"); if(!b) return; hours=+b.dataset.h;
-  document.querySelectorAll("#range > button").forEach(x=>x.classList.toggle("on",x===b)); if(DATA) render(); renderSlo();});
+  document.querySelectorAll("#range > button").forEach(x=>x.classList.toggle("on",x===b)); if(STV==="low") renderLow(); else if(DATA) render(); renderSlo();});
 
 
 /* ---------- mappa discese ---------- */
@@ -2141,6 +2177,7 @@ function initUI(){
 
 initStatic(); initInstall(); initUI(); initMap(); initMapUI(); loadForecast(); try{initRadar();}catch(e){console.error(e);} loadBulletin(); load(); loadPast();
 setInterval(load,15*60e3);
+setInterval(()=>{ if(STV==="low") stSetAlt("low"); },15*60e3);
 setInterval(loadForecast,60*60e3);
 setInterval(loadPast,60*60e3);
 </script>
