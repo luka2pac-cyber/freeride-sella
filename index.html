@@ -420,6 +420,7 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .hd-b.hv-c .secbanner{margin:-34px -22px 28px}
 @media(max-width:520px){.hd-b main>section{padding:26px 14px 22px;margin:16px 0}.hd-b.hv-c .secbanner{margin:-26px -14px 22px}.hd-b .wrap{padding:0 12px}}
 /* kompaktne glave sekcij na telefonu (v122) */
+@media(max-width:600px){#discese .secbanner{height:120px}#discese .secbanner img{object-position:41% 55%;transform:scale(1.7);transform-origin:41% 58%}}
 @media(max-width:600px){.hd-b main>section{padding-top:18px}.hd-b.hv-c .secbanner{margin-top:-18px}.sic{width:42px;height:42px;font-size:21px;margin-bottom:6px;box-shadow:0 0 14px color-mix(in srgb,var(--sc) 30%,transparent)}main .eyebrow{font-size:.8rem;margin-bottom:3px}main .title{font-size:1.4rem;line-height:1.1}main .intro{font-size:.84rem;line-height:1.4;margin-top:6px}main .head,main .fc-head{margin-bottom:12px}.toggle{margin-bottom:10px}.toggle button{padding:5px 14px;font-size:.85rem}}
 
 .toggle{display:inline-flex;border:1px solid var(--line);margin-bottom:14px}
@@ -689,12 +690,6 @@ footer a{color:var(--ice)}
   .hb-c.hv-c .hero-photo{height:84vw}
   .hb-c.hv-c #heroImg2{object-position:72% 62%}
   .hb-c.hv-c .hero-in{padding-top:12vw}
-  .hb-d.hv-c .hero-photo{height:84vw}
-  .hb-d.hv-c #heroImg2{object-position:72% 62%;animation:none;transform:scale(1.5);transform-origin:74% 40%}
-  .hb-d.hv-c .hero-in{padding-top:12vw}
-  .hb-e.hv-c .hero-photo{height:70vw}
-  .hb-e.hv-c #heroImg2{object-position:72% 50%;animation:none;transform:scale(1.6) translateX(6%);transform-origin:74% 40%}
-  .hb-e.hv-c .hero-in{padding-top:5vw}
   .hb-f.hv-c .hero-photo{height:62vw}
   .hb-f.hv-c #heroImg2{object-position:72% 50%;animation:none;transform:scale(1.8) translateX(3%);transform-origin:74% 38%}
   .hb-f.hv-c .hero-in{padding-top:2vw}
@@ -1073,7 +1068,7 @@ if(LANG!=="it"){
 }
 
 document.documentElement.classList.add("hv-c");
-(function(){var v=new URLSearchParams(location.search).get("hb")||"c";if(/^[abcdef]$/.test(v))document.documentElement.classList.add("hb-"+v);})();
+(function(){var v=new URLSearchParams(location.search).get("hb")||"f";if(/^[abcf]$/.test(v))document.documentElement.classList.add("hb-"+v);})();
 (function(){var v=new URLSearchParams(location.search).get("hd")||"b";if(!/^[abc]$/.test(v))return;var d=document.documentElement;d.classList.add("hd","hd-"+v);
 var M={neve:["❄️","#5ec8f2"],meteo:["🌤️","#f5b83d"],webcam:["📷","#9fb3c8"],sicurezza:["⚠️","#EE1C25"],discese:["🗺️","#4cc38a"],video:["🎬","#b388ff"],corsi:["🎿","#5ec8f2"],community:["👥","#2f9fd0"],dormire:["🛏️","#2f9fd0"]};
 Object.keys(M).forEach(function(id){var sec=document.getElementById(id);if(!sec)return;var eb=sec.querySelector(".eyebrow");if(!eb)return;
