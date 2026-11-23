@@ -622,8 +622,9 @@ footer a{color:var(--ice)}
 .rv.in{opacity:1;transform:none}
 
 .brand{flex:none}
-@media(max-width:1280px){.menu a{padding:8px 7px;font-size:.9rem}.menu a svg{display:none}.lang{margin-left:8px}}
-@media(max-width:1100px){.menu{display:none}.lang{margin-left:auto}}
+.top .menu a svg{display:none}
+.top .menu a{padding:8px 6px;font-size:.9rem}.lang{margin-left:8px}
+@media(max-width:1200px){.menu{display:none}.lang{margin-left:auto}}
 @media(max-width:900px){
   .charts.four{grid-template-columns:1fr}
   .menu{display:none}
@@ -664,10 +665,12 @@ footer a{color:var(--ice)}
   .lang{margin-right:0;flex:none}
   .lang button{padding:6px 7px}
   .lang .flag{width:24px;height:16px}
-  .lang button{gap:5px}
+  .lang button{gap:0;font-size:0;padding:7px 6px}
   .install{flex:none}
 }
 @media(max-width:400px){.install{font-size:0;gap:0;padding:7px 9px}.install svg{width:22px;height:22px}.brand span{font-size:.9rem}}
+@media(min-width:901px){.install{font-size:0;gap:0;padding:7px 9px}.install svg{width:22px;height:22px}.lang button{font-size:0;gap:0;padding:7px 9px}.lang .flag{width:24px;height:16px}}
+@media(max-width:380px){.lang button{padding:7px 4px}.top .wrap{gap:5px}}
 @media(max-width:340px){.brand span{display:none}}
 @supports not (overflow:clip){html,body{overflow-x:hidden}}
 
@@ -690,10 +693,10 @@ footer a{color:var(--ice)}
   <nav class="menu">
     <a href="#neve"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v20M4.9 4.9l14.2 14.2M2 12h20M4.9 19.1 19.1 4.9"/><path d="m9 4 3 3 3-3M9 20l3-3 3 3M4 9l3 3-3 3M20 9l-3 3 3 3"/></svg>Neve</a><a href="#meteo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v2M4.9 4.9l1.4 1.4M20 12h2M19.1 4.9l-1.4 1.4"/><path d="M15.9 13A4 4 0 0 0 8.3 10.3"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/></svg>Meteo</a><a href="#sicurezza"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Valanghe</a><a href="#webcam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>Webcam</a><a href="#discese"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>Discese</a><a href="#video"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="15" height="14" rx="2"/><path d="m22 8-5 4 5 4V8z"/></svg>Video</a><a href="#corsi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2.1 6.3-6.3 2.1 2.1-6.3z"/></svg>Corsi e uscite</a><a href="#community"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/></svg>Community</a>
   </nav>
-  <div class="lang" role="group" aria-label="Lingua"><button data-l="it" title="Italiano"><svg class="flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#009246"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ce2b37"/></svg>IT</button><button data-l="en" title="English"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><clipPath id="ukt"><path d="M30,15h30v15zv15h-30zh-30v-15zv-15h30z"/></clipPath><rect width="60" height="30" fill="#012169"/><path d="M0,0L60,30M60,0L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0L60,30M60,0L0,30" clip-path="url(#ukt)" stroke="#C8102E" stroke-width="4"/><path d="M30,0v30M0,15h60" stroke="#fff" stroke-width="10"/><path d="M30,0v30M0,15h60" stroke="#C8102E" stroke-width="6"/></svg>EN</button></div>
+  <div class="lang" role="group" aria-label="Lingua"><button data-l="it" title="Italiano"><svg class="flag" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#009246"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ce2b37"/></svg>IT</button><button data-l="en" title="English"><svg class="flag" viewBox="0 0 60 30" aria-hidden="true"><clipPath id="ukt"><path d="M30,15h30v15zv15h-30zh-30v-15zv-15h30z"/></clipPath><rect width="60" height="30" fill="#012169"/><path d="M0,0L60,30M60,0L0,30" stroke="#fff" stroke-width="6"/><path d="M0,0L60,30M60,0L0,30" clip-path="url(#ukt)" stroke="#C8102E" stroke-width="4"/><path d="M30,0v30M0,15h60" stroke="#fff" stroke-width="10"/><path d="M30,0v30M0,15h60" stroke="#C8102E" stroke-width="6"/></svg>EN</button><button data-l="sl" title="Slovenščina"><svg class="flag" viewBox="0 0 12 6" aria-hidden="true"><rect width="12" height="2" fill="#fff"/><rect y="2" width="12" height="2" fill="#0057b8"/><rect y="4" width="12" height="2" fill="#ed1c24"/><path d="M2.3 1h1.8v1.9c0 .7-.4 1.1-.9 1.4-.5-.3-.9-.7-.9-1.4z" fill="#0057b8" stroke="#ed1c24" stroke-width=".22"/><path d="M2.6 2.9l.6-.8.6.8z" fill="#fff"/></svg>SL</button></div>
 <script>/* Lingua: gumba delujeta takoj (v114) */
 (function(){
-  function cur(){try{var q=new URLSearchParams(location.search).get("lang");if(q==="en"||q==="it")return q;var v=localStorage.getItem("fr-lang");if(v==="en"||v==="it")return v;}catch(e){}return "it";}
+  function cur(){try{var q=new URLSearchParams(location.search).get("lang");if(q==="en"||q==="it"||q==="sl")return q;var v=localStorage.getItem("fr-lang");if(v==="en"||v==="it"||v==="sl")return v;}catch(e){}return "it";}
   var now=cur(),bs=document.querySelectorAll(".lang button");
   function mark(l){for(var i=0;i<bs.length;i++)bs[i].classList.toggle("on",bs[i].dataset.l===l);}
   window.frSetLang=function(l){
@@ -928,9 +931,9 @@ footer a{color:var(--ice)}
 </div></div>
 
 <script>
-/* ===== Lingua IT / EN ===== */
-var LANG=(function(){var q=null;try{q=new URLSearchParams(location.search).get("lang");}catch(e){}if(q==="en"||q==="it"){try{localStorage.setItem("fr-lang",q);}catch(e){}return q;}try{var s=localStorage.getItem("fr-lang");if(s==="en"||s==="it")return s;}catch(e){}return "it";})();
-var LOC=LANG==="en"?"en-GB":"it-IT";
+/* ===== Lingua IT / EN / SL ===== */
+var LANG=(function(){var q=null;try{q=new URLSearchParams(location.search).get("lang");}catch(e){}if(q==="en"||q==="it"||q==="sl"){try{localStorage.setItem("fr-lang",q);}catch(e){}return q;}try{var s=localStorage.getItem("fr-lang");if(s==="en"||s==="it"||s==="sl")return s;}catch(e){}return "it";})();
+var LOC=LANG==="en"?"en-GB":LANG==="sl"?"sl-SI":"it-IT";
 document.documentElement.lang=LANG;
 var I18N={
 "Previsioni non disponibili.":"Forecast not available.","Vedi su bergfex":"See on bergfex","Bollettino valanghe FVG ↗":"FVG avalanche bulletin ↗","Corsi":"Courses",
@@ -1003,24 +1006,36 @@ var I18N={
 var I18R=[
 [/^di (.+)$/,"by $1"],[/^Guarda (.+)$/,"Watch $1"],[/^(\d+) video · scorri ⇆$/,"$1 videos · swipe ⇆"],[/^(\d+) video$/,"$1 videos"],
 [/^Ultimo dato: (.+) \(ora locale\) · aggiornamento automatico ogni 15 min\.$/,"Last reading: $1 (local time) · automatic update every 15 min."],
-[/^sopra (\d+) m/,"above $1 m"],[/^sotto (\d+) m/,"below $1 m"],[/^Nessun bollettino valido oggi \(fuori stagione\?\)\.$/,"No valid bulletin today (off season?)."],
+[/^sopra (\d+) m/,"above $1 m"],[/^sotto (\d+) m/,"below $1 m"],[/\(sopra (\d+) m\)/,"(above $1 m)"],[/\(sotto (\d+) m\)/,"(below $1 m)"],[/^Nessun bollettino valido oggi \(fuori stagione\?\)\.$/,"No valid bulletin today (off season?)."],
 [/Apertura invernale prevista per (.+?)\./,"Winter opening planned for $1."],[/fonte PromoTurismoFVG/,"source PromoTurismoFVG"],[/: chiuso$/,": closed"],[/: aperto$/,": open"],[/: stato n\.d\.$/,": status n/a"],[/^agg\. /,"upd. "],[/ · agg\. /," · upd. "],
 [/Dalla cresta (\d+) varianti in discesa \(tratteggio corto\) verso il Piano del Prevala\./,"From the ridge, $1 descent variants (short dashes) towards the Prevala plateau."],
 [/^\+(\d+) cm · POWDER!$/,"+$1 cm · POWDER!"],[/^\(poca base · (\d+) cm\)$/,"(little base · $1 cm)"],[/^Nuova 24 h $/,"New 24 h "],[/^da (\d+:\d\d)$/,"from $1"],[/^(\d+) linee con video$/,"$1 lines with video"],[/^ ?– tocca una linea con ?$/,"– tap a line with"],[/^ ?nell'elenco o il filtro «Con video» per vederla girata\.$/,"in the list or the «With video» filter to watch it on video."],[/^(\d+) video$/,"$1 videos"]
 ];
+var I18N_SL={"Community":"Skupnost","Previsioni non disponibili.":"Napoved ni na voljo.","Vedi su bergfex":"Poglej na bergfex","Bollettino valanghe FVG ↗":"Plazovni bilten FVG ↗","Corsi":"Tečaji","(CC BY 4.0) · Bollettino valanghe: AINEVA / Protezione Civile FVG · Kanin SLO:":"(CC BY 4.0) · Plazovni bilten: AINEVA / Civilna zaščita FVG · Kanin SLO:","· Previsioni:":"· Napoved:","Ultime 2 ore, ogni 10 min · 📍 Sella Nevea · radar ©":"Zadnji 2 uri, vsakih 10 min · 📍 Sella Nevea · radar ©",". In montagna il radar può non vedere le precipitazioni basse (ostacolato dai rilievi).":". V gorah radar morda ne zazna nizkih padavin (ovirajo ga gore).","Gruppo di un corso freeride a Sella Nevea":"Skupina na freeride tečaju v Selli Nevei","Livio Sadoch, maestro di sci":"Livio Sadoch, učitelj smučanja","Lingua":"Jezik","Play/Pausa":"Predvajaj/premor","Rosa dei venti":"Roža vetrov","Sezioni":"Sekcije","Neve":"Sneg","Meteo":"Vreme","Sicurezza":"Varnost","Discese":"Spusti","Installa":"Namesti","La community freeride del Canin":"Freeride skupnost Kanina","❄ Neve":"❄ Sneg","Nuova 24 h":"Novi 24 h","In quota":"Zgoraj","A valle":"V dolini","Vento km/h":"Veter km/h","Valanghe":"Plazovi","Oggi":"Danes","Domani":"Jutri","Previsioni 4 giorni · tocca per i dettagli":"Napoved 4 dni · tapni za podrobnosti","Neve live":"Sneg v živo","Aggiungi alla Home":"Dodaj na začetni zaslon","Dati live":"Podatki v živo","Neve, temperatura e vento":"Sneg, temperatura in veter","Stazione automatica della Protezione Civile FVG al Livinal Lunc (1837 m), versante nord del Canin sopra il Rif. Gilberti. Dati ogni 15 minuti, non validati.":"Samodejna postaja Civilne zaščite FVG na Livinal Luncu (1837 m), severna stran Kanina nad kočo Rif. Gilberti. Podatki vsakih 15 minut, niso preverjeni.","Non riesco a caricare i dati in diretta. Guardali sul sito della Protezione Civile:":"Podatkov v živo ni mogoče naložiti. Poglej jih na strani Civilne zaščite:","24 ore":"24 ur","48 ore":"48 ur","Altezza neve · cm":"Višina snega · cm","Direzione vento":"Smer vetra","Temperatura · °C":"Temperatura · °C","Vento e raffiche · km/h":"Veter in sunki · km/h","Guarda adesso":"Poglej zdaj","Panorami a 360° aggiornati ogni pochi minuti. Trascina per girare la vista.":"360° panorame, osvežene vsakih nekaj minut. Povleci za vrtenje pogleda.","In quota · 1870 m":"Zgoraj · 1870 m","Canin, arrivo cabinovia":"Kanin, zgornja postaja kabinske žičnice","Schermo intero ↗":"Celoten zaslon ↗","A valle · 1140 m":"V dolini · 1140 m","Campo scuola, Sella Nevea":"Vadbišče, Sella Nevea","Previsioni a 1800 m":"Napoved na 1800 m","🏘️ Paese 1180 m":"🏘️ Vas 1180 m","🌲 Paese 1180 m":"🌲 Vas 1180 m","Meteo e neve prevista":"Vreme in napoved snega","Neve prevista prossimi 3 giorni:":"Napovedan sneg naslednje 3 dni:","Neve prevista 3 giorni:":"Napovedan sneg 3 dni:","Precipitazioni":"Padavine","Raffiche":"Sunki","Zero termico":"Ničta izoterma","Sereno":"Jasno","Quasi sereno":"Pretežno jasno","Parz. nuvoloso":"Delno oblačno","Nuvoloso":"Oblačno","Nebbia":"Megla","Pioviggine":"Rosenje","Pioggia gelata":"Dež, ki zmrzuje","Pioggia debole":"Šibek dež","Pioggia":"Dež","Pioggia forte":"Močan dež","Neve debole":"Šibko sneženje","Neve forte":"Močno sneženje","Nevischio":"Zrnat sneg","Rovesci":"Plohe","Rovesci forti":"Močne plohe","Rovesci di neve":"Snežne plohe","Rovesci di neve forti":"Močne snežne plohe","Temporale":"Nevihta","Modello: Open-Meteo (best match per l'Europa), quota 1837 m. Le previsioni di neve sono indicative.":"Model: Open-Meteo (best match za Evropo), višina 1837 m. Napovedi snega so okvirne.","Confronta su bergfex":"Primerjaj na bergfex","📡 Radar precipitazioni":"📡 Padavinski radar","Prima di partire":"Pred odhodom","⚠ Bollettino valanghe · Canin":"⚠ Plazovni bilten · Kanin","Pericolo valanghe":"Nevarnost plazov","Carico…":"Nalagam…","Non disponibile":"Ni na voljo","n.d.":"n. p.","Bollettino completo":"Celoten bilten","Debole":"Majhna","Moderato":"Zmerna","Marcato":"Znatna","Forte":"Velika","Molto forte":"Zelo velika","1 · Debole":"1 · Majhna","2 · Moderato":"2 · Zmerna","3 · Marcato":"3 · Znatna","4 · Forte":"4 · Velika","5 · Molto forte":"5 · Zelo velika","Fuori pista sei in terreno non controllato":"Izven prog si na nenadzorovanem terenu","I percorsi indicati sono da ritenersi sicuri solo in condizioni di buon innevamento; con innevamento insufficiente è sconsigliato uscire dalle piste battute.":"Prikazane smeri veljajo za varne le ob dobri snežni odeji; ob premalo snega ni priporočljivo zapuščati urejenih prog.","acceso e testato":"vklopljen in preizkušen","Pala e sonda":"Lopata in sonda","sempre nello zaino":"vedno v nahrbtniku","Bollettino":"Bilten","letto ogni giorno":"preberi vsak dan","Mai da soli":"Nikoli sam","uno alla volta sui ripidi · 112":"po eden na strmih · 112","Bollettino valanghe FVG":"Plazovni bilten FVG","Protezione Civile FVG":"Civilna zaščita FVG","Bollettini AINEVA":"Bilteni AINEVA","Tutto l'arco alpino italiano":"Celotne italijanske Alpe","Livinal Lunc – dati completi":"Livinal Lunc – vsi podatki","Le informazioni su questa pagina hanno solo scopo informativo. Ognuno pratica il fuoripista sotto la propria responsabilità.":"Podatki na tej strani so zgolj informativni. Vsak smuča izven prog na lastno odgovornost.","Le linee":"Linije","Mappa delle discese":"Zemljevid spustov","⚠ Tracciati indicativi":"⚠ Okvirne sledi","– linee e punti sono ricostruiti dal cartello ufficiale e":"– linije in točke so povzete po uradni tabli in","non hanno coordinate precise":"nimajo natančnih koordinat","(errore possibile di 100 m e oltre). Non usarli per navigare: segui le indicazioni sul posto e valuta sempre il terreno. Quote e lunghezze approssimative.":"(možna napaka 100 m in več). Ne uporabljaj jih za navigacijo: sledi oznakam na terenu in vedno oceni teren. Višine in dolžine so približne.","Tutte":"Vse","Facili":"Lahke","Medie":"Srednje","Difficili":"Težke","📍 Dove sono":"📍 Kje sem","📍 Cerco…":"📍 Iščem…","Topografica":"Topografska","Difficoltà":"Težavnost","facile":"lahka","media":"srednja","medio-difficile":"srednje težka","Zona":"Območje","Quota ≈":"Višina ≈","Lunghezza ≈":"Dolžina ≈","Prima parte come la Livinallunc Classica, poi traverso verso la mulattiera del Poviz e giù lungo la mulattiera fino a Sella Nevea.":"Prvi del kot Livinallunc Classica, nato prečka do mulatjere Poviz in po njej navzdol do Selle Nevee.","● cerchio = partenza · ■ quadrato = arrivo · numero sul tracciato. Valori approssimativi, tracciato non preciso.":"● krog = začetek · ■ kvadrat = konec · številka na sledi. Vrednosti so približne, sled ni natančna.","Le linee in video":"Linije na videu","Cartelli e panorami":"Table in panorame","Rotellina o + / − per ingrandire · clic per zoom · trascina per spostare":"Kolešček ali + / − za povečavo · klik za zoom · povleci za premik","Pizzica o tocca per ingrandire · trascina per spostare":"Razpri prsta ali tapni za povečavo · povleci za premik","Ingrandisci":"Povečaj","Riduci":"Pomanjšaj","Adatta":"Prilagodi","Cartello ufficiale con pendenze (sul cartello n. 1–5 = qui n. 2–6, n. 6–11 = qui n. 8–13)":"Uradna tabla z nakloni (na tabli št. 1–5 = tu št. 2–6, št. 6–11 = tu št. 8–13)","Fonte: cartello ufficiale freeride Sella Nevea, cartografia © Casa Editrice Tabacco":"Vir: uradna freeride tabla Sella Nevea, kartografija © Casa Editrice Tabacco","Mappa topografica Golovec e Forato":"Topografska karta Golovec in Forato","Fonte: cartello ufficiale freeride Sella Nevea":"Vir: uradna freeride tabla Sella Nevea","Panorama – lato Montasio":"Panorama – stran Montaža","Panorama – lato Canin":"Panorama – stran Kanina","Fonte: sellaneveaparco.it":"Vir: sellaneveaparco.it","Fonte: TurismoFVG.it":"Vir: TurismoFVG.it","Video":"Video","Video pubblici su YouTube – rider, scuole, TV ed enti turistici – come esempio di linee e condizioni. Tutti i diritti ai rispettivi autori.":"Javni videi na YouTubu – riderji, šole, TV in turistične organizacije – kot primer linij in razmer. Vse pravice pripadajo avtorjem.","Mostra tutti":"Pokaži vse","Mostra meno":"Pokaži manj","Con chi la conosce":"Z domačini","Corsi e uscite guidate":"Tečaji in vodeni izleti","Vuoi imparare a leggere la neve o scoprire le linee con qualcuno che conosce il Canin da sempre?":"Bi se rad naučil brati sneg ali odkriti linije s nekom, ki Kanin pozna od nekdaj?","Livio Sadoch · maestro di sci":"Livio Sadoch · učitelj smučanja","Livio vive a Sella Nevea dal 2008 ed è maestro di sci dal 2013. Accompagna piccoli gruppi fuoripista sul Canin, tra Sella Nevea e Bovec, alla ricerca della neve migliore. Nei corsi si impara anche a leggere la neve e il terreno e a usare ARTVA, pala e sonda.":"Livio živi v Selli Nevei od leta 2008, učitelj smučanja je od leta 2013. Male skupine spremlja izven prog na Kaninu, med Sello Nevea in Bovcem, v iskanju najboljšega snega. Na tečajih se naučiš tudi brati sneg in teren ter uporabljati žolno, lopato in sondo.","Sito web":"Spletna stran","Unisciti a noi":"Pridruži se","Dove dormire":"Kje prespati","Ski & Spa Resort a 1190 m, direttamente sulle piste accanto agli impianti.":"Ski & Spa Resort na 1190 m, neposredno ob progah poleg žičnic.","Sito web ↗":"Spletna stran ↗","La community":"Skupnost","Uscite di gruppo, foto, video e condizioni in tempo reale dai rider di Sella Nevea.":"Skupinski izleti, fotografije, videi in razmere v realnem času od riderjev iz Selle Nevee.","Dati meteo:":"Vremenski podatki:","Protezione Civile della Regione FVG":"Civilna zaščita dežele FJK","(CC BY 4.0) · Bollettino valanghe: AINEVA / Protezione Civile FVG · Previsioni:":"(CC BY 4.0) · Plazovni bilten: AINEVA / Civilna zaščita FVG · Napoved:","(CC BY 4.0) · Mappa: OpenTopoMap / OpenStreetMap · misure non validate.":"(CC BY 4.0) · Zemljevid: OpenTopoMap / OpenStreetMap · meritve niso preverjene.","Aggiungi alla schermata Home":"Dodaj na začetni zaslon","Chiudi":"Zapri","Impianti":"Žičnice","Ora":"Ura","Neve/pioggia":"Sneg/dež","Prob.":"Verj.","Vento":"Veter","ore":"ure","Previsione oraria a 1837 m · vento in km/h":"Urna napoved na 1837 m · veter v km/h","Frecce: direzione verso cui soffia il vento":"Puščice: smer, v katero piha veter","Ore di sole":"Ure sonca","Sole":"Sonce","Vento (più rosso = più forte)":"Veter (bolj rdeče = močnejši)","❄ Neve 1837 m":"❄ Sneg 1837 m","Lato sloveno":"Slovenska stran","Neve Kanin SLO 2260 m · cm":"Sneg Kanin SLO 2260 m · cm","Temperatura":"Temperatura","Variazione 24 h":"Sprememba 24 h","Entrambi":"Oboje","Neve IT 1837 m":"Sneg IT 1837 m","Neve SLO 2260 m":"Sneg SLO 2260 m","Temp. SLO":"Temp. SLO","Vento SLO":"Veter SLO","Kanin · 2260 m":"Kanin · 2260 m","Stazione ARSO Kanin (2260 m)":"Postaja ARSO Kanin (2260 m)","neve":"sneg","vento":"veter","fonte ARSO ↗":"vir ARSO ↗","Corsi e uscite":"Tečaji in izleti","Giornate freeride":"Freeride dnevi","Corso freeride adulti":"Freeride tečaj za odrasle","Freeride ragazzi":"Freeride za mlade","Tecnica fuoripista per scialpinisti":"Tehnika izven prog za turne smučarje","Corso freeride sul Canin":"Freeride tečaj na Kaninu","Foto: Sella Nevea Mountain Experience":"Foto: Sella Nevea Mountain Experience","fonte PromoTurismoFVG ↗":"vir PromoTurismoFVG ↗","aperto":"odprto","chiuso":"zaprto","stato n.d.":"stanje n. p.","Cabinovia Canin":"Kabinska žičnica Canin","Seggiovia Gilberti":"Sedežnica Gilberti","Freerider in neve fresca":"Freerider v svežem snegu","Sulla cresta del Golovec, Sella Nevea":"Na grebenu Golovca, Sella Nevea","Stato impianti":"Stanje žičnic","Previsioni 4 giorni":"Napoved 4 dni","Webcam Sella Nevea in quota (1870 m)":"Spletna kamera Sella Nevea zgoraj (1870 m)","Webcam Sella Nevea a valle":"Spletna kamera Sella Nevea v dolini","Neve fresca a Sella Nevea":"Svež sneg v Selli Nevei","Precedenti":"Prejšnji","Successivi":"Naslednji","Neve cm":"Sneg cm","Raffica":"Sunek","Posizione non disponibile su questo dispositivo.":"Lokacija na tej napravi ni na voljo.","Non riesco a leggere la posizione. Controlla i permessi del browser.":"Lokacije ni mogoče prebrati. Preveri dovoljenja brskalnika.","Apri il menu del browser":"Odpri meni brskalnika","Scegli":"Izberi","o":"ali","Conferma":"Potrdi","Tocca":"Tapni","in Safari":"v Safariju","⬆️ in Safari":"⬆️ v Safariju","Aggiungi":"Dodaj","Condividi":"Deli","Installa app":"Namesti aplikacijo","▶ Con video":"▶ Z videom","▶ Video":"▶ Video","🎬 Video della linea":"🎬 Video linije","dall'inizio":"od začetka","Aggiungi a schermata Home":"Dodaj na začetni zaslon"};
+var I18R_SL=[
+[/^di (.+)$/,"avtor: $1"],[/^Guarda (.+)$/,"Poglej $1"],[/^(\d+) video · scorri ⇆$/,"$1 videov · podrsaj ⇆"],[/^(\d+) video$/,"$1 videov"],
+[/^Ultimo dato: (.+) \(ora locale\) · aggiornamento automatico ogni 15 min\.$/,"Zadnji podatek: $1 (lokalni čas) · samodejna osvežitev vsakih 15 min."],
+[/^sopra (\d+) m/,"nad $1 m"],[/^sotto (\d+) m/,"pod $1 m"],[/\(sopra (\d+) m\)/,"(nad $1 m)"],[/\(sotto (\d+) m\)/,"(pod $1 m)"],[/^Nessun bollettino valido oggi \(fuori stagione\?\)\.$/,"Danes ni veljavnega biltena (izven sezone?)."],
+[/Apertura invernale prevista per (.+?)\./,"Zimsko odprtje predvideno: $1."],[/fonte PromoTurismoFVG/,"vir PromoTurismoFVG"],[/: chiuso$/,": zaprto"],[/: aperto$/,": odprto"],[/: stato n\.d\.$/,": stanje n. p."],[/^agg\. /,"osv. "],[/ · agg\. /," · osv. "],
+[/Dalla cresta (\d+) varianti in discesa \(tratteggio corto\) verso il Piano del Prevala\./,"Z grebena $1 variant spusta (kratka črtkana črta) proti planoti Prevala."],
+[/^\+(\d+) cm · POWDER!$/,"+$1 cm · PRŠIČ!"],[/^\(poca base · (\d+) cm\)$/,"(malo podlage · $1 cm)"],[/^Nuova 24 h $/,"Novi 24 h "],[/^da (\d+:\d\d)$/,"od $1"],[/^(\d+) linee con video$/,"$1 linij z videom"],[/^ ?– tocca una linea con ?$/,"– tapni linijo z"],[/^ ?nell'elenco o il filtro «Con video» per vederla girata\.$/,"na seznamu ali filter «Z videom», da jo vidiš na videu."]
+];
+var SL_DAYS={sabato:"sobota",domenica:"nedelja",lunedì:"ponedeljek",martedì:"torek",mercoledì:"sreda",giovedì:"četrtek",venerdì:"petek"};
+var SL_MON={gennaio:"januar",febbraio:"februar",marzo:"marec",aprile:"april",maggio:"maj",giugno:"junij",luglio:"julij",agosto:"avgust",settembre:"september",ottobre:"oktober",novembre:"november",dicembre:"december"};
 var IT_DAYS={sabato:"Saturday",domenica:"Sunday",lunedì:"Monday",martedì:"Tuesday",mercoledì:"Wednesday",giovedì:"Thursday",venerdì:"Friday"};
 var IT_MON={gennaio:"January",febbraio:"February",marzo:"March",aprile:"April",maggio:"May",giugno:"June",luglio:"July",agosto:"August",settembre:"September",ottobre:"October",novembre:"November",dicembre:"December"};
 function tr(s){
-  if(LANG!=="en"||!s)return s;
+  if(LANG==="it"||!s)return s;
+  var D=LANG==="sl"?I18N_SL:I18N,R=LANG==="sl"?I18R_SL:I18R,DY=LANG==="sl"?SL_DAYS:IT_DAYS,MO=LANG==="sl"?SL_MON:IT_MON;
   var m=s.match(/^(\s*)([\s\S]*?)(\s*)$/),core=m[2];if(!core)return s;
-  if(I18N[core]!==undefined)return m[1]+I18N[core]+m[3];
+  if(D[core]!==undefined)return m[1]+D[core]+m[3];
   var out=core;
-  for(var i=0;i<I18R.length;i++)out=out.replace(I18R[i][0],I18R[i][1]);
-  out=out.replace(/\b(sabato|domenica|lunedì|martedì|mercoledì|giovedì|venerdì)\b/g,function(d){return IT_DAYS[d]}).replace(/\b(gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\b/g,function(d){return IT_MON[d]});
+  for(var i=0;i<R.length;i++)out=out.replace(R[i][0],R[i][1]);
+  out=out.replace(/(^|[^\wà-ü])(sabato|domenica|lunedì|martedì|mercoledì|giovedì|venerdì)(?![\wà-ü])/g,function(x,p,d){return p+DY[d]}).replace(/\b(gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\b/g,function(d){return MO[d]});
   return m[1]+out+m[3];
 }
 function trNode(root){
-  if(LANG!=="en")return;
+  if(LANG==="it")return;
   var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),n,list=[];
   while(n=w.nextNode()){var p=n.parentElement;if(p&&!p.closest("script,style"))list.push(n);}
   list.forEach(function(t){var v=tr(t.nodeValue);if(v!==t.nodeValue)t.nodeValue=v;});
@@ -1029,7 +1044,7 @@ function trNode(root){
   Array.prototype.forEach.call(els,function(e){["aria-label","title","alt"].forEach(function(a){var v=e.getAttribute(a);if(v){var t=tr(v);if(t!==v)e.setAttribute(a,t);}});});
 }
 function setLang(l){window.frSetLang(l);}
-if(LANG==="en"){
+if(LANG!=="it"){
   var _alert=window.alert;window.alert=function(m){_alert(tr(m));};
   document.addEventListener("DOMContentLoaded",function(){
     trNode(document.body);
@@ -1132,7 +1147,7 @@ const VH="b";
 const $ = id => document.getElementById(id);
 const diffTxt = {1:["facile","d1"],2:["media","d2"],3:["medio-difficile","d3"]};
 const zoneCol = {Golovec:"#2f9fd0",Forato:"#2fa35c"};
-const DIRS = LANG==="en"?["N","NE","E","SE","S","SW","W","NW"]:["N","NE","E","SE","S","SO","O","NO"];
+const DIRS = LANG==="en"?["N","NE","E","SE","S","SW","W","NW"]:LANG==="sl"?["S","SV","V","JV","J","JZ","Z","SZ"]:["N","NE","E","SE","S","SO","O","NO"];
 const ICON = {
   Facebook:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3c-2.8 0-4 1.7-4 4.3V10H7v4h3v8h4v-8h3l1-4h-4V8.6c0-.4.3-.6.6-.6z"/></svg>',
   Instagram:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>'
@@ -1226,8 +1241,8 @@ function stLinks(){
   const low=STV==="low", id=low?ST_LOW.id:CONFIG.station.id, nm=low?"Sella Nevea 1180 m":"Livinal Lunc 1837 m";
   [["chSnow",low?ST_LOW.snow:CONFIG.station.sensors.snow],["chTemp",low?ST_LOW.temp:CONFIG.station.sensors.temp]].forEach(([c,sid])=>{
     const p=$(c)&&$(c).closest(".chart").querySelector(".sloMini"); if(p) p.innerHTML=`${nm} · <a href="https://monitor.protezionecivile.fvg.it/misure/${id}/${sid}" target="_blank" rel="noopener">PC FVG ↗</a>`;});
-  $("stIntro").textContent=low?L2("Stazione automatica della Protezione Civile FVG a Sella Nevea paese (1180 m), vicino agli impianti. Neve e temperatura ogni 15 minuti, non validati (vento non misurato).","Automatic Protezione Civile FVG station in Sella Nevea village (1180 m), near the lifts. Snow and temperature every 15 minutes, not validated (no wind sensor)."):
-    L2("Stazione automatica della Protezione Civile FVG al Livinal Lunc (1837 m), versante nord del Canin sopra il Rif. Gilberti. Dati ogni 15 minuti, non validati.","Automatic Protezione Civile FVG station at Livinal Lunc (1837 m), north side of the Canin above Rif. Gilberti. Data every 15 minutes, not validated.");
+  $("stIntro").textContent=low?L2("Stazione automatica della Protezione Civile FVG a Sella Nevea paese (1180 m), vicino agli impianti. Neve e temperatura ogni 15 minuti, non validati (vento non misurato).","Automatic Protezione Civile FVG station in Sella Nevea village (1180 m), near the lifts. Snow and temperature every 15 minutes, not validated (no wind sensor).","Samodejna postaja Civilne zaščite FVG v vasi Sella Nevea (1180 m), blizu žičnic. Sneg in temperatura vsakih 15 minut, niso preverjeni (veter se ne meri)."):
+    L2("Stazione automatica della Protezione Civile FVG al Livinal Lunc (1837 m), versante nord del Canin sopra il Rif. Gilberti. Dati ogni 15 minuti, non validati.","Automatic Protezione Civile FVG station at Livinal Lunc (1837 m), north side of the Canin above Rif. Gilberti. Data every 15 minutes, not validated.","Samodejna postaja Civilne zaščite FVG na Livinal Luncu (1837 m), severna stran Kanina nad kočo Rif. Gilberti. Podatki vsakih 15 minut, niso preverjeni.");
   $("neve").classList.toggle("stlow",low);
   document.querySelectorAll("#stAlt button").forEach(b=>b.classList.toggle("on",b.dataset.a===STV));
 }
@@ -1236,7 +1251,7 @@ function renderLow(){
   const cut=new Date(Date.now()-hours*3600e3), f=a=>a.filter(x=>x.t>=cut);
   draw("chSnow",[{label:tr("Neve cm"),data:f(DLOW.snow),color:"#7ee08f",fill:true}],{suggestedMin:0});
   draw("chTemp",[{label:"°C",data:f(DLOW.temp),color:"#ff7a59"}],{zero:true});
-  const ls=last(DLOW.snow)||last(DLOW.temp); if(ls) $("updated").textContent=L2(`Ultimo dato Sella Nevea: ${ls.t.toLocaleString(LOC)} (ora locale) · aggiornamento automatico ogni 15 min.`,`Latest Sella Nevea reading: ${ls.t.toLocaleString(LOC)} (local time) · auto-update every 15 min.`);
+  const ls=last(DLOW.snow)||last(DLOW.temp); if(ls) $("updated").textContent=L2(`Ultimo dato Sella Nevea: ${ls.t.toLocaleString(LOC)} (ora locale) · aggiornamento automatico ogni 15 min.`,`Latest Sella Nevea reading: ${ls.t.toLocaleString(LOC)} (local time) · auto-update every 15 min.`,`Zadnji podatek Sella Nevea: ${ls.t.toLocaleString(LOC)} (lokalni čas) · samodejna osvežitev vsakih 15 min.`);
 }
 async function loadLow(){
   const to=new Date(), from=new Date(to.getTime()-170*3600e3);
@@ -1248,7 +1263,7 @@ async function stSetAlt(a){
   STV=a; stLinks();
   if(a==="top"){ if(DATA) render(); return; }
   $("err").style.display="none";
-  if(!DLOW||Date.now()-DLOWT>14*60e3){ try{ await loadLow(); }catch(e){ console.error(e); $("updated").textContent=L2("Dati di Sella Nevea paese non disponibili al momento.","Sella Nevea village data not available right now."); return; } }
+  if(!DLOW||Date.now()-DLOWT>14*60e3){ try{ await loadLow(); }catch(e){ console.error(e); $("updated").textContent=L2("Dati di Sella Nevea paese non disponibili al momento.","Sella Nevea village data not available right now.","Podatki za vas Sella Nevea trenutno niso na voljo."); return; } }
   if(STV==="low") renderLow();
 }
 document.addEventListener("click",ev=>{const b=ev.target.closest("#stAlt button"); if(b) stSetAlt(b.dataset.a);});
@@ -1286,7 +1301,7 @@ function render(){
   try{renderDir(dir,wind,cut)}catch(e){console.error(e)}
 }
 /* ---------- smer vetra: roža + časovni trak ---------- */
-const D16=LANG==="en"?["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"]:["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSO","SO","OSO","O","ONO","NO","NNO"];
+const D16=LANG==="en"?["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"]:LANG==="sl"?["S","SSV","SV","VSV","V","VJV","JV","JJV","J","JJZ","JZ","ZJZ","Z","ZSZ","SZ","SSZ"]:["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSO","SO","OSO","O","ONO","NO","NNO"];
 const d16=d=>D16[Math.round(((d%360)+360)%360/22.5)%16];
 function spdCol(k){return k<10?"#5ec8f2":k<25?"#7ee08f":k<40?"#ffc65c":k<60?"#ff9a4d":"#ff5a5a";}
 const SPL=[[0,"<10"],[10,"10–25"],[25,"25–40"],[40,"40–60"],[60,">60"]];
@@ -1307,8 +1322,8 @@ function renderDir(dir,wind,cut){
   const lp=pts[pts.length-1];
   g+=`<circle r="${R0-2}" fill="#0b0b0b" stroke="rgba(242,241,238,.25)"/><g transform="rotate(${Math.round(lp.d)%360})"><line x1="0" y1="-${R0+6}" x2="0" y2="${R0-2}" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M0 ${R0+6}L-6 ${R0-4}L6 ${R0-4}Z" fill="#fff"/></g>`;
   const svg=$("wrose"); svg.innerHTML=g; svg.classList.remove("has-sel");
-  $("wnow").innerHTML=`<b>${L2("da ","from ")}${d16(lp.d)}</b><span>${Math.round(lp.d)}° · ${Math.round(lp.k)} km/h · ${lp.t.toLocaleTimeString(LOC,{hour:"2-digit",minute:"2-digit"})}</span>`;
-  const info=$("wdInfo"), dflt=L2(`Ultime ${hours} h · calma ${Math.round(calm/n*100)}% · tocca la rosa o una freccia`,`Last ${hours} h · calm ${Math.round(calm/n*100)}% · tap the rose or an arrow`);
+  $("wnow").innerHTML=`<b>${L2("da ","from ","iz ")}${d16(lp.d)}</b><span>${Math.round(lp.d)}° · ${Math.round(lp.k)} km/h · ${lp.t.toLocaleTimeString(LOC,{hour:"2-digit",minute:"2-digit"})}</span>`;
+  const info=$("wdInfo"), dflt=L2(`Ultime ${hours} h · calma ${Math.round(calm/n*100)}% · tocca la rosa o una freccia`,`Last ${hours} h · calm ${Math.round(calm/n*100)}% · tap the rose or an arrow`,`Zadnjih ${hours} h · brezvetrje ${Math.round(calm/n*100)} % · tapni rožo ali puščico`);
   info.textContent=dflt;
   const H=[], now=new Date(), stp=hours>24?2:1; for(let h=hours;h>0;h-=stp){const a=new Date(now-h*3600e3), b=new Date(now-(h-stp)*3600e3), q=pts.filter(p=>p.t>=a&&p.t<b); if(!q.length){H.push(null);continue}
     let x=0,y=0,k=0; q.forEach(p=>{const r=p.d*Math.PI/180; x+=Math.sin(r); y+=Math.cos(r); k+=p.k}); H.push({t:b,d:(Math.atan2(x,y)*180/Math.PI+360)%360,k:k/q.length});}
@@ -1321,10 +1336,10 @@ function renderDir(dir,wind,cut){
   const clear=()=>{svg.querySelectorAll(".pet.sel").forEach(e=>e.classList.remove("sel"));st.querySelectorAll("i.sel").forEach(e=>e.classList.remove("sel"));svg.classList.remove("has-sel");};
   svg.onclick=e=>{const p=e.target.closest(".pet"); const was=p&&p.classList.contains("sel"); clear(); if(!p||was){info.textContent=dflt;return}
     const i=+p.dataset.i; p.classList.add("sel"); svg.classList.add("has-sel");
-    info.textContent=L2(`Da ${D16[i]}: ${Math.round(cnt[i]/n*100)}% del tempo · media ${Math.round(sum[i]/cnt[i])} km/h`,`From ${D16[i]}: ${Math.round(cnt[i]/n*100)}% of the time · avg ${Math.round(sum[i]/cnt[i])} km/h`);};
+    info.textContent=L2(`Da ${D16[i]}: ${Math.round(cnt[i]/n*100)}% del tempo · media ${Math.round(sum[i]/cnt[i])} km/h`,`From ${D16[i]}: ${Math.round(cnt[i]/n*100)}% of the time · avg ${Math.round(sum[i]/cnt[i])} km/h`,`Iz smeri ${D16[i]}: ${Math.round(cnt[i]/n*100)} % časa · povprečno ${Math.round(sum[i]/cnt[i])} km/h`);};
   st.onclick=e=>{const c=e.target.closest("i[data-j]"); const was=c&&c.classList.contains("sel"); clear(); if(!c||was){info.textContent=dflt;return}
     c.classList.add("sel"); const h=H[+c.dataset.j], a=new Date(h.t-stp*3600e3);
-    info.textContent=`${a.toLocaleString(LOC,{weekday:"short",hour:"2-digit",minute:"2-digit"})}–${h.t.toLocaleTimeString(LOC,{hour:"2-digit",minute:"2-digit"})} · ${L2("da","from")} ${d16(h.d)} ${Math.round(h.d)}° · ${Math.round(h.k)} km/h`;};
+    info.textContent=`${a.toLocaleString(LOC,{weekday:"short",hour:"2-digit",minute:"2-digit"})}–${h.t.toLocaleTimeString(LOC,{hour:"2-digit",minute:"2-digit"})} · ${L2("da","from","iz")} ${d16(h.d)} ${Math.round(h.d)}° · ${Math.round(h.k)} km/h`;};
 }
 
 if(window.Chart){ Chart.defaults.color="#a3a09b"; Chart.defaults.font.family="Barlow, sans-serif"; }
@@ -1558,7 +1573,7 @@ function applyEns(j,e,elv){
     fit(hp,pr[i]); fit(hs,sn[i]); if(ss>0) ks.forEach(k=>hm[k]*=sn[i]/ss); });
   d.snowfall_sum=sn; d.precipitation_sum=pr; d.rain_sum=rn; h.snowfall=hs; h.precipitation=hp; h.snow_mm=hm;
   j.ens={models,days};
-  j.ensNote=own?L2(`Neve, pioggia e precipitazioni a ${elv} m: valori dei modelli (Open-Meteo «snowfall»), ECMWF come valore principale (se manca: mediana); sotto il valore ↕ l'intervallo min–max di ${models.length} modelli (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}).`,`Snow, rain and precipitation at ${elv} m: model values (Open-Meteo «snowfall»), ECMWF as main value (if missing: median); below the value ↕ the min–max range of ${models.length} models (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}).`):L2(`Neve e precipitazioni: modello ECMWF (se manca: mediana dei modelli), quota ${elv} m; sotto il valore ↕ l'intervallo min–max di ${models.length} modelli (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}). Vento, sole e temperatura: Open-Meteo best match. Stima indicativa.`,`Snow and precipitation: ECMWF model (if missing: median of the models), elevation ${elv} m; below the value ↕ the min–max range of ${models.length} models (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}). Wind, sun and temperature: Open-Meteo best match. Indicative estimate.`);
+  j.ensNote=own?L2(`Neve, pioggia e precipitazioni a ${elv} m: valori dei modelli (Open-Meteo «snowfall»), ECMWF come valore principale (se manca: mediana); sotto il valore ↕ l'intervallo min–max di ${models.length} modelli (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}).`,`Snow, rain and precipitation at ${elv} m: model values (Open-Meteo «snowfall»), ECMWF as main value (if missing: median); below the value ↕ the min–max range of ${models.length} models (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}).`,`Sneg, dež in padavine na ${elv} m: vrednosti modelov (Open-Meteo «snowfall»), ECMWF kot glavna vrednost (če manjka: mediana); pod vrednostjo ↕ razpon min–max ${models.length} modelov (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}).`):L2(`Neve e precipitazioni: modello ECMWF (se manca: mediana dei modelli), quota ${elv} m; sotto il valore ↕ l'intervallo min–max di ${models.length} modelli (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}). Vento, sole e temperatura: Open-Meteo best match. Stima indicativa.`,`Snow and precipitation: ECMWF model (if missing: median of the models), elevation ${elv} m; below the value ↕ the min–max range of ${models.length} models (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}). Wind, sun and temperature: Open-Meteo best match. Indicative estimate.`,`Sneg in padavine: model ECMWF (če manjka: mediana modelov), višina ${elv} m; pod vrednostjo ↕ razpon min–max ${models.length} modelov (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}). Veter, sonce in temperatura: Open-Meteo best match. Okvirna ocena.`);
   const nt=$("fcNote"); if(nt&&elv===1837) nt.textContent=j.ensNote;
 }
 function ensRg(j,i){ const x=j&&j.ens&&j.ens.days[i]; if(!x) return ""; const a=Math.round(x.min),b=Math.round(x.max); return a===b?"":`${a}–${b} cm`; }
@@ -1573,23 +1588,23 @@ function initRadar(){
     const fr=(j.radar&&j.radar.past)||[]; if(!fr.length) throw 0;
     const lay=fr.map(f=>L.tileLayer(`${j.host}${f.path}/256/{z}/{x}/{y}/2/1_1.png`,{maxNativeZoom:7,maxZoom:10,opacity:0,zIndex:5}).addTo(map));
     const sl=$("rdSl"); sl.max=fr.length-1; let i=fr.length-1, play=true, tm=null;
-    const show=k=>{ lay.forEach((l,n)=>l.setOpacity(n===k?.75:0)); i=k; sl.value=k; const d=new Date(fr[k].time*1000); $("rdT").textContent=tFmt(d)+(k===fr.length-1?" · "+L2("ultimo","latest"):""); };
+    const show=k=>{ lay.forEach((l,n)=>l.setOpacity(n===k?.75:0)); i=k; sl.value=k; const d=new Date(fr[k].time*1000); $("rdT").textContent=tFmt(d)+(k===fr.length-1?" · "+L2("ultimo","latest","zadnji"):""); };
     const step=()=>{ show(i>=fr.length-1?0:i+1); tm=setTimeout(step,i===fr.length-1?1800:600); };
     show(i); tm=setTimeout(step,1500);
     $("rdPlay").onclick=()=>{ play=!play; $("rdPlay").textContent=play?"⏸":"▶"; clearTimeout(tm); if(play) step(); };
     sl.oninput=()=>{ play=false; $("rdPlay").textContent="▶"; clearTimeout(tm); show(+sl.value); };
-  }).catch(()=>{ $("rdT").textContent=L2("non disponibile","not available"); });
+  }).catch(()=>{ $("rdT").textContent=L2("non disponibile","not available","ni na voljo"); });
 }
 let FC=null, FCTOP=null, FCLOW=null, FALT="top", FSEL=-1;
 function fcElev(){ return FALT==="low"?CONFIG.forecast.low.elev:1837; }
 function fcLowUrl(u){ const L=CONFIG.forecast.low; return u.replace(/latitude=[\d.]+/,"latitude="+L.lat).replace(/longitude=[\d.]+/,"longitude="+L.lon).replace(/elevation=\d+/,"elevation="+L.elev); }
 function fcTotal(j){ const d=j.daily; let t=0; for(let i=1;i<4&&i<d.time.length;i++) t+=d.snowfall_sum[i]||0; return t; }
 function fcShow(){
-  $("fcEb").textContent=FALT==="low"?L2("Previsioni paese · 1180 m","Forecast village · 1180 m"):L2("Previsioni a 1800 m","Forecast at 1800 m");
+  $("fcEb").textContent=FALT==="low"?L2("Previsioni paese · 1180 m","Forecast village · 1180 m","Napoved za vas · 1180 m"):L2("Previsioni a 1800 m","Forecast at 1800 m","Napoved na 1800 m");
   document.querySelectorAll("#fcAlt button").forEach(b=>b.classList.toggle("on",b.dataset.a===FALT));
   if(!FC) return;
   if(FCV==="new"){ $("days").hidden=true; $("fstrip").hidden=false; }
-  const tot=fcTotal(FC); $("fcTot").innerHTML=L2("Neve prevista prossimi 3 giorni","Expected snow next 3 days")+`: <b>${tot>0&&tot<1?"&lt;1":Math.round(tot)} cm</b>`;
+  const tot=fcTotal(FC); $("fcTot").innerHTML=L2("Neve prevista prossimi 3 giorni","Expected snow next 3 days","Napovedan sneg naslednje 3 dni")+`: <b>${tot>0&&tot<1?"&lt;1":Math.round(tot)} cm</b>`;
   const nt=$("fcNote"); if(nt&&FC.ensNote) nt.textContent=FC.ensNote;
   FSEL=-1; if(FCV==="new") renderStrip(); renderHours();
 }
@@ -1601,7 +1616,7 @@ async function fcSetAlt(a){
       if(FCTOP&&FCTOP.hourly){ const T={}; FCTOP.hourly.time.forEach((t,k)=>T[t]=FCTOP.hourly.freezing_level_height[k]); j.hourly.freezing_level_height=j.hourly.time.map((t,k)=>T[t]!=null?T[t]:j.hourly.freezing_level_height[k]); }
       try{ applyEns(j,e,CONFIG.forecast.low.elev); }catch(x){ console.error(x); }
       FCLOW=j; }
-    catch(x){ console.error(x); FALT="top"; FC=FCTOP; fcShow(); $("fcTot").insertAdjacentHTML("beforeend",` <small style="color:#ff9e3d">${L2("Previsioni paese non disponibili","Village forecast unavailable")}</small>`); return; } }
+    catch(x){ console.error(x); FALT="top"; FC=FCTOP; fcShow(); $("fcTot").insertAdjacentHTML("beforeend",` <small style="color:#ff9e3d">${L2("Previsioni paese non disponibili","Village forecast unavailable","Napoved za vas ni na voljo")}</small>`); return; } }
   if(FALT==="low"){ FC=FCLOW; fcShow(); }
 }
 document.addEventListener("click",ev=>{const b=ev.target.closest("#fcAlt button"); if(b) fcSetAlt(b.dataset.a);});
@@ -1612,7 +1627,7 @@ function snowCol(cm,rain,scale){ // scale: cm that gives full colour
   if(cm<=0&&rain<=0.05) return "#161b20";
   const k=Math.min(1,(cm>0?cm:rain*0.5)/(scale*20));
   return cm>0?`rgba(52,128,200,${(.3+.7*k).toFixed(2)})`:`rgba(60,90,200,${(.3+.6*k).toFixed(2)})`;}
-function dirTxt(d){ if(d==null) return ""; const a=LANG==="en"?["N","NE","E","SE","S","SW","W","NW"]:["N","NE","E","SE","S","SO","O","NO"]; return a[Math.round((d%360)/45)%8]; }
+function dirTxt(d){ if(d==null) return ""; const a=LANG==="en"?["N","NE","E","SE","S","SW","W","NW"]:LANG==="sl"?["S","SV","V","JV","J","JZ","Z","SZ"]:["N","NE","E","SE","S","SO","O","NO"]; return a[Math.round((d%360)/45)%8]; }
 function wIcon(c,day){ if(!day&&(c===0||c===1)) return "🌙"; if(!day&&c===2) return "☁️"; return (WMO[c]||["❔"])[0]; }
 function renderStrip(){
   if(MT==="a") return renderMT();
@@ -1631,7 +1646,7 @@ function renderStrip(){
       <div class="sun" style="background:rgba(216,179,58,${alpha.toFixed(2)})" title="Ore di sole">☀ ${Math.round(sun)}h</div>
       <div class="bx w" style="background:${windCol(d.wind_gusts_10m_max[i])}" title="Vento km/h">${Math.round(d.wind_speed_10m_max[i])}-${Math.round(d.wind_gusts_10m_max[i])}<small>${dirTxt(d.wind_direction_10m_dominant[i])} · km/h</small></div>
       <div class="bx s" style="background:${snowCol(sn,d.rain_sum?d.rain_sum[i]:(d.precipitation_sum[i]||0)-sn/0.7,1)}" title="Neve">${sTxt}<small>${(d.precipitation_sum[i]||0).toFixed(1)} mm · ${pr}%</small></div>
-      ${ensRg(FC,i)?`<div class="ex rg" title="${L2("Intervallo dei modelli","Model range")}">↕ ${ensRg(FC,i).replace(" cm","")}</div>`:""}
+      ${ensRg(FC,i)?`<div class="ex rg" title="${L2("Intervallo dei modelli","Model range","Razpon modelov")}">↕ ${ensRg(FC,i).replace(" cm","")}</div>`:""}
       ${fzt?`<div class="ex">0° <b>${fzt}</b> m</div>`:""}
       <div class="more">${i===FSEL?"▲":"▼"} ore</div></div>`;}).join("");
   el.innerHTML=`<svg class="fsvg" id="fsvg"></svg>`+cols;
@@ -1665,18 +1680,18 @@ function renderHours(){
   const lab=(a,b,cls)=>`<div class="ml r ${cls}"><b>${a}</b>${b||""}</div>`;
   const row=(cls,lb,f)=>lab(...lb,cls)+H.map(x=>{const o=f(x);return `<div class="c r ${cls}${x.day?"":" nt"}"${o.st?` style="${o.st}"`:""}>${o.h}</div>`}).join("");
   const nd=`<span class="v" style="font-size:.9rem;color:#666">–</span>`;
-  const grid=row("hd",[L2("Ora","Hour"),""],x=>({h:`<span class="v">${x.hr}</span>`}))+
+  const grid=row("hd",[L2("Ora","Hour","Ura"),""],x=>({h:`<span class="v">${x.hr}</span>`}))+
     row("ic",["",""],x=>({h:x.ic}))+
     row("",["🌡️ °C",""],x=>({h:`<span class="v" style="color:${x.t>0?"#ffb39a":"#9fd6f5"}">${x.t}°</span>`}))+
-    row("sn",["❄️ "+L2("Neve","Snow"),"cm"],x=>({h:x.sn>=0.05?`<span class="v" style="font-size:1rem">${x.sn.toFixed(1)}</span><small>cm</small>`:nd,st:x.sn>=0.05?`background:${snowCol(x.sn,0,0.15)}`:""}))+
-    row("",["🌧️ "+L2("Pioggia","Rain"),"mm"],x=>({h:x.rn>=0.05?`<span class="v" style="font-size:.95rem">${x.rn.toFixed(1)}</span><small>mm</small>`:nd,st:x.rn>=0.05?`background:rgba(60,90,200,${(.35+.6*Math.min(1,x.rn/2)).toFixed(2)})`:""}))+
-    row("sm",["💧 "+L2("Prob.","Prob."),"%"],x=>({h:`<span class="v" style="font-size:.9rem">${x.prob??"–"}%</span>`}))+
-    row("",["💨 "+L2("Vento","Wind"),L2("km/h · raff.","km/h · gust")],x=>({h:`<span class="v" style="font-size:.95rem">${x.w}<span style="opacity:.6">/</span>${x.g}</span><small>${x.arr} ${x.dir}</small>`,st:`background:${windCol(x.g)}`}))+
-    row("sm",["☀️ "+L2("Sole","Sun"),"min"],x=>({h:`<span class="v" style="font-size:.9rem;color:${x.sun?"#1b1b1b":"#777"}">${x.sun}′</span>`,st:x.sun?`background:rgba(216,179,58,${(.3+.7*Math.min(1,x.sun/60)).toFixed(2)})`:""}))+
-    row("sm",["0 °C",L2("quota m","level m")],x=>({h:`<span class="v" style="font-size:.85rem">${x.fz}</span>`}));
-  box.innerHTML=`<div class="fh-head"><b>${FSEL===0?L2("Oggi","Today"):FSEL===1?L2("Domani","Tomorrow"):dt.toLocaleDateString(LOC,{weekday:"long"})} · ${dt.toLocaleDateString(LOC,{day:"numeric",month:"long"})}</b><span>${L2(`Ora per ora a ${fcElev()} m · scorri ⇆`,`Hour by hour at ${fcElev()} m · swipe ⇆`)}</span></div>
+    row("sn",["❄️ "+L2("Neve","Snow","Sneg"),"cm"],x=>({h:x.sn>=0.05?`<span class="v" style="font-size:1rem">${x.sn.toFixed(1)}</span><small>cm</small>`:nd,st:x.sn>=0.05?`background:${snowCol(x.sn,0,0.15)}`:""}))+
+    row("",["🌧️ "+L2("Pioggia","Rain","Dež"),"mm"],x=>({h:x.rn>=0.05?`<span class="v" style="font-size:.95rem">${x.rn.toFixed(1)}</span><small>mm</small>`:nd,st:x.rn>=0.05?`background:rgba(60,90,200,${(.35+.6*Math.min(1,x.rn/2)).toFixed(2)})`:""}))+
+    row("sm",["💧 "+L2("Prob.","Prob.","Verj."),"%"],x=>({h:`<span class="v" style="font-size:.9rem">${x.prob??"–"}%</span>`}))+
+    row("",["💨 "+L2("Vento","Wind","Veter"),L2("km/h · raff.","km/h · gust","km/h · sunki")],x=>({h:`<span class="v" style="font-size:.95rem">${x.w}<span style="opacity:.6">/</span>${x.g}</span><small>${x.arr} ${x.dir}</small>`,st:`background:${windCol(x.g)}`}))+
+    row("sm",["☀️ "+L2("Sole","Sun","Sonce"),"min"],x=>({h:`<span class="v" style="font-size:.9rem;color:${x.sun?"#1b1b1b":"#777"}">${x.sun}′</span>`,st:x.sun?`background:rgba(216,179,58,${(.3+.7*Math.min(1,x.sun/60)).toFixed(2)})`:""}))+
+    row("sm",["0 °C",L2("quota m","level m","višina m")],x=>({h:`<span class="v" style="font-size:.85rem">${x.fz}</span>`}));
+  box.innerHTML=`<div class="fh-head"><b>${FSEL===0?L2("Oggi","Today","Danes"):FSEL===1?L2("Domani","Tomorrow","Jutri"):dt.toLocaleDateString(LOC,{weekday:"long"})} · ${dt.toLocaleDateString(LOC,{day:"numeric",month:"long"})}</b><span>${L2(`Ora per ora a ${fcElev()} m · scorri ⇆`,`Hour by hour at ${fcElev()} m · swipe ⇆`,`Ura za uro na ${fcElev()} m · podrsaj ⇆`)}</span></div>
     <div class="fh-scroll"><div class="mtA mtH" style="grid-template-columns:62px repeat(${H.length},52px)">${grid}</div></div>
-    ${FC.ens&&FC.ens.days[FSEL]?`<div class="fh-ens">${L2("Neve per modello","Snow by model")}: ${Object.entries(FC.ens.days[FSEL].by).map(([m,v])=>`<span${m===CONFIG.forecast.ensMain?' style="color:#fff"':""}>${m===CONFIG.forecast.ensMain?"★ ":""}${CONFIG.forecast.ensNames[m]||m} <b>${Math.round(v)} cm</b></span>`).join("")}</div>`:""}`;
+    ${FC.ens&&FC.ens.days[FSEL]?`<div class="fh-ens">${L2("Neve per modello","Snow by model","Sneg po modelih")}: ${Object.entries(FC.ens.days[FSEL].by).map(([m,v])=>`<span${m===CONFIG.forecast.ensMain?' style="color:#fff"':""}>${m===CONFIG.forecast.ensMain?"★ ":""}${CONFIG.forecast.ensNames[m]||m} <b>${Math.round(v)} cm</b></span>`).join("")}</div>`:""}`;
   box.hidden=false;
   const sc=box.querySelector(".fh-scroll"); sc.scrollLeft=FSEL===0?Math.max(0,(new Date().getHours()-1)*55):7*55;
 }
@@ -1686,7 +1701,7 @@ function mtDay(i){
   const d=FC.daily,h=FC.hourly,t=d.time[i],dt=new Date(t+"T12:00"),sn=d.snowfall_sum[i]||0,pr=d.precipitation_sum[i]||0;
   const fz=h.time.map((x,k)=>[x,h.freezing_level_height[k]]).filter(([x])=>x.startsWith(t)&&+x.slice(11,13)>=6&&+x.slice(11,13)<=18).map(a=>a[1]);
   const e=FC.ens&&FC.ens.days[i];
-  return {i,dt,name:i===0?L2("Oggi","Today"):i===1?L2("Domani","Tmrw"):dt.toLocaleDateString(LOC,{weekday:"short"}).replace(".",""),
+  return {i,dt,name:i===0?L2("Oggi","Today","Danes"):i===1?L2("Domani","Tmrw","Jutri"):dt.toLocaleDateString(LOC,{weekday:"short"}).replace(".",""),
     date:dt.toLocaleDateString(LOC,{day:"numeric",month:"short"}),wc:d.weather_code[i],
     tx:Math.round(d.temperature_2m_max[i]),tn:Math.round(d.temperature_2m_min[i]),sn,snT:sn>=1?String(Math.round(sn)):sn>0?"<1":"0",
     rng:e&&Math.round(e.min)!==Math.round(e.max)?[Math.round(e.min),Math.round(e.max)]:null,rngMax:e?e.max:sn,
@@ -1707,15 +1722,15 @@ function renderMT(){
       row("hd",["",""],x=>({h:`<span class="v">${x.name}</span><small>${x.date}</small>`}))+
       row("ic",["",""],x=>({h:x.ic}))+
       row("",["🌡️ °C","max min"],x=>({h:`<span class="v"><span class="tmx">${x.tx}°</span> <span class="tmn">${x.tn}°</span></span>`}))+
-      row("sn",["❄️ "+L2("Neve","Snow"),L2("nuova, cm","new, cm")],x=>({h:`<span class="v">${x.snT}</span><small>cm</small>`,st:`background:${snowCol(x.sn,0,1)}`}))+
-      row("sm",[L2("Modelli","Models"),"min–max"],x=>({h:`<small style="color:#9cc7ea">${x.rng?x.rng[0]+"–"+x.rng[1]:"–"}</small>`}))+
-      row("sm",["💧 "+L2("Prob.","Prob."),L2("precipit.","precip.")],x=>({h:`<span class="v" style="font-size:.9rem">${x.prob}%</span>`}))+
-      row("",["🌧️ "+L2("Pioggia","Rain"),"mm"],x=>{const r=x.rain>=0.1?x.rain:0; return {h:r?`<span class="v" style="font-size:.95rem">${r.toFixed(r<10?1:0)}</span><small>mm</small>`:`<span class="v" style="font-size:.95rem;color:#666">–</span>`,st:r?`background:rgba(60,90,200,${(.3+.6*Math.min(1,r/10)).toFixed(2)})`:""};})+
-      row("",["💨 "+L2("Vento","Wind"),L2("km/h · raff.","km/h · gust")],x=>({h:`<span class="v" style="font-size:.95rem">${x.w}<span style="opacity:.6">/</span>${x.g}</span><small>${x.arr} ${x.dir}</small>`,st:`background:${windCol(x.g)}`}))+
-      row("sm",["☀️ "+L2("Sole","Sun"),L2("ore","hours")],x=>({h:`<span class="v" style="font-size:.95rem;color:${x.sun?"#1b1b1b":"#777"}">${x.sun} h</span>`,st:x.sun?`background:rgba(216,179,58,${(.35+.65*Math.min(1,x.sun/8)).toFixed(2)})`:""}))+
-      row("sm",["0 °C",L2("quota m","level m")],x=>({h:`<span class="v" style="font-size:.9rem">${x.fz??"–"}</span>`}))+
-      row("ob",["",""],x=>({h:`<span class="obtn">${x.i===FSEL?"▲":"▼"} ${L2("Ore","Hours")}</span>`}))+
-      `</div><div class="mt-tip">👆 ${L2("Tocca un giorno per la previsione oraria","Tap a day for the hourly forecast")}</div>`;
+      row("sn",["❄️ "+L2("Neve","Snow","Sneg"),L2("nuova, cm","new, cm","novi, cm")],x=>({h:`<span class="v">${x.snT}</span><small>cm</small>`,st:`background:${snowCol(x.sn,0,1)}`}))+
+      row("sm",[L2("Modelli","Models","Modeli"),"min–max"],x=>({h:`<small style="color:#9cc7ea">${x.rng?x.rng[0]+"–"+x.rng[1]:"–"}</small>`}))+
+      row("sm",["💧 "+L2("Prob.","Prob.","Verj."),L2("precipit.","precip.","padavin")],x=>({h:`<span class="v" style="font-size:.9rem">${x.prob}%</span>`}))+
+      row("",["🌧️ "+L2("Pioggia","Rain","Dež"),"mm"],x=>{const r=x.rain>=0.1?x.rain:0; return {h:r?`<span class="v" style="font-size:.95rem">${r.toFixed(r<10?1:0)}</span><small>mm</small>`:`<span class="v" style="font-size:.95rem;color:#666">–</span>`,st:r?`background:rgba(60,90,200,${(.3+.6*Math.min(1,r/10)).toFixed(2)})`:""};})+
+      row("",["💨 "+L2("Vento","Wind","Veter"),L2("km/h · raff.","km/h · gust","km/h · sunki")],x=>({h:`<span class="v" style="font-size:.95rem">${x.w}<span style="opacity:.6">/</span>${x.g}</span><small>${x.arr} ${x.dir}</small>`,st:`background:${windCol(x.g)}`}))+
+      row("sm",["☀️ "+L2("Sole","Sun","Sonce"),L2("ore","hours","ure")],x=>({h:`<span class="v" style="font-size:.95rem;color:${x.sun?"#1b1b1b":"#777"}">${x.sun} h</span>`,st:x.sun?`background:rgba(216,179,58,${(.35+.65*Math.min(1,x.sun/8)).toFixed(2)})`:""}))+
+      row("sm",["0 °C",L2("quota m","level m","višina m")],x=>({h:`<span class="v" style="font-size:.9rem">${x.fz??"–"}</span>`}))+
+      row("ob",["",""],x=>({h:`<span class="obtn">${x.i===FSEL?"▲":"▼"} ${L2("Ore","Hours","Ure")}</span>`}))+
+      `</div><div class="mt-tip">👆 ${L2("Tocca un giorno per la previsione oraria","Tap a day for the hourly forecast","Tapni dan za urno napoved")}</div>`;
     el.querySelectorAll(".c[data-i]").forEach(c=>c.onclick=()=>mtSel(+c.dataset.i));
   }
 }
@@ -1749,7 +1764,7 @@ function parseBulletin(j){
     day:new Date(new Date(b.validTime.startTime).getTime()+12*3600e3).toLocaleDateString(LOC,{weekday:"long",day:"numeric",month:"long"})};
 }
 async function loadBulletin(){
-  const AF="https://bollettini.aineva.it/albina_files/latest/", pdf=AF+"IT-36_"+(LANG==="en"?"en":"it")+".pdf";
+  const AF="https://bollettini.aineva.it/albina_files/latest/", pdf=AF+"IT-36_"+(LANG==="it"?"it":"en")+".pdf";
   let link=`<a href="${CONFIG.bulletin.page}" target="_blank" rel="noopener">Bollettino valanghe FVG ↗</a>`;
   const show=(lvl,txt,note,chip)=>{
     document.querySelectorAll(".lights span").forEach(s=>s.classList.toggle("on",+s.dataset.l===lvl));
@@ -1782,7 +1797,7 @@ function sunFac(m){ // m 0-11
   if(m===2) return {N:.35,E:.7,S:1,O:.7};
   return {N:.55,E:.8,S:1,O:.8};
 }
-const ASP=["N","E","S","O"], ASPN={N:["Nord","North"],E:["Est","East"],S:["Sud","South"],O:["Ovest","West"]};
+const ASP=["N","E","S","O"], ASPN={N:["Nord","North","Sever"],E:["Est","East","Vzhod"],S:["Sud","South","Jug"],O:["Ovest","West","Zahod"]};
 function aspOf(deg){ return ASP[Math.round(((deg%360)+360)%360/90)%4]; }
 function hourly(arr,mult){ const m={}; (arr||[]).forEach(x=>{const k=Math.floor(x.t/3600e3);(m[k]=m[k]||[]).push(x.v*(mult||1));}); return m; }
 function snowModel(){
@@ -1830,83 +1845,83 @@ function snowModel(){
   // neve zuccherosa: lungo periodo freddo e senza neve, manto non troppo spesso
   const facets=!hasEv&&L120.length>90&&Math.max(...L120.map(x=>x.T))<-2&&base<150;
   // tipo di neve fresca secondo la temperatura della nevicata
-  const fresh=tEv==null?["",""]:tEv>-1?[" pesante e umida"," heavy and damp"]:tEv<-7?[" molto leggera"," very light"]:["",""];
+  const fresh=tEv==null?["","",""]:tEv>-1?[" pesante e umida"," heavy and damp"," težak in vlažen"]:tEv<-7?[" molto leggera"," very light"," zelo lahek"]:["","",""];
   const rows={};
   ASP.forEach(a=>{
-    let c, it, en;
+    let c, it, en, sl;
     const melt=warm+2*sunW[a], cs=sunC[a], ww=wind>=3&&a===windward, lw=wind>=3&&a===lee;
-    const ageTxt=()=>age<1?[`powder fresca${fresh[0]} (+${ev.cm} cm)`,`fresh${fresh[1]} powder (+${ev.cm} cm)`]
-      :age<3.5?[`powder di ${Math.max(1,Math.round(age))} giorni (+${ev.cm} cm), ancora leggera`,`${Math.max(1,Math.round(age))}-day-old powder (+${ev.cm} cm), still light`]
-      :[`powder di ${Math.round(age)} giorni, assestata ma ancora soffice`,`${Math.round(age)}-day-old powder, settled but still soft`];
-    if(rain){ c="#ff9e3d"; [it,en]=cold12?["crosta da pioggia rigelata, dura, possibile ghiaccio: attenzione alle cadute","refrozen rain crust, hard, possibly icy: beware of falls"]:["neve bagnata dalla pioggia, pesante","rain-soaked snow, heavy"]; }
+    const ageTxt=()=>age<1?[`powder fresca${fresh[0]} (+${ev.cm} cm)`,`fresh${fresh[1]} powder (+${ev.cm} cm)`,`svež pršič${fresh[2]?","+fresh[2]:""} (+${ev.cm} cm)`]
+      :age<3.5?[`powder di ${Math.max(1,Math.round(age))} giorni (+${ev.cm} cm), ancora leggera`,`${Math.max(1,Math.round(age))}-day-old powder (+${ev.cm} cm), still light`,`pršič star ${Math.max(1,Math.round(age))} dni (+${ev.cm} cm), še lahek`]
+      :[`powder di ${Math.round(age)} giorni, assestata ma ancora soffice`,`${Math.round(age)}-day-old powder, settled but still soft`,`pršič star ${Math.round(age)} dni, sesedel, a še mehak`];
+    if(rain){ c="#ff9e3d"; [it,en,sl]=cold12?["crosta da pioggia rigelata, dura, possibile ghiaccio: attenzione alle cadute","refrozen rain crust, hard, possibly icy: beware of falls","zmrznjena skorja od dežja, trda, možen led: pazi na padce"]:["neve bagnata dalla pioggia, pesante","rain-soaked snow, heavy","z dežjem premočen sneg, težak"]; }
     else if(hasEv&&age<=7&&melt<4&&cs<12){
-      c="#7ee081"; [it,en]=ageTxt();
-      if(tEv!=null&&tEv>-1&&age<2){ c="#ffd34d"; [it,en]=[`neve fresca pesante e umida (+${ev.cm} cm): sciata faticosa`,`heavy, damp new snow (+${ev.cm} cm): hard work to ski`]; }
-      if(ww){ c="#ffd34d"; [it,en]=["esposto al vento: probabile neve ventata, crosta da vento a tratti non portante, polvere solo nelle zone riparate","wind-exposed: likely wind-packed snow, wind crust sometimes breakable, powder only in sheltered spots"]; }
-      else if(lw){ c="#ffd34d"; it+=", ma accumuli da vento (lastroni)"; en+=", but wind-loaded (slabs)"; }
+      c="#7ee081"; [it,en,sl]=ageTxt();
+      if(tEv!=null&&tEv>-1&&age<2){ c="#ffd34d"; [it,en,sl]=[`neve fresca pesante e umida (+${ev.cm} cm): sciata faticosa`,`heavy, damp new snow (+${ev.cm} cm): hard work to ski`,`težak, vlažen nov sneg (+${ev.cm} cm): naporna smuka`]; }
+      if(ww){ c="#ffd34d"; [it,en,sl]=["esposto al vento: probabile neve ventata, crosta da vento a tratti non portante, polvere solo nelle zone riparate","wind-exposed: likely wind-packed snow, wind crust sometimes breakable, powder only in sheltered spots","izpostavljeno vetru: verjetno spihan sneg, vetrna skorja mestoma lomljiva, pršič le v zavetju"]; }
+      else if(lw){ c="#ffd34d"; it+=", ma accumuli da vento (lastroni)"; en+=", but wind-loaded (slabs)"; sl+=", a z navejanim snegom (klože)"; }
     }
     else if(hasEv&&age<=7&&melt<10){
       c="#ffd34d";
-      [it,en]=melt<4?["sole al freddo: possibile crosta sottile, polvere nelle zone d'ombra e nel bosco","sun in the cold: possible thin crust, powder in shaded spots and in the trees"]
-                    :["possibile crosta sottile non portante sopra la polvere (si rompe sotto gli sci)","possible thin breakable crust over the powder"];
-      if(ww){ [it,en]=["neve ventata e crosta sottile non portante","wind-packed snow and thin breakable crust"]; }
+      [it,en,sl]=melt<4?["sole al freddo: possibile crosta sottile, polvere nelle zone d'ombra e nel bosco","sun in the cold: possible thin crust, powder in shaded spots and in the trees","sonce v mrazu: možna tanka skorja, pršič v senci in v gozdu"]
+                    :["possibile crosta sottile non portante sopra la polvere (si rompe sotto gli sci)","possible thin breakable crust over the powder","možna tanka lomljiva skorja nad pršičem (se udira pod smučmi)"];
+      if(ww){ [it,en,sl]=["neve ventata e crosta sottile non portante","wind-packed snow and thin breakable crust","spihan sneg in tanka lomljiva skorja"]; }
     }
     else if(melt>=10){
       c="#ff9e3d";
-      if(warmNow&&!cold12) [it,en]=["neve pesante e umida, possibile pappa nelle ore calde","heavy, damp snow, possibly slushy in the warm hours"];
-      else if(sunW[a]>=3) [it,en]=["crosta da rigelo al mattino, firn/neve morbida nelle ore centrali se c'è sole","refrozen crust in the morning, corn/soft snow at midday in the sun"];
-      else [it,en]=["crosta da rigelo, dura","refrozen crust, hard"];
-      if(a==="N"&&hasEv&&age<=7&&sunW.N<2&&warm<80){ c="#ffd34d"; [it,en]=["neve fresca appesantita dal caldo, possibile crosta leggera; migliore in alto e nelle zone d'ombra","new snow made heavier by the warmth, possible light crust; better higher up and in the shade"]; }
+      if(warmNow&&!cold12) [it,en,sl]=["neve pesante e umida, possibile pappa nelle ore calde","heavy, damp snow, possibly slushy in the warm hours","težak, vlažen sneg, v toplih urah možna brozga"];
+      else if(sunW[a]>=3) [it,en,sl]=["crosta da rigelo al mattino, firn/neve morbida nelle ore centrali se c'è sole","refrozen crust in the morning, corn/soft snow at midday in the sun","zjutraj zmrznjena skorja, opoldne na soncu firn/mehak sneg"];
+      else [it,en,sl]=["crosta da rigelo, dura","refrozen crust, hard","zmrznjena skorja, trda"];
+      if(a==="N"&&hasEv&&age<=7&&sunW.N<2&&warm<80){ c="#ffd34d"; [it,en,sl]=["neve fresca appesantita dal caldo, possibile crosta leggera; migliore in alto e nelle zone d'ombra","new snow made heavier by the warmth, possible light crust; better higher up and in the shade","nov sneg, otežen zaradi toplote, možna rahla skorja; bolje višje in v senci"]; }
     }
     else if(dust){
-      c="#ffd34d"; [it,en]=a==="S"&&cs>=6?[`spolverata di +${ev.cm} cm, già lavorata dal sole`,`dusting of +${ev.cm} cm, already worked by the sun`]:[`spolverata di +${ev.cm} cm su fondo vecchio: bella in superficie, dura sotto`,`dusting of +${ev.cm} cm on an old base: nice on top, hard underneath`];
+      c="#ffd34d"; [it,en,sl]=a==="S"&&cs>=6?[`spolverata di +${ev.cm} cm, già lavorata dal sole`,`dusting of +${ev.cm} cm, already worked by the sun`,`pobelitev +${ev.cm} cm, že predelana od sonca`]:[`spolverata di +${ev.cm} cm su fondo vecchio: bella in superficie, dura sotto`,`dusting of +${ev.cm} cm on an old base: nice on top, hard underneath`,`pobelitev +${ev.cm} cm na stari podlagi: lepo na površju, trdo spodaj`];
     }
     else {
       c="#9aa3ad";
-      if(ww) [it,en]=["neve vecchia ventata, dura o a sastrugi","old wind-packed snow, hard or sastrugi"];
-      else if(a==="N"&&facets) [it,en]=["neve vecchia fredda, possibile neve zuccherosa (cristalli sfaccettati): soffice ma poco coesa","old cold snow, possibly faceted 'sugar' snow: soft but loose"];
-      else if(a==="N") [it,en]=tmax<0?["neve vecchia fredda, compatta; possibile soffice nelle zone riparate","old cold snow, packed; possibly soft in sheltered spots"]:["neve vecchia assestata","old settled snow"];
-      else if(t24max>1&&cold12) [it,en]=a==="S"?["firn: dura al mattino, morbida nelle ore centrali","corn snow: hard in the morning, soft at midday"]:["crosta dura al mattino, si ammorbidisce poco","hard crust in the morning, softens only a little"];
-      else [it,en]=cs>=12?["neve vecchia, possibile crosta sottile da sole","old snow, possible thin sun crust"]:["neve vecchia assestata","old settled snow"];
+      if(ww) [it,en,sl]=["neve vecchia ventata, dura o a sastrugi","old wind-packed snow, hard or sastrugi","star spihan sneg, trd ali zastrugi"];
+      else if(a==="N"&&facets) [it,en,sl]=["neve vecchia fredda, possibile neve zuccherosa (cristalli sfaccettati): soffice ma poco coesa","old cold snow, possibly faceted 'sugar' snow: soft but loose","star mrzel sneg, možen sladkorni sneg (oglati kristali): mehak, a slabo povezan"];
+      else if(a==="N") [it,en,sl]=tmax<0?["neve vecchia fredda, compatta; possibile soffice nelle zone riparate","old cold snow, packed; possibly soft in sheltered spots","star mrzel sneg, zbit; v zavetju možen mehak"]:["neve vecchia assestata","old settled snow","star sesedel sneg"];
+      else if(t24max>1&&cold12) [it,en,sl]=a==="S"?["firn: dura al mattino, morbida nelle ore centrali","corn snow: hard in the morning, soft at midday","firn: zjutraj trd, opoldne mehak"]:["crosta dura al mattino, si ammorbidisce poco","hard crust in the morning, softens only a little","zjutraj trda skorja, se le malo zmehča"];
+      else [it,en,sl]=cs>=12?["neve vecchia, possibile crosta sottile da sole","old snow, possible thin sun crust","star sneg, možna tanka skorja od sonca"]:["neve vecchia assestata","old settled snow","star sesedel sneg"];
     }
-    rows[a]={c,t:L2(it,en)};
+    rows[a]={c,t:L2(it,en,sl)};
   });
   // ---- in basso (1150–1500 m): circa +3/+4 °C rispetto alla stazione ----
   let low;
   const lowMax=t24max+3.5, rain72=last(72).some(x=>x.rn>0.2&&x.T>-2.5);
-  if(rain72) low={c:"#ff9e3d",t:L2("probabile pioggia in basso: neve bagnata o crosta, spesso scarsa","likely rain lower down: wet snow or crust, often thin cover")};
-  else if(lowMax>1.5) low={c:"#ff9e3d",t:L2("neve più pesante e umida nelle ore calde, crosta al mattino; copertura spesso scarsa nel bosco","heavier, damper snow in the warm hours, crust in the morning; often thin cover in the forest")};
-  else low={c:hasEv&&age<=3?"#7ee081":"#9aa3ad",t:hasEv&&age<=3?L2("neve fresca anche in basso, nel bosco spesso la migliore con poca visibilità","new snow lower down too, the forest is often best in poor visibility"):L2("neve vecchia, nel bosco possibile più soffice","old snow, possibly softer in the forest")};
+  if(rain72) low={c:"#ff9e3d",t:L2("probabile pioggia in basso: neve bagnata o crosta, spesso scarsa","likely rain lower down: wet snow or crust, often thin cover","nižje verjetno dež: moker sneg ali skorja, pogosto malo snega")};
+  else if(lowMax>1.5) low={c:"#ff9e3d",t:L2("neve più pesante e umida nelle ore calde, crosta al mattino; copertura spesso scarsa nel bosco","heavier, damper snow in the warm hours, crust in the morning; often thin cover in the forest","v toplih urah težji, vlažnejši sneg, zjutraj skorja; v gozdu pogosto malo snega")};
+  else low={c:hasEv&&age<=3?"#7ee081":"#9aa3ad",t:hasEv&&age<=3?L2("neve fresca anche in basso, nel bosco spesso la migliore con poca visibilità","new snow lower down too, the forest is often best in poor visibility","nov sneg tudi nižje, ob slabi vidljivosti je gozd pogosto najboljši"):L2("neve vecchia, nel bosco possibile più soffice","old snow, possibly softer in the forest","star sneg, v gozdu morda mehkejši")};
   // ---- note ----
   const notes=[];
-  if(hoar) notes.push(L2("notti serene e fredde senza vento: possibile brina di superficie (bella da sciare, ma diventa uno strato debole se coperta da neve nuova)","clear, cold, calm nights: possible surface hoar (fun to ski, but a weak layer once buried by new snow)"));
-  if(hasEv&&tEv!=null&&tEv<-7&&age<2) notes.push(L2("nevicata molto fredda: neve leggerissima, poca coesione","very cold snowfall: very light snow, little cohesion"));
+  if(hoar) notes.push(L2("notti serene e fredde senza vento: possibile brina di superficie (bella da sciare, ma diventa uno strato debole se coperta da neve nuova)","clear, cold, calm nights: possible surface hoar (fun to ski, but a weak layer once buried by new snow)","jasne, mrzle noči brez vetra: možen površinski srež (lep za smuko, a postane šibka plast, ko ga prekrije nov sneg)"));
+  if(hasEv&&tEv!=null&&tEv<-7&&age<2) notes.push(L2("nevicata molto fredda: neve leggerissima, poca coesione","very cold snowfall: very light snow, little cohesion","zelo mrzlo sneženje: zelo lahek sneg, slabo povezan"));
   // ---- prossime 24 h (modello) ----
   const fut=(FCP||[]).filter(x=>x.t>now&&x.t<=now+24*H);
   const fT=fut.length?Math.max(...fut.map(x=>x.T)):null, fS=fut.reduce((a,x)=>a+x.sn,0), fSun=fut.reduce((a,x)=>a+x.sun,0), fG=fut.length?Math.max(...fut.map(x=>x.g)):0, fR=fut.some(x=>x.rn>0.2&&x.T>0.5);
   const F=[];
-  if(fS>=5) F.push(L2(`in arrivo circa +${Math.round(fS)} cm`,`about +${Math.round(fS)} cm on the way`));
-  if(fR) F.push(L2("pioggia sulla neve: crosta quando rigela","rain on the snow: crust when it refreezes"));
-  else if(fT!=null&&fT>2&&fSun>=3) F.push(L2(`sole e rialzo termico (max ${Math.round(fT)}°): la neve al sole si trasforma, il nord regge`,`sun and warming (max ${Math.round(fT)}°): snow in the sun will transform, north faces hold`));
-  else if(fT!=null&&fT>2) F.push(L2(`rialzo termico (max ${Math.round(fT)}°): neve più pesante`,`warming (max ${Math.round(fT)}°): heavier snow`));
-  else if(fSun>=4&&hasEv) F.push(L2("sole ma freddo: al sud possibile crosta sottile, al nord la polvere tiene","sunny but cold: possible thin crust on south faces, north powder holds"));
-  if(fG>=60) F.push(L2(`vento forte (raffiche ${Math.round(fG)} km/h): la neve verrà ventata sulle creste`,`strong wind (gusts ${Math.round(fG)} km/h): snow will be wind-affected on ridges`));
+  if(fS>=5) F.push(L2(`in arrivo circa +${Math.round(fS)} cm`,`about +${Math.round(fS)} cm on the way`,`prihaja okoli +${Math.round(fS)} cm`));
+  if(fR) F.push(L2("pioggia sulla neve: crosta quando rigela","rain on the snow: crust when it refreezes","dež na sneg: skorja, ko ponovno zmrzne"));
+  else if(fT!=null&&fT>2&&fSun>=3) F.push(L2(`sole e rialzo termico (max ${Math.round(fT)}°): la neve al sole si trasforma, il nord regge`,`sun and warming (max ${Math.round(fT)}°): snow in the sun will transform, north faces hold`,`sonce in otoplitev (max ${Math.round(fT)}°): sneg na soncu se bo preobrazil, sever zdrži`));
+  else if(fT!=null&&fT>2) F.push(L2(`rialzo termico (max ${Math.round(fT)}°): neve più pesante`,`warming (max ${Math.round(fT)}°): heavier snow`,`otoplitev (max ${Math.round(fT)}°): težji sneg`));
+  else if(fSun>=4&&hasEv) F.push(L2("sole ma freddo: al sud possibile crosta sottile, al nord la polvere tiene","sunny but cold: possible thin crust on south faces, north powder holds","sončno, a mrzlo: na jugu možna tanka skorja, na severu pršič zdrži"));
+  if(fG>=60) F.push(L2(`vento forte (raffiche ${Math.round(fG)} km/h): la neve verrà ventata sulle creste`,`strong wind (gusts ${Math.round(fG)} km/h): snow will be wind-affected on ridges`,`močan veter (sunki ${Math.round(fG)} km/h): sneg na grebenih bo spihan`));
   return {rows,low,notes,hasEv,ev,age,wind,windward,lee,next:F};
 }
 function snowModelHTML(m){
   if(!m) return "";
-  const head=L2("Neve stimata per esposizione · 1800–2100 m","Estimated snow by aspect · 1800–2100 m");
+  const head=L2("Neve stimata per esposizione · 1800–2100 m","Estimated snow by aspect · 1800–2100 m","Ocena snega po ekspozicijah · 1800–2100 m");
   const r=(lab,o)=>`<div class="r"><span class="a"><i style="background:${o.c}"></i>${lab}</span><span>${o.t}</span></div>`;
-  const rows=ASP.map(a=>r(L2(...ASPN[a]),m.rows[a])).join("")+r(L2("In basso","Lower"),m.low);
+  const rows=ASP.map(a=>r(L2(...ASPN[a]),m.rows[a])).join("")+r(L2("In basso","Lower","Nižje"),m.low);
   const nt=m.notes.map(x=>`<div class="f">💡 ${x}</div>`).join("");
-  const nx=m.next.length?`<div class="f">${L2("Prossime 24 h","Next 24 h")}: ${m.next.join(" · ")}</div>`:"";
-  return `<div class="snq"><h4>${head}</h4>${rows}${nt}${nx}<div class="f">${L2("Stima indicativa da temperatura, sole, vento e nevicate: verifica sempre sul posto.","Rough estimate from temperature, sun, wind and snowfall: always check on site.")}</div></div>`;
+  const nx=m.next.length?`<div class="f">${L2("Prossime 24 h","Next 24 h","Naslednjih 24 h")}: ${m.next.join(" · ")}</div>`:"";
+  return `<div class="snq"><h4>${head}</h4>${rows}${nt}${nx}<div class="f">${L2("Stima indicativa da temperatura, sole, vento e nevicate: verifica sempre sul posto.","Rough estimate from temperature, sun, wind and snowfall: always check on site.","Okvirna ocena iz temperature, sonca, vetra in sneženja: vedno preveri na terenu.")}</div></div>`;
 }
 
 /* ===== Valutazione automatica delle condizioni ===== */
 let BUL=null;
 const COND={minBase:50, thinBase:80, slabSnow:10, bigSnow:30, slabWind:25, slabGust:50, gustHi:60, gustVHi:80, snowSoon:10};
-const L2=(it,en)=>LANG==="en"?en:it;
+const L2=(it,en,sl)=>LANG==="en"?en:LANG==="sl"?(sl!==undefined?sl:tr(it)):it;
 function newSnowH(snow,hh){
   if(!snow||snow.length<8) return null;
   const lt=snow[snow.length-1].t;
@@ -1933,7 +1948,7 @@ function leeDir(wind,dir,since){
 }
 function renderCond(){
   const FC=FCTOP; const el=$("cond"); if(!el||(!DATA&&!FC)||(!DATA&&!STFAIL)) return;
-  const F=[]; const add=(sev,ic,it,en)=>F.push({sev,ic,t:L2(it,en)});
+  const F=[]; const add=(sev,ic,it,en,sl)=>F.push({sev,ic,t:L2(it,en,sl)});
   let base=null, powder=false;
   if(DATA&&DATA.snow.length){
     const {snow,temp,wind,gust,dir}=DATA, lt=snow[snow.length-1].t;
@@ -1944,17 +1959,17 @@ function renderCond(){
     const t24=temp.filter(x=>x.t>=s24).map(x=>x.v), t12=temp.filter(x=>x.t>=s12).map(x=>x.v);
     const tmax=t24.length?Math.max(...t24):null, tmin12=t12.length?Math.min(...t12):null;
     if(base<COND.minBase){}
-    else if(base<COND.thinBase) add(1,"🪨",`Fondo sottile (${base} cm): attenzione a sassi e mughi`,`Thin base (${base} cm): watch out for rocks and dwarf pines`);
-    if(n48>=COND.bigSnow) add(3,"⚠️",`Forte nevicata recente (+${n48} cm in 48 h): pericolo valanghe in aumento, lascia assestare il manto`,`Heavy recent snowfall (+${n48} cm in 48 h): rising avalanche danger, let the snowpack settle`);
+    else if(base<COND.thinBase) add(1,"🪨",`Fondo sottile (${base} cm): attenzione a sassi e mughi`,`Thin base (${base} cm): watch out for rocks and dwarf pines`,`Tanka podlaga (${base} cm): pazi na skale in rušje`);
+    if(n48>=COND.bigSnow) add(3,"⚠️",`Forte nevicata recente (+${n48} cm in 48 h): pericolo valanghe in aumento, lascia assestare il manto`,`Heavy recent snowfall (+${n48} cm in 48 h): rising avalanche danger, let the snowpack settle`,`Močno nedavno sneženje (+${n48} cm v 48 h): nevarnost plazov narašča, počakaj, da se odeja sesede`);
     if(n48>=COND.slabSnow&&(w24>=COND.slabWind||g24>=COND.slabGust)){
       const lee=leeDir(wind,dir,s24);
-      add(2,"🌬️",`Neve fresca + vento (raffiche ${Math.round(g24)} km/h): probabili accumuli da vento${lee?` sui pendii esposti a ${lee}`:""}`,`New snow + wind (gusts ${Math.round(g24)} km/h): wind slabs likely${lee?` on ${lee}-facing slopes`:""}`);
+      add(2,"🌬️",`Neve fresca + vento (raffiche ${Math.round(g24)} km/h): probabili accumuli da vento${lee?` sui pendii esposti a ${lee}`:""}`,`New snow + wind (gusts ${Math.round(g24)} km/h): wind slabs likely${lee?` on ${lee}-facing slopes`:""}`,`Nov sneg + veter (sunki ${Math.round(g24)} km/h): verjetne kložaste plošče${lee?` na pobočjih, obrnjenih proti ${lee}`:""}`);
     }
     const SM=snowModel(); if(SM&&SM.hasEv&&SM.age<2&&SM.rows.N.c==="#7ee081") powder=true;
     let qDone=!!SM;
     if(base>=10&&tmax!=null&&tmin12!=null){
-      if(tmax>1&&tmin12<-1){ if(!qDone) add(1,"🧊","Gelo-disgelo: possibile neve dura o crostosa al mattino, si ammorbidisce col sole (firn nelle ore centrali)","Melt-freeze: likely hard or crusty snow in the morning, softens in the sun (corn snow at midday)"); qDone=true; }
-      else if(tmin12>0.5&&tmax>2){ add(2,"💧","Nessun rigelo notturno: neve pesante e bagnata, rischio valanghe bagnate nelle ore calde","No overnight refreeze: heavy wet snow, wet-avalanche risk in the warm hours"); qDone=true; }
+      if(tmax>1&&tmin12<-1){ if(!qDone) add(1,"🧊","Gelo-disgelo: possibile neve dura o crostosa al mattino, si ammorbidisce col sole (firn nelle ore centrali)","Melt-freeze: likely hard or crusty snow in the morning, softens in the sun (corn snow at midday)","Taljenje in zmrzovanje: zjutraj verjetno trd ali skorjast sneg, na soncu se zmehča (opoldne firn)"); qDone=true; }
+      else if(tmin12>0.5&&tmax>2){ add(2,"💧","Nessun rigelo notturno: neve pesante e bagnata, rischio valanghe bagnate nelle ore calde","No overnight refreeze: heavy wet snow, wet-avalanche risk in the warm hours","Ponoči ni zmrznilo: težak moker sneg, v toplih urah nevarnost mokrih plazov"); qDone=true; }
     }
   }
   if(FC){
@@ -1967,42 +1982,42 @@ function renderCond(){
     const isRain=k=>(h.snow_mm?(h.precipitation[k]||0)-(h.snow_mm[k]||0):(h.precipitation[k]||0)-(h.snowfall[k]||0)/0.7)>0.3&&(h.temperature_2m[k]||0)>0.5;
     const rainPast=ps.some(isRain), rainNext=nx12.some(isRain);
     const fog=nx12.filter(k=>h.is_day[k]&&(h.weather_code[k]===45||h.weather_code[k]===48)).length;
-    if(gMax>=COND.gustVHi) add(2,"💨",`Vento molto forte nelle prossime ore (raffiche fino a ${Math.round(gMax)} km/h): creste esposte${LIFTS_ON?", possibili chiusure degli impianti":""}`,`Very strong wind in the coming hours (gusts up to ${Math.round(gMax)} km/h): exposed ridges${LIFTS_ON?", lifts may close":""}`);
-    else if(gMax>=COND.gustHi) add(1,"💨",`Vento forte in quota (raffiche fino a ${Math.round(gMax)} km/h)`,`Strong wind up high (gusts up to ${Math.round(gMax)} km/h)`);
-    if((rainPast||rainNext)&&(base==null||base>=10)) add(2,"🌧️",rainNext?"Pioggia prevista sulla neve: manto appesantito, crosta quando rigela":"Pioggia recente sulla neve: manto appesantito, crosta quando rigela",rainNext?"Rain expected on the snow: heavier snowpack, crust when it refreezes":"Recent rain on the snow: heavier snowpack, crust when it refreezes");
-    if(snowSoon>=COND.snowSoon) add(1,"🌨️",`In arrivo circa +${Math.round(snowSoon)} cm nelle prossime 24 h`,`About +${Math.round(snowSoon)} cm expected in the next 24 h`);
-    if(fog>=3) add(1,"🌫️","Visibilità ridotta (nebbia): orientamento difficile sui pendii aperti","Poor visibility (fog): hard to navigate on open slopes");
+    if(gMax>=COND.gustVHi) add(2,"💨",`Vento molto forte nelle prossime ore (raffiche fino a ${Math.round(gMax)} km/h): creste esposte${LIFTS_ON?", possibili chiusure degli impianti":""}`,`Very strong wind in the coming hours (gusts up to ${Math.round(gMax)} km/h): exposed ridges${LIFTS_ON?", lifts may close":""}`,`Zelo močan veter v prihodnjih urah (sunki do ${Math.round(gMax)} km/h): izpostavljeni grebeni${LIFTS_ON?", možno zaprtje žičnic":""}`);
+    else if(gMax>=COND.gustHi) add(1,"💨",`Vento forte in quota (raffiche fino a ${Math.round(gMax)} km/h)`,`Strong wind up high (gusts up to ${Math.round(gMax)} km/h)`,`Močan veter v višinah (sunki do ${Math.round(gMax)} km/h)`);
+    if((rainPast||rainNext)&&(base==null||base>=10)) add(2,"🌧️",rainNext?"Pioggia prevista sulla neve: manto appesantito, crosta quando rigela":"Pioggia recente sulla neve: manto appesantito, crosta quando rigela",rainNext?"Rain expected on the snow: heavier snowpack, crust when it refreezes":"Recent rain on the snow: heavier snowpack, crust when it refreezes",rainNext?"Napovedan dež na sneg: težja snežna odeja, skorja, ko zmrzne":"Nedavni dež na sneg: težja snežna odeja, skorja, ko zmrzne");
+    if(snowSoon>=COND.snowSoon) add(1,"🌨️",`In arrivo circa +${Math.round(snowSoon)} cm nelle prossime 24 h`,`About +${Math.round(snowSoon)} cm expected in the next 24 h`,`V naslednjih 24 h napovedanih okoli +${Math.round(snowSoon)} cm`);
+    if(fog>=3) add(1,"🌫️","Visibilità ridotta (nebbia): orientamento difficile sui pendii aperti","Poor visibility (fog): hard to navigate on open slopes","Slaba vidljivost (megla): težka orientacija na odprtih pobočjih");
   }
   const BADV={
-    1:[0,"Pericolo 1 · Debole: condizioni generalmente favorevoli, attenzione solo ai pendii estremamente ripidi","Danger 1 · Low: generally favourable, take care only on extremely steep slopes"],
-    2:[1,"Pericolo 2 · Moderato: condizioni per lo più favorevoli, scegli con cura i pendii ripidi alle quote ed esposizioni indicate","Danger 2 · Moderate: mostly favourable, choose steep slopes carefully at the indicated elevations and aspects"],
-    3:[3,"Pericolo 3 · Marcato: situazione critica, evita i pendii ripidi alle quote ed esposizioni indicate, uno alla volta","Danger 3 · Considerable: critical situation, avoid steep slopes at the indicated elevations and aspects, one at a time"],
-    4:[3,"Pericolo 4 · Forte: fuoripista sconsigliato, resta su terreno poco ripido","Danger 4 · High: off-piste not recommended, stay on gentle terrain"],
-    5:[3,"Pericolo 5 · Molto forte: niente fuoripista","Danger 5 · Very high: no off-piste"]};
+    1:[0,"Pericolo 1 · Debole: condizioni generalmente favorevoli, attenzione solo ai pendii estremamente ripidi","Danger 1 · Low: generally favourable, take care only on extremely steep slopes","Nevarnost 1 · Majhna: razmere večinoma ugodne, previdnost le na izjemno strmih pobočjih"],
+    2:[1,"Pericolo 2 · Moderato: condizioni per lo più favorevoli, scegli con cura i pendii ripidi alle quote ed esposizioni indicate","Danger 2 · Moderate: mostly favourable, choose steep slopes carefully at the indicated elevations and aspects","Nevarnost 2 · Zmerna: razmere pretežno ugodne, strma pobočja na navedenih višinah in ekspozicijah izbiraj previdno"],
+    3:[3,"Pericolo 3 · Marcato: situazione critica, evita i pendii ripidi alle quote ed esposizioni indicate, uno alla volta","Danger 3 · Considerable: critical situation, avoid steep slopes at the indicated elevations and aspects, one at a time","Nevarnost 3 · Znatna: kritične razmere, izogibaj se strmim pobočjem na navedenih višinah in ekspozicijah, po eden"],
+    4:[3,"Pericolo 4 · Forte: fuoripista sconsigliato, resta su terreno poco ripido","Danger 4 · High: off-piste not recommended, stay on gentle terrain","Nevarnost 4 · Velika: smučanje izven prog ni priporočljivo, ostani na položnem terenu"],
+    5:[3,"Pericolo 5 · Molto forte: niente fuoripista","Danger 5 · Very high: no off-piste","Nevarnost 5 · Zelo velika: brez smučanja izven prog"]};
   if(BUL&&BADV[BUL.level]&&(base==null||base>=COND.minBase||BUL.level>=3)){
-    const [sv,it,en]=BADV[BUL.level], el2=BUL.elev?` (${BUL.elev})`:"";
-    F.push({sev:sv,ic:"⚠️",t:L2(it,en)+(el2?tr(el2):""),bul:true});
+    const [sv,it,en,sl]=BADV[BUL.level], el2=BUL.elev?` (${BUL.elev})`:"";
+    F.push({sev:sv,ic:"⚠️",t:L2(it,en,sl)+(el2?tr(el2):""),bul:true});
   }
-  else if(BUL&&BUL.level===0&&base!=null&&base>=COND.minBase) add(1,"📋","Bollettino valanghe non disponibile: valuta con prudenza extra","No avalanche bulletin available: be extra careful");
+  else if(BUL&&BUL.level===0&&base!=null&&base>=COND.minBase) add(1,"📋","Bollettino valanghe non disponibile: valuta con prudenza extra","No avalanche bulletin available: be extra careful","Plazovni bilten ni na voljo: bodi še posebej previden");
   F.sort((a,b)=>(b.bul?1:0)-(a.bul?1:0)||b.sev-a.sev);
   const mx=F.length?Math.max(...F.map(f=>f.sev)):0;
   let col,head;
-  if(base!=null&&base<COND.minBase){ col="#9aa3ad"; head=L2(`Neve insufficiente per il fuoripista (${base} cm)`,`Not enough snow for off-piste (${base} cm)`); }
-  else if(BUL&&BUL.level>=4){ col="#ff5a4e"; head=L2("Fuoripista sconsigliato","Off-piste not recommended"); }
-  else if(mx>=3){ col="#ff5a4e"; head=L2("Massima prudenza","Extreme caution"); }
-  else if(mx===2){ col="#ff9e3d"; head=L2("Prudenza","Caution"); }
-  else if(mx===1){ col="#ffd34d"; head=L2("Condizioni discrete","Fair conditions"); }
-  else { col="#7ee081"; head=powder?L2("Powder day!","Powder day!"):L2("Buone condizioni","Good conditions"); }
+  if(base!=null&&base<COND.minBase){ col="#9aa3ad"; head=L2(`Neve insufficiente per il fuoripista (${base} cm)`,`Not enough snow for off-piste (${base} cm)`,`Premalo snega za smučanje izven prog (${base} cm)`); }
+  else if(BUL&&BUL.level>=4){ col="#ff5a4e"; head=L2("Fuoripista sconsigliato","Off-piste not recommended","Smučanje izven prog ni priporočljivo"); }
+  else if(mx>=3){ col="#ff5a4e"; head=L2("Massima prudenza","Extreme caution","Največja previdnost"); }
+  else if(mx===2){ col="#ff9e3d"; head=L2("Prudenza","Caution","Previdnost"); }
+  else if(mx===1){ col="#ffd34d"; head=L2("Condizioni discrete","Fair conditions","Zmerne razmere"); }
+  else { col="#7ee081"; head=powder?L2("Powder day!","Powder day!"):L2("Buone condizioni","Good conditions","Dobre razmere"); }
   el.style.setProperty("--c",col);
   const lvl=BUL&&BUL.level?BUL.level:0, nos=base!=null&&base<COND.minBase;
   const badge=lvl?String(lvl):nos?"⛔":mx>=2?"⚠":"✓";
-  const sub=lvl?L2(`Pericolo valanghe ${lvl} · ${BUL.txt.split(" · ")[1]}`,`Avalanche danger ${lvl} · ${tr(BUL.txt).split(" · ")[1]}`):L2("Bollettino valanghe n.d.","Avalanche bulletin n/a");
+  const sub=lvl?L2(`Pericolo valanghe ${lvl} · ${BUL.txt.split(" · ")[1]}`,`Avalanche danger ${lvl} · ${tr(BUL.txt).split(" · ")[1]}`,`Nevarnost plazov ${lvl} · ${tr(BUL.txt).split(" · ")[1]}`):L2("Bollettino valanghe n.d.","Avalanche bulletin n/a","Plazovni bilten n. p.");
   const EC=["#ccff66","#ffff00","#ff9900","#ff0000","#ff0000"];
   const scale=`<div class="cscale">${[1,2,3,4,5].map(i=>`<span class="${i===lvl?"on":""}" style="--s:${EC[i-1]}">${i}</span>`).join("")}</div>`;
   el.className="cond vc vbc";
   el.innerHTML=`<div class="cbar"><div class="cbadge">${badge}</div><div class="chead"><b>${head}</b><span>${sub}</span></div></div>`+
     scale+(F.length?`<ul>${(F.length>5?F.slice(0,5):F).map(f=>`<li class="s${f.sev}"><i>${f.ic}</i>${f.t}</li>`).join("")}</ul>`:"")+snowModelHTML(snowModel())+
-    `<small>${L2("Stima automatica da stazione Livinal Lunc, modello meteo e bollettino. Non sostituisce il bollettino né la valutazione sul posto.","Automatic estimate from the Livinal Lunc station, weather model and bulletin. It does not replace the bulletin or your own assessment on site.")}</small>`;
+    `<small>${L2("Stima automatica da stazione Livinal Lunc, modello meteo e bollettino. Non sostituisce il bollettino né la valutazione sul posto.","Automatic estimate from the Livinal Lunc station, weather model and bulletin. It does not replace the bulletin or your own assessment on site.","Samodejna ocena iz postaje Livinal Lunc, vremenskega modela in biltena. Ne nadomešča biltena niti lastne ocene na terenu.")}</small>`;
   el.hidden=false;
 }
 
