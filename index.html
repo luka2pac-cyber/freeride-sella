@@ -863,10 +863,8 @@ footer a{color:var(--ice)}
     <button class="fbtn" data-f="1">Facili</button>
     <button class="fbtn" data-f="2">Medie</button>
     <button class="fbtn" data-f="3">Difficili</button>
-    <button class="fbtn vf" data-f="v">▶ Con video</button>
     <button class="fbtn loc" id="locBtn">📍 Dove sono</button>
   </div>
-  <div class="vcall" id="vcall"></div>
   <div class="mapwrap"><div id="map"></div></div>
   <div class="rinfo" id="rinfo"></div>
   <div class="rgroups" id="routes"></div>
@@ -1219,9 +1217,6 @@ function initStatic(){
   });
   lbZoom.init();
   document.documentElement.classList.add("vh-"+VH);
-  { const vr=CONFIG.routes.filter(r=>r.vids);
-    $("vcall").innerHTML=`<span class="ic">▶</span><span><b>${vr.length} linee con video</b> – tocca una linea con <b style="color:#ff6b6b">▶ VIDEO</b> nell'elenco o il filtro «Con video» per vederla girata.</span>`;
-  }
   const zones=[...new Set(CONFIG.routes.map(r=>r.zone))];
   $("routes").innerHTML = zones.map(z=>`<div class="rg" style="--c:${zoneCol[z]||'#777'}"><h3>Freeride ${z}</h3><ol>`+
     CONFIG.routes.filter(r=>r.zone===z).map(r=>{let [t,c]=diffTxt[r.d]; if(r.dt) t=r.dt;
