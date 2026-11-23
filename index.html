@@ -420,7 +420,16 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .hd-b.hv-c .secbanner{margin:-34px -22px 28px}
 @media(max-width:520px){.hd-b main>section{padding:26px 14px 22px;margin:16px 0}.hd-b.hv-c .secbanner{margin:-26px -14px 22px}.hd-b .wrap{padding:0 12px}}
 /* kompaktne glave sekcij na telefonu (v122) */
-@media(max-width:600px){#discese .secbanner{height:120px}#discese .secbanner img{object-position:41% 55%;transform:scale(1.7);transform-origin:41% 58%}}
+@media(max-width:600px){
+  #discese .secbanner{height:220px;margin-bottom:-70px!important}
+  #discese .secbanner img{object-position:28% 50%;transform:scale(1.2);transform-origin:41% 75%}
+  #discese .secbanner::after{background:linear-gradient(180deg,rgba(6,7,8,0) 40%,rgba(6,7,8,.55) 68%,var(--bg-2) 100%)}
+  #discese .secbanner~*{position:relative;z-index:1}
+  #discese .secbanner+.head .sic{display:none}
+  #discese .secbanner+.head .title,#discese .secbanner+.head .eyebrow{text-shadow:0 2px 10px rgba(0,0,0,.85)}
+  .sb-b #discese .secbanner{height:270px;margin-bottom:-74px!important}
+  .sb-b #discese .secbanner img{transform:scale(1.55);transform-origin:41% 72%}
+}
 @media(max-width:600px){.hd-b main>section{padding-top:18px}.hd-b.hv-c .secbanner{margin-top:-18px}.sic{width:42px;height:42px;font-size:21px;margin-bottom:6px;box-shadow:0 0 14px color-mix(in srgb,var(--sc) 30%,transparent)}main .eyebrow{font-size:.8rem;margin-bottom:3px}main .title{font-size:1.4rem;line-height:1.1}main .intro{font-size:.84rem;line-height:1.4;margin-top:6px}main .head,main .fc-head{margin-bottom:12px}.toggle{margin-bottom:10px}.toggle button{padding:5px 14px;font-size:.85rem}}
 
 .toggle{display:inline-flex;border:1px solid var(--line);margin-bottom:14px}
@@ -1068,6 +1077,7 @@ if(LANG!=="it"){
 }
 
 document.documentElement.classList.add("hv-c");
+(function(){var s=new URLSearchParams(location.search).get("sb")||"a";if(/^[ab]$/.test(s))document.documentElement.classList.add("sb-"+s);})();
 (function(){var v=new URLSearchParams(location.search).get("hb")||"f";if(/^[abcf]$/.test(v))document.documentElement.classList.add("hb-"+v);})();
 (function(){var v=new URLSearchParams(location.search).get("hd")||"b";if(!/^[abc]$/.test(v))return;var d=document.documentElement;d.classList.add("hd","hd-"+v);
 var M={neve:["❄️","#5ec8f2"],meteo:["🌤️","#f5b83d"],webcam:["📷","#9fb3c8"],sicurezza:["⚠️","#EE1C25"],discese:["🗺️","#4cc38a"],video:["🎬","#b388ff"],corsi:["🎿","#5ec8f2"],community:["👥","#2f9fd0"],dormire:["🛏️","#2f9fd0"]};
