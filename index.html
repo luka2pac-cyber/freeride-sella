@@ -392,6 +392,10 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .st3 .xtra{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
 .st3 .xtra span{background:rgba(0,0,0,.6);border:1px solid var(--line);padding:5px 10px;font-weight:700;font-size:.9rem}
 .st3 .xtra b{color:var(--ice)}
+.st3 .smaa{display:flex;align-items:center;justify-content:center;gap:8px;margin:8px auto 0;padding:8px 14px;max-width:100%;width:max-content;background:rgba(0,0,0,.6);border:1px solid rgba(94,200,242,.55);border-radius:12px;color:var(--ink);text-decoration:none;font-weight:700;font-size:.85rem;letter-spacing:.03em}
+.st3 .smaa .e{font-size:1.2rem}.st3 .smaa small{white-space:nowrap;color:var(--ice);font-size:.75rem;letter-spacing:.06em}
+.st3 .smaa:hover{border-color:var(--ice)}
+@media(max-width:520px){.st3 .smaa{font-size:.78rem;padding:7px 10px;width:auto}}
 .st3 .xtra .pwA{background:linear-gradient(135deg,#5ec8f2,#2f6fff);color:#04121c;border:0;border-radius:12px;padding:9px 16px;font-size:1.1rem;white-space:nowrap;animation:pwG 1.8s ease-in-out infinite}
 .st3 .xtra .pwA b{color:#fff;font-size:1.3em}
 .st3 .xtra .pwA small{display:block;text-align:center;font-size:.75em;color:#04121c;opacity:.85;margin-top:2px}
@@ -2174,9 +2178,10 @@ loadKanin();
     var I1=v==="c"?"":"❄ ",I2=v==="c"?"":"🌡 ",I3=v==="c"?"":"💨 ";var R=function(e,nm,sub,sn,t,w){return '<div class="row">'+(v==="c"?'<span class="e">'+e+'</span>':'')+'<span class="nm">'+nm+'<small>'+sub+'</small></span><span class="v">'+I1+'<b>'+sn+'</b></span><span class="v t">'+I2+'<b>'+t+'</b></span>'+(w!==undefined?'<span class="v w">'+I3+'<b>'+w+'</b></span>':(v==="b"?'':'<span class="v w"></span>'))+'</div>'};
     var r1=R("🏔️","Kanin SLO","2260 m",kS,kT,kW), r2=R("⛰️","Canin IT","1837 m",lS,lT,lW+(lW!=="–"?AR(ldd):"")), r3=R("🌲","Sella Nevea","1180 m",vS,vT);
     var x='<div class="xtra"><span>Nuova 24 h <b>'+n24+'</b></span><span>💨 km/h · 1837 m</span></div>';
-    if(v==="a") box.innerHTML='<div class="grp"><div class="gh"><span class="e">⛰️</span>In quota</div>'+r1+r2+'</div><div class="grp"><div class="gh"><span class="e">🌲</span>A valle</div>'+r3+'</div>'+pwX(n24);
-    else if(v==="b") box.innerHTML='<div class="cols"><div class="grp"><div class="gh"><span class="e">⛰️</span>In quota</div>'+r1+r2+'</div><div class="grp"><div class="gh"><span class="e">🌲</span>A valle</div>'+r3+'</div></div>'+pwX(n24);
-    else box.innerHTML='<div class="grp"><div class="hd"><span></span><span>Neve</span><span>Temp.</span><span>Vento km/h</span></div>'+r1+r2+'<div class="sep"></div>'+r3.replace('class="row"','class="row" style="border-top:0"')+'</div>'+pwX(n24);
+    var SMAL='<a class="smaa" href="https://www.aametsoc.org/alpi-giulie-meteo-lab/conca-prevala-meteo" target="_blank" rel="noopener"><span class="e">🥶</span><span>'+L2('Inversione? Prevala 1787 m','Inversion? Prevala 1787 m','Inverzija? Prevala 1787 m')+'</span><small>SMAA ↗</small></a>';
+    if(v==="a") box.innerHTML='<div class="grp"><div class="gh"><span class="e">⛰️</span>In quota</div>'+r1+r2+'</div><div class="grp"><div class="gh"><span class="e">🌲</span>A valle</div>'+r3+'</div>'+pwX(n24)+SMAL;
+    else if(v==="b") box.innerHTML='<div class="cols"><div class="grp"><div class="gh"><span class="e">⛰️</span>In quota</div>'+r1+r2+'</div><div class="grp"><div class="gh"><span class="e">🌲</span>A valle</div>'+r3+'</div></div>'+pwX(n24)+SMAL;
+    else box.innerHTML='<div class="grp"><div class="hd"><span></span><span>Neve</span><span>Temp.</span><span>Vento km/h</span></div>'+r1+r2+'<div class="sep"></div>'+r3.replace('class="row"','class="row" style="border-top:0"')+'</div>'+pwX(n24)+SMAL;
   }
   new MutationObserver(function(){clearTimeout(draw3.t);draw3.t=setTimeout(draw3,150)}).observe(chips,{subtree:true,childList:true,characterData:true});
   setTimeout(draw3,3000);
