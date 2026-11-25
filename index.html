@@ -308,6 +308,34 @@ a.chip:hover{border-color:var(--ice)}
 .mtA .c[data-i]:hover{background-color:rgba(94,200,242,.08)}
 .mt-leg{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.74rem;color:var(--muted);margin:8px 4px 0}
 .mt-tip{font-size:.78rem;color:var(--ice);text-align:center;margin:8px 0 4px;font-family:var(--display);letter-spacing:.05em;text-transform:uppercase}
+/* Meteo pro B/C (25. 11. 2026) */
+.mtP{padding:6px 8px 8px;column-gap:0;grid-template-columns:86px repeat(5,minmax(0,1fr))}
+.mtP .r{height:44px;margin:0;border-bottom:1px solid rgba(255,255,255,.07)}
+.mtP .r.hd{height:44px}.mtP .r.ic{height:38px;font-size:1.5rem;border-bottom:0}.mtP .r.sm{height:30px}
+.mtP .ml{padding-left:2px;font-size:.62rem;color:#8b96a0;gap:1px}.mtP .ml b{font-size:.72rem;font-weight:600;color:#dfe6ec;letter-spacing:.01em}
+.mtP .c{border-radius:0;gap:2px}
+.mtP .c.td{background:rgba(94,200,242,.05)}
+.mtP .col-on{box-shadow:none;background:rgba(94,200,242,.13)!important}
+.mtP .dn{font-family:var(--display);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:#fff}
+.mtP .hd small{font-size:.62rem;color:#8b96a0}
+.mtP .v{font-size:1rem}.mtP .t{font-family:var(--display);font-weight:600;font-size:.92rem;color:#e8eef3;font-variant-numeric:tabular-nums}
+.mtP .tmn{font-size:.72rem;color:#9fd6f5}
+.mtP .u{font-style:normal;font-size:.6rem;font-weight:600;color:#9aa7b2;margin-left:2px;letter-spacing:.02em}
+.mtP .nd{color:#5c6670}
+.mtP .sl{opacity:.45;margin:0 1px}
+.mtP .rn{color:#8fb4ff}
+.mtP .pb{display:block;width:70%;max-width:46px;height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden}.mtP .pb i{display:block;height:100%;background:#5ec8f2}.mtP .pb.sb i{background:#e3b93c}
+.mtP .r.sn{height:64px}.mtP .sp{width:calc(100% - 6px);height:54px;border-radius:9px;background:rgba(255,255,255,.04);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}.mtP .sn .v{font-size:1.3rem;line-height:1}
+.mtP .srg{font-size:.6rem;color:#e3f1fb;white-space:nowrap}
+.mtP .r.ob{height:40px;border-bottom:0}.mtP .obtn{border:0;color:var(--ice);padding:6px 0;font-size:.74rem}.mtP .col-on .obtn{background:none;color:#fff}
+.mtC .r.bch{height:104px;border-bottom:1px solid rgba(255,255,255,.07)}
+.mtC .bc{position:relative;width:100%;height:100%}
+.mtC .bb{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);width:44%;max-width:34px;border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,#8fdcff,#2f8fd8)}.mtC .bb.z{background:rgba(255,255,255,.15)}
+.mtC .wk{position:absolute;left:50%;width:0;border-left:2px solid rgba(255,255,255,.75);transform:translateX(-1px)}
+.mtC .wk::before,.mtC .wk::after{content:"";position:absolute;left:-6px;width:10px;border-top:2px solid rgba(255,255,255,.75)}.mtC .wk::before{top:0}.mtC .wk::after{bottom:0}
+.mtC .bl{position:absolute;left:0;right:0;text-align:center;font-family:var(--display);font-weight:700;font-size:1.05rem;color:#fff}
+.mtC .lg{display:flex;flex-wrap:wrap;gap:2px 6px;align-items:center}.mtC .lg i{display:inline-block;width:8px;height:8px;margin-right:2px;border-radius:2px}.mtC .lg .k1{background:#5ec8f2}.mtC .lg .k2{width:2px;height:9px;background:#fff;border-radius:0}
+@media(max-width:420px){.mtP{grid-template-columns:70px repeat(5,minmax(0,1fr));padding:4px 4px 6px}.mtP .ml b{font-size:.66rem}.mtP .ml{font-size:.56rem}.mtP .t{font-size:.84rem}.mtP .dn{font-size:.78rem}}
 
 @media(max-width:600px){.fcol .wi{font-size:1.9rem}.fcol .dn{font-size:.9rem}.fcol .tt{font-size:1.05rem;height:60px}.fcol .snw{font-size:1.05rem}.fcol .ex{font-size:.66rem}}
 .day{background:var(--bg-2);border:1px solid var(--line);padding:16px 14px;text-align:center;position:relative}
@@ -1715,7 +1743,8 @@ function renderHours(){
   const sc=box.querySelector(".fh-scroll"); sc.scrollLeft=FSEL===0?Math.max(0,(new Date().getHours()-1)*55):7*55;
 }
 /* ===== Meteo varianti ?mt=a|b|c ===== */
-const MT=(new URLSearchParams(location.search).get("mt")||"a").toLowerCase()==="x"?"":"a"; // ?mt=x = stari trak
+const MTV=(new URLSearchParams(location.search).get("mt")||"a").toLowerCase(); // ?mt=a|b|c (25. 11. 2026 varianti), ?mt=x = stari trak
+const MT=MTV==="x"?"":"a";
 function mtDay(i){
   const d=FC.daily,h=FC.hourly,t=d.time[i],dt=new Date(t+"T12:00"),sn=d.snowfall_sum[i]||0,pr=d.precipitation_sum[i]||0;
   const fz=h.time.map((x,k)=>[x,h.freezing_level_height[k]]).filter(([x])=>x.startsWith(t)&&+x.slice(11,13)>=6&&+x.slice(11,13)<=18).map(a=>a[1]);
@@ -1730,10 +1759,38 @@ function mtDay(i){
     sun:Math.round((d.sunshine_duration[i]||0)/3600),fz:fz.length?Math.round(Math.max(...fz)/50)*50:null,
     get ic(){return dayIcon(this.i);}};
 }
+/* Meteo – "pro" varianti B (čista tabela) in C (graf snega) – 25. 11. 2026 */
+function wCol(g){return g>=70?"#ff6b6b":g>=50?"#ff9f5a":g>=30?"#f2c94c":"#e8eef3";}
+function renderMTpro(el,D){
+  const C=MTV==="c", top=Math.max(1,...D.map(x=>Math.max(x.sn,x.rng?x.rng[1]:0)));
+  const lab=(a,b,cls)=>`<div class="ml r ${cls}"><b>${a}</b>${b?`<span>${b}</span>`:""}</div>`;
+  const row=(cls,lb,f)=>lab(...lb,cls)+D.map(x=>{const o=f(x);return `<div class="c r ${cls}${x.i===FSEL?" col-on":""}${x.i===0?" td":""}" data-i="${x.i}"${o.st?` style="${o.st}"`:""}>${o.h}</div>`}).join("");
+  const dash=`<span class="nd">–</span>`, cm=`<i class="u">cm</i>`;
+  const snowB=row("sn",[L2("Neve nuova","New snow","Novi sneg"),L2("cm · ↕ modelli","cm · ↕ models","cm · ↕ modeli")],x=>({h:`<div class="sp"${x.sn>=1?` style="background:${snowCol(x.sn,0,1)}"`:""}><span class="v">${x.snT}<i class="u">cm</i></span><small class="srg">${x.rng?`↕ ${x.rng[0]}–${x.rng[1]} cm`:"&nbsp;"}</small></div>`}));
+  const bar=x=>{const h=v=>Math.round(58*Math.min(1,v/top)), b=h(x.sn), hi=x.rng?Math.max(b,h(x.rng[1])):b;
+    const wk=x.rng?`<i class="wk" style="bottom:${h(x.rng[0])+14}px;height:${Math.max(2,h(x.rng[1])-h(x.rng[0]))}px"></i>`:"";
+    return {h:`<div class="bc"><i class="bb${x.sn>=1?"":" z"}" style="height:${Math.max(2,b)}px"></i>${wk}<span class="bl" style="bottom:${hi+17}px">${x.snT}<i class="u">cm</i></span></div>`};};
+  const snowC=row("bch",[L2("Neve nuova","New snow","Novi sneg"),`<span class="lg"><i class="k1"></i>ECMWF <i class="k2"></i>${L2("modelli","models","modeli")}</span>`],bar)+
+    row("sm",[L2("Modelli","Models","Modeli"),"min–max, cm"],x=>({h:x.rng?`<span class="t">${x.rng[0]}–${x.rng[1]} cm</span>`:dash}));
+  el.innerHTML=`<div class="mtA mtP${C?" mtC":""}">`+
+    row("hd",["",""],x=>({h:`<span class="dn">${x.name}</span><small>${x.date}</small>`}))+
+    row("ic",["",""],x=>({h:x.ic}))+
+    row("",[L2("Temperatura","Temperature","Temperatura"),"max / min °C"],x=>({h:`<span class="v tmx">${x.tx}°</span><small class="tmn">${x.tn}°</small>`}))+
+    (C?snowC:snowB)+
+    row("",[L2("Probabilità","Probability","Verjetnost"),L2("precipitazioni","precipitation","padavin")],x=>({h:`<span class="t">${x.prob}%</span><i class="pb"><i style="width:${x.prob}%"></i></i>`}))+
+    row("",[L2("Pioggia","Rain","Dež"),"mm"],x=>{const r=x.rain>=0.1?x.rain:0;return {h:r?`<span class="t rn">${r.toFixed(r<10?1:0)} mm</span>`:dash};})+
+    row("",[L2("Vento","Wind","Veter"),L2("km/h · raffiche","km/h · gusts","km/h · sunki")],x=>({h:`<span class="t" style="color:${wCol(x.g)}">${x.w}<span class="sl">/</span>${x.g}</span><small>${x.arr} ${x.dir}</small>`}))+
+    row("",[L2("Sole","Sun","Sonce"),L2("ore","hours","ure")],x=>({h:`<span class="t"${x.sun?"":' style="color:#777"'}>${x.sun} h</span><i class="pb sb"><i style="width:${Math.min(100,x.sun/9*100)}%"></i></i>`}))+
+    row("",[L2("Zero termico","0 °C level","Meja 0 °C"),L2("quota","altitude","višina")],x=>({h:x.fz!=null?`<span class="t">${x.fz} m</span>`:dash}))+
+    row("ob",["",""],x=>({h:`<span class="obtn">${L2("Ore","Hours","Ure")} ${x.i===FSEL?"▴":"▾"}</span>`}))+
+    `</div><div class="mt-tip">${L2("Tocca un giorno per la previsione oraria","Tap a day for the hourly forecast","Tapni dan za urno napoved")}</div>`;
+  el.querySelectorAll(".c[data-i]").forEach(c=>c.onclick=()=>mtSel(+c.dataset.i));
+}
 function mtSel(i){ FSEL=FSEL===i?-1:i; renderMT(); renderHours(); }
 function renderMT(){
   const el=$("fstrip"), n=FC.daily.time.length, D=[...Array(n).keys()].map(mtDay);
   el.style.cssText="display:block;background:none;border:0;padding:0"; el.className="mtA-wrap";
+  if(MTV==="b"||MTV==="c") return renderMTpro(el,D);
   {
     const lab=(a,b,cls)=>`<div class="ml r ${cls}"><b>${a}</b>${b?b:""}</div>`;
     const row=(cls,lb,f)=>lab(...lb,cls)+D.map(x=>`<div class="c r ${cls}${x.i===FSEL?" col-on":""}" data-i="${x.i}" ${f(x).st?`style="${f(x).st}"`:""}>${f(x).h}</div>`).join("");
@@ -1742,7 +1799,7 @@ function renderMT(){
       row("ic",["",""],x=>({h:x.ic}))+
       row("",["🌡️ °C","max min"],x=>({h:`<span class="v"><span class="tmx">${x.tx}°</span> <span class="tmn">${x.tn}°</span></span>`}))+
       row("sn",["❄️ "+L2("Neve","Snow","Sneg"),L2("nuova, cm","new, cm","novi, cm")],x=>({h:`<span class="v">${x.snT}</span><small>cm</small>`,st:`background:${snowCol(x.sn,0,1)}`}))+
-      row("sm",[L2("Modelli","Models","Modeli"),"min–max"],x=>({h:`<small style="color:#9cc7ea">${x.rng?x.rng[0]+"–"+x.rng[1]:"–"}</small>`}))+
+      row("sm",[L2("Modelli","Models","Modeli"),L2("min–max, cm","min–max, cm","min–max, cm")],x=>({h:`<small style="color:#9cc7ea">${x.rng?x.rng[0]+"–"+x.rng[1]+" cm":"–"}</small>`}))+
       row("sm",["💧 "+L2("Prob.","Prob.","Verj."),L2("precipit.","precip.","padavin")],x=>({h:`<span class="v" style="font-size:.9rem">${x.prob}%</span>`}))+
       row("",["🌧️ "+L2("Pioggia","Rain","Dež"),"mm"],x=>{const r=x.rain>=0.1?x.rain:0; return {h:r?`<span class="v" style="font-size:.95rem">${r.toFixed(r<10?1:0)}</span><small>mm</small>`:`<span class="v" style="font-size:.95rem;color:#666">–</span>`,st:r?`background:rgba(60,90,200,${(.3+.6*Math.min(1,r/10)).toFixed(2)})`:""};})+
       row("",["💨 "+L2("Vento","Wind","Veter"),L2("km/h · raff.","km/h · gust","km/h · sunki")],x=>({h:`<span class="v" style="font-size:.95rem">${x.w}<span style="opacity:.6">/</span>${x.g}</span><small>${x.arr} ${x.dir}</small>`,st:`background:${windCol(x.g)}`}))+
