@@ -325,8 +325,6 @@ a.chip:hover{border-color:var(--ice)}
 .mtP .sl{opacity:.45;margin:0 1px}
 .mtP .rn{color:#8fb4ff}
 .mtP .pb{display:block;width:70%;max-width:46px;height:3px;border-radius:2px;background:rgba(255,255,255,.08);overflow:hidden}.mtP .pb i{display:block;height:100%;background:#5ec8f2}.mtP .pb.sb i{background:#e3b93c}
-.mtP .r.sn{height:64px}.mtP .sp{width:calc(100% - 6px);height:54px;border-radius:9px;background:rgba(255,255,255,.04);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}.mtP .sn .v{font-size:1.3rem;line-height:1}
-.mtP .srg{font-size:.6rem;color:#e3f1fb;white-space:nowrap}
 .mtP .r.ob{height:40px;border-bottom:0}.mtP .obtn{border:0;color:var(--ice);padding:6px 0;font-size:.74rem}.mtP .col-on .obtn{background:none;color:#fff}
 .mtC .r.bch{height:104px;border-bottom:1px solid rgba(255,255,255,.07)}
 .mtC .bc{position:relative;width:100%;height:100%}
@@ -334,6 +332,9 @@ a.chip:hover{border-color:var(--ice)}
 .mtC .wk{position:absolute;left:50%;width:0;border-left:2px solid rgba(255,255,255,.75);transform:translateX(-1px)}
 .mtC .wk::before,.mtC .wk::after{content:"";position:absolute;left:-6px;width:10px;border-top:2px solid rgba(255,255,255,.75)}.mtC .wk::before{top:0}.mtC .wk::after{bottom:0}
 .mtC .bl{position:absolute;left:0;right:0;text-align:center;font-family:var(--display);font-weight:700;font-size:1.05rem;color:#fff}
+.mtC .bb.bm{background:repeating-linear-gradient(135deg,#e8f6ff 0 4px,#bfe6fb 4px 8px);z-index:1}
+.mtC .bms{position:absolute;left:0;right:0;bottom:0;text-align:center;font-size:.56rem;color:#cfe6f7;white-space:nowrap;line-height:1}
+.fc-live{margin:8px 2px 2px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:rgba(94,200,242,.05);font-size:.74rem;line-height:1.45;color:#b9c4cd;display:flex;flex-direction:column;gap:3px}.fc-live b{color:#fff}
 .mtC .lg{display:flex;flex-wrap:wrap;gap:2px 6px;align-items:center}.mtC .lg i{display:inline-block;width:8px;height:8px;margin-right:2px;border-radius:2px}.mtC .lg .k1{background:#5ec8f2}.mtC .lg .k2{width:2px;height:9px;background:#fff;border-radius:0}
 @media(max-width:420px){.mtP{grid-template-columns:70px repeat(5,minmax(0,1fr));padding:4px 4px 6px}.mtP .ml b{font-size:.66rem}.mtP .ml{font-size:.56rem}.mtP .t{font-size:.84rem}.mtP .dn{font-size:.78rem}}
 
@@ -1128,6 +1129,7 @@ const CONFIG = {
     url: "https://api.open-meteo.com/v1/forecast?latitude=46.3743&longitude=13.4703&elevation=1837&daily=weather_code,temperature_2m_max,temperature_2m_min,snowfall_sum,precipitation_sum,wind_gusts_10m_max,wind_speed_10m_max,wind_direction_10m_dominant,sunshine_duration,precipitation_probability_max&hourly=sunshine_duration,freezing_level_height,temperature_2m,weather_code,precipitation,snowfall,precipitation_probability,wind_speed_10m,wind_direction_10m,wind_gusts_10m,is_day&timezone=Europe%2FRome&forecast_days=5",
     past: "https://api.open-meteo.com/v1/forecast?latitude=46.3743&longitude=13.4703&elevation=1837&hourly=temperature_2m,sunshine_duration,snowfall,rain,wind_gusts_10m,wind_direction_10m&timezone=GMT&past_days=7&forecast_days=2",
     bergfex: "https://www.bergfex.com/sella-nevea/wetter/berg/",
+    json: "https://raw.githubusercontent.com/luka2pac-cyber/freeride-sella/data/forecast.json", // GitHub Action vsako uro (branch data)
     // multi-model (alta risoluzione per le Alpi) solo per precipitazioni/neve
     ens: "https://api.open-meteo.com/v1/forecast?latitude=46.3743&longitude=13.4703&elevation=1837&hourly=temperature_2m,precipitation&models=ecmwf_ifs,dwd_icon_d2_native,italia_meteo_arpae_icon_2i,meteoswiss_icon_ch2,dmi_harmonie_arome_europe,dwd_icon_eu_native&timezone=Europe%2FRome&forecast_days=5",
     low: { lat: 46.3880, lon: 13.4825, elev: 1180 }, // Sella Nevea paese (Luka, 22. 11. 2026)
@@ -1318,7 +1320,7 @@ async function load(){
   const to=new Date(), from=new Date(to.getTime()-170*3600e3), s=CONFIG.station.sensors;
   try{
     const [snow,temp,wind,gust,dir]=await Promise.all([s.snow,s.temp,s.wind,s.gust,s.dir].map(id=>getSensor(id,from,to)));
-    DATA={snow,temp,wind,gust,dir}; render(); renderPowder(); renderCond();
+    DATA={snow,temp,wind,gust,dir}; render(); renderPowder(); if(FCRAW){ try{ buildTop(); }catch(x){ console.error(x); } } renderCond();
   }catch(e){ console.error(e); $("err").style.display="block"; STFAIL=true; renderCond(); }
 }
 const last=a=>a.length?a[a.length-1]:null;
@@ -1546,12 +1548,23 @@ const WMO={0:["☀️","Sereno"],1:["🌤️","Quasi sereno"],2:["⛅","Parz. nu
  61:["🌧️","Pioggia debole"],63:["🌧️","Pioggia"],65:["🌧️","Pioggia forte"],66:["🌧️","Pioggia gelata"],67:["🌧️","Pioggia gelata"],
  71:["🌨️","Neve debole"],73:["🌨️","Neve"],75:["❄️","Neve forte"],77:["🌨️","Nevischio"],80:["🌦️","Rovesci"],81:["🌧️","Rovesci"],82:["⛈️","Rovesci forti"],
  85:["🌨️","Rovesci di neve"],86:["❄️","Rovesci di neve forti"],95:["⛈️","Temporale"],96:["⛈️","Temporale"],99:["⛈️","Temporale"]};
+let FCRAW=null; // surovi odgovor Open-Meteo (Canin 1837 m); buildTop() ga obdela znova, ko pridejo meritve postaje
 async function loadForecast(){
   $("bfLink").href=CONFIG.forecast.bergfex;
   try{
-    const [j,e]=await Promise.all([fetch(CONFIG.forecast.url).then(r=>r.json()),fetch(CONFIG.forecast.ens).then(r=>r.ok?r.json():null).catch(()=>null)]);
+    const [j,e,at]=await fcGetTop();
+    if(!j||!j.daily) throw new Error("fc");
+    FCRAW={j,e,at}; buildTop();
+  }catch(e){ console.error(e); $("days").innerHTML=`<p class="meta">Previsioni non disponibili. <a href="${CONFIG.forecast.bergfex}" target="_blank" rel="noopener" style="color:var(--ice)">Vedi su bergfex</a></p>`; }
+}
+function buildTop(){
+  {
+    const j=JSON.parse(JSON.stringify(FCRAW.j)), e=FCRAW.e?JSON.parse(JSON.stringify(FCRAW.e)):null;
+    j.fetchedAt=FCRAW.at;
     const d=j.daily, h=j.hourly;
+    try{ fcCorrect(j,e); }catch(x){ console.error(x); }
     try{ applyEns(j,e); }catch(x){ console.error(x); }
+    try{ fcToday(j); }catch(x){ console.error(x); }
     let tot=0;
     $("days").innerHTML=d.time.slice(0,4).map((t,i)=>{
       const dt=new Date(t+"T12:00"), sn=Math.round((d.snowfall_sum[i]||0)*10)/10;
@@ -1568,13 +1581,81 @@ async function loadForecast(){
         <li>Raffiche <b>${Math.round(d.wind_gusts_10m_max[i])} km/h</b></li>
         ${fz.length?(()=>{const a=Math.round(Math.min(...fz)/50)*50,b=Math.round(Math.max(...fz)/50)*50;return `<li>Zero termico <b>${a===b?a:a+"–"+b} m</b></li>`})():""}</ul></div>`;
     }).join("");
-    FC=j; FCTOP=j; renderCond(); if(FCV==="new"){ $("days").hidden=true; $("fstrip").hidden=false; renderStrip(); }
+    FCTOP=j; if(FALT!=="low") FC=j; renderCond(); if(FCV==="new"&&FALT!=="low"){ $("days").hidden=true; $("fstrip").hidden=false; const keep=FSEL; renderStrip(); if(keep>=0){FSEL=keep;renderStrip();renderHours();} }
     $("mini").innerHTML=d.time.slice(0,4).map((t,i)=>{const dt=new Date(t+"T12:00"),sn=d.snowfall_sum[i]||0;
       return `<div><span class="md">${i===0?"Oggi":dt.toLocaleDateString(LOC,{weekday:"short"})}</span><br><span class="mi">${dayIcon(i)}</span><br><span class="ms">${sn>=1?"+"+Math.round(sn):sn>0?"&lt;1":"0"} cm</span><br><span class="mt">${Math.round(d.temperature_2m_max[i])}°/${Math.round(d.temperature_2m_min[i])}°</span></div>`}).join("");
-    $("fcTot").innerHTML=`Neve prevista prossimi 3 giorni: <b>${tot>0&&tot<1?"&lt;1":Math.round(tot)} cm</b>`;
-  }catch(e){ console.error(e); $("days").innerHTML=`<p class="meta">Previsioni non disponibili. <a href="${CONFIG.forecast.bergfex}" target="_blank" rel="noopener" style="color:var(--ice)">Vedi su bergfex</a></p>`; }
+    if(FALT!=="low") $("fcTot").innerHTML=`Neve prevista prossimi 3 giorni: <b>${tot>0&&tot<1?"&lt;1":Math.round(tot)} cm</b>`;
+  }
 }
 
+/* ===== Napoved v realnem času (Luka 25. 11. 2026) =====
+   fcGetTop: najprej forecast.json (GitHub Action vsako uro), sicer neposredno Open-Meteo.
+   fcCorrect: temperatura vsakega modela popravljena za razliko z meritvijo postaje Livinal Lunc (zadnjih 6 h), popravek pojenja v 24 h.
+   fcToday: danes = izmerjen novi sneg od polnoči (postaja) + napoved za preostale ure. */
+let FJ=null;
+async function fcJson(){
+  if(FJ!==null) return FJ;
+  try{ const r=await fetch(CONFIG.forecast.json+"?t="+Math.floor(Date.now()/6e5),{cache:"no-store"}); const x=r.ok?await r.json():null;
+    FJ=(x&&x.generated&&Date.now()-Date.parse(x.generated)<3*3600e3)?x:false; }catch(e){ FJ=false; }
+  return FJ;
+}
+async function fcGetTop(){
+  const x=await fcJson();
+  if(x&&x.top&&x.top.daily) return [x.top,x.ens||null,Date.parse(x.generated)];
+  const [j,e]=await Promise.all([fetch(CONFIG.forecast.url).then(r=>r.json()),fetch(CONFIG.forecast.ens).then(r=>r.ok?r.json():null).catch(()=>null)]);
+  return [j,e,Date.now()];
+}
+function omT(str,off){ return Date.parse(str+":00Z")-(off||0)*1000; }
+function stAvg(a,t,win){ const v=a.filter(x=>Math.abs(x.t-t)<=win).map(x=>x.v).filter(v=>v!=null&&isFinite(v)); return v.length?v.reduce((p,c)=>p+c,0)/v.length:null; }
+function fcBias(times,off,T,obs,now){
+  let s=0,n=0;
+  times.forEach((t,k)=>{ const tt=omT(t,off); if(tt>now||tt<now-6*3600e3||T[k]==null) return; const m=stAvg(obs,tt,20*60e3); if(m==null) return; s+=m-T[k]; n++; });
+  return n>=3?Math.max(-5,Math.min(5,s/n)):null;
+}
+function fcCorrect(j,e){
+  if(!DATA||!DATA.temp||!DATA.temp.length) return;
+  const now=Date.now(), obs=DATA.temp; if(now-obs[obs.length-1].t>3*3600e3) return;
+  const w=tt=>tt<=now?1:Math.max(0,1-(tt-now)/(24*3600e3));
+  const h=j.hourly, off=j.utc_offset_seconds||0, corr={models:{}};
+  const b=fcBias(h.time,off,h.temperature_2m,obs,now);
+  if(b!=null){ corr.bm=b;
+    h.time.forEach((t,k)=>{ const f=w(omT(t,off)); if(!f) return; h.temperature_2m[k]+=b*f; if(h.freezing_level_height[k]!=null) h.freezing_level_height[k]+=b*f*154; });
+    j.daily.time.forEach((day,i)=>{ const v=h.time.map((t,k)=>t.startsWith(day)?h.temperature_2m[k]:null).filter(x=>x!=null); if(v.length>=20&&i<2){ j.daily.temperature_2m_max[i]=Math.max(...v); j.daily.temperature_2m_min[i]=Math.min(...v); } }); }
+  if(e&&e.hourly){ const H=e.hourly, oe=e.utc_offset_seconds||0;
+    Object.keys(CONFIG.forecast.ensNames).forEach(m=>{ const T=H["temperature_2m_"+m]; if(!T) return; const bm=fcBias(H.time,oe,T,obs,now); if(bm==null) return;
+      corr.models[m]=bm; H.time.forEach((t,k)=>{ const f=w(omT(t,oe)); if(f&&T[k]!=null) T[k]+=bm*f; }); }); }
+  if(corr.bm!=null||Object.keys(corr.models).length) j.corr=corr;
+}
+function fcToday(j){
+  if(!DATA||!DATA.snow||DATA.snow.length<8) return;
+  const now=Date.now(), off=j.utc_offset_seconds||0, sn=DATA.snow, d=j.daily, h=j.hourly;
+  if(now-sn[sn.length-1].t>3*3600e3) return;
+  const mid=omT(d.time[0]+"T00:00",off), since=sn.filter(x=>x.t>=mid&&x.v!=null);
+  if(since.length<6) return;
+  const sm=since.map((x,k)=>medA(since.slice(Math.max(0,k-2),k+3).map(y=>y.v))); // drseča mediana (šum senzorja)
+  const cur=medA(sn.filter(x=>x.t>now-3600e3).map(x=>x.v).filter(v=>v!=null))??sm[sm.length-1];
+  const meas=Math.max(0,cur-Math.min(...sm));
+  const fut=h.time.reduce((a,t,k)=>t.startsWith(d.time[0])&&omT(t,off)>=now-1800e3?a+(h.snowfall[k]||0):a,0);
+  d.snowfall_sum[0]=meas+fut;
+  const L={meas,fut,at:sn[sn.length-1].t};
+  if(j.ens&&j.ens.days[0]&&j.ensPer){ const P=j.ensPer, by={};
+    Object.keys(j.ens.days[0].by).forEach(m=>{ by[m]=meas+P.time.reduce((a,t,k)=>t.startsWith(d.time[0])&&omT(t,P.off)>=now-1800e3&&P.per[m][k]?a+P.per[m][k].s:a,0); });
+    const vs=Object.values(by); if(vs.length>=2) Object.assign(j.ens.days[0],{by,min:Math.min(...vs),max:Math.max(...vs)}); }
+  j.live=L;
+}
+function fcLiveNote(){
+  if(!FC||FC!==FCTOP) return "";
+  const f=v=>(v>=0?"+":"−")+Math.abs(v).toFixed(1).replace(".",LANG==="en"?".":",");
+  const hm=t=>new Date(t).toLocaleTimeString(LOC,{hour:"2-digit",minute:"2-digit"});
+  const p=[];
+  if(FC.live){ const L=FC.live, m=Math.round(L.meas), u=Math.round(L.fut);
+    p.push(`📡 <b>${L2("Oggi","Today","Danes")}:</b> ${L2(`${m} cm misurati dalla mezzanotte (Livinal Lunc, ${hm(L.at)}) + ${u} cm previsti per le ore restanti`,`${m} cm measured since midnight (Livinal Lunc, ${hm(L.at)}) + ${u} cm forecast for the remaining hours`,`${m} cm izmerjeno od polnoči (Livinal Lunc, ${hm(L.at)}) + ${u} cm napoved za preostale ure`)}`); }
+  if(FC.corr){ const C=FC.corr, M=CONFIG.forecast.ensMain, oth=Object.entries(C.models).filter(([m])=>m!==M&&FC.ens&&FC.ens.models.includes(m)).map(([,v])=>v), main=C.models[M]??C.bm;
+    const a=oth.length?Math.min(...oth):0, z=oth.length?Math.max(...oth):0, rg=oth.length?` (${L2("altri modelli","other models","ostali modeli")} ${f(a)}${f(a)===f(z)?"":"…"+f(z)})`:"";
+    if(main!=null) p.push(`🌡️ ${L2("Temperatura corretta con la stazione (ultime 6 h, svanisce in 24 h)","Temperature corrected with the station (last 6 h, fades over 24 h)","Temperatura popravljena po meritvah postaje (zadnjih 6 h, pojenja v 24 h)")}: ECMWF <b>${f(main)} °C</b>${rg}`); }
+  if(FC.fetchedAt) p.push(`🕒 ${L2("Previsione aggiornata alle","Forecast updated at","Napoved osvežena ob")} ${hm(FC.fetchedAt)}`);
+  return p.length?`<div class="fc-live">${p.map(x=>`<div>${x}</div>`).join("")}</div>`:"";
+}
 // Neve da più modelli: frazione neve e densità dalla temperatura a 1837 m (stima)
 function snowFrac(T){ return T<=0.5?1:T>=2?0:(2-T)/1.5; }
 function snowRatio(T){ return T>-2?1.0:T>-6?1.2:1.4; } // cm di neve per mm d'acqua
@@ -1619,7 +1700,7 @@ function applyEns(j,e,elv){
     const sm=ks.reduce((a,k)=>a+hm[k],0), ss=ks.reduce((a,k)=>a+hs[k],0);
     fit(hp,pr[i]); fit(hs,sn[i]); if(ss>0) ks.forEach(k=>hm[k]*=sn[i]/ss); });
   d.snowfall_sum=sn; d.precipitation_sum=pr; d.rain_sum=rn; h.snowfall=hs; h.precipitation=hp; h.snow_mm=hm;
-  j.ens={models,days};
+  j.ens={models,days}; j.ensPer={per,time:H.time,off:e.utc_offset_seconds||0};
   j.ensNote=own?L2(`Neve, pioggia e precipitazioni a ${elv} m: valori dei modelli (Open-Meteo «snowfall»), ECMWF come valore principale (se manca: mediana); sotto il valore ↕ l'intervallo min–max di ${models.length} modelli (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}).`,`Snow, rain and precipitation at ${elv} m: model values (Open-Meteo «snowfall»), ECMWF as main value (if missing: median); below the value ↕ the min–max range of ${models.length} models (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}).`,`Sneg, dež in padavine na ${elv} m: vrednosti modelov (Open-Meteo «snowfall»), ECMWF kot glavna vrednost (če manjka: mediana); pod vrednostjo ↕ razpon min–max ${models.length} modelov (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}).`):L2(`Neve e precipitazioni: modello ECMWF (se manca: mediana dei modelli), quota ${elv} m; sotto il valore ↕ l'intervallo min–max di ${models.length} modelli (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}). Vento, sole e temperatura: Open-Meteo best match. Stima indicativa.`,`Snow and precipitation: ECMWF model (if missing: median of the models), elevation ${elv} m; below the value ↕ the min–max range of ${models.length} models (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}). Wind, sun and temperature: Open-Meteo best match. Indicative estimate.`,`Sneg in padavine: model ECMWF (če manjka: mediana modelov), višina ${elv} m; pod vrednostjo ↕ razpon min–max ${models.length} modelov (${models.map(m=>CONFIG.forecast.ensNames[m]).join(", ")}). Veter, sonce in temperatura: Open-Meteo best match. Okvirna ocena.`);
   const nt=$("fcNote"); if(nt&&elv===1837) nt.textContent=j.ensNote;
 }
@@ -1657,7 +1738,7 @@ function fcShow(){
 }
 async function fcSetAlt(a){
   FALT=a; if(a==="top"){ FC=FCTOP; fcShow(); return; }
-  if(!FCLOW){ fcShow(); try{ const [j,e]=await Promise.all([fetch(fcLowUrl(CONFIG.forecast.url)).then(r=>r.json()),fetch(fcLowUrl(CONFIG.forecast.ens).replace("hourly=temperature_2m,precipitation","hourly=temperature_2m,precipitation,snowfall")).then(r=>r.ok?r.json():null).catch(()=>null)]);
+  if(!FCLOW){ fcShow(); try{ const x=await fcJson(); const [j,e]=(x&&x.low&&x.low.daily)?[JSON.parse(JSON.stringify(x.low)),x.lowEns?JSON.parse(JSON.stringify(x.lowEns)):null]:await Promise.all([fetch(fcLowUrl(CONFIG.forecast.url)).then(r=>r.json()),fetch(fcLowUrl(CONFIG.forecast.ens).replace("hourly=temperature_2m,precipitation","hourly=temperature_2m,precipitation,snowfall")).then(r=>r.ok?r.json():null).catch(()=>null)]);
       if(!j.daily) throw 0;
       // quota 0 °C = proprietà dell'atmosfera, uguale per Canin e paese → prendila dalla previsione di Canin (Luka 22. 11.)
       if(FCTOP&&FCTOP.hourly){ const T={}; FCTOP.hourly.time.forEach((t,k)=>T[t]=FCTOP.hourly.freezing_level_height[k]); j.hourly.freezing_level_height=j.hourly.time.map((t,k)=>T[t]!=null?T[t]:j.hourly.freezing_level_height[k]); }
@@ -1743,8 +1824,7 @@ function renderHours(){
   const sc=box.querySelector(".fh-scroll"); sc.scrollLeft=FSEL===0?Math.max(0,(new Date().getHours()-1)*55):7*55;
 }
 /* ===== Meteo varianti ?mt=a|b|c ===== */
-const MTV=(new URLSearchParams(location.search).get("mt")||"a").toLowerCase(); // ?mt=a|b|c (25. 11. 2026 varianti), ?mt=x = stari trak
-const MT=MTV==="x"?"":"a";
+const MT=(new URLSearchParams(location.search).get("mt")||"").toLowerCase()==="x"?"":"a"; // tabela C (Luka izbral 25. 11. 2026); ?mt=x = stari trak
 function mtDay(i){
   const d=FC.daily,h=FC.hourly,t=d.time[i],dt=new Date(t+"T12:00"),sn=d.snowfall_sum[i]||0,pr=d.precipitation_sum[i]||0;
   const fz=h.time.map((x,k)=>[x,h.freezing_level_height[k]]).filter(([x])=>x.startsWith(t)&&+x.slice(11,13)>=6&&+x.slice(11,13)<=18).map(a=>a[1]);
@@ -1759,56 +1839,38 @@ function mtDay(i){
     sun:Math.round((d.sunshine_duration[i]||0)/3600),fz:fz.length?Math.round(Math.max(...fz)/50)*50:null,
     get ic(){return dayIcon(this.i);}};
 }
-/* Meteo – "pro" varianti B (čista tabela) in C (graf snega) – 25. 11. 2026 */
+/* Meteo – tabela C (graf snega + razpon modelov), Luka izbral 25. 11. 2026 */
 function wCol(g){return g>=70?"#ff6b6b":g>=50?"#ff9f5a":g>=30?"#f2c94c":"#e8eef3";}
 function renderMTpro(el,D){
-  const C=MTV==="c", top=Math.max(1,...D.map(x=>Math.max(x.sn,x.rng?x.rng[1]:0)));
+  const top=Math.max(1,...D.map(x=>Math.max(x.sn,x.rng?x.rng[1]:0)));
   const lab=(a,b,cls)=>`<div class="ml r ${cls}"><b>${a}</b>${b?`<span>${b}</span>`:""}</div>`;
   const row=(cls,lb,f)=>lab(...lb,cls)+D.map(x=>{const o=f(x);return `<div class="c r ${cls}${x.i===FSEL?" col-on":""}${x.i===0?" td":""}" data-i="${x.i}"${o.st?` style="${o.st}"`:""}>${o.h}</div>`}).join("");
   const dash=`<span class="nd">–</span>`, cm=`<i class="u">cm</i>`;
-  const snowB=row("sn",[L2("Neve nuova","New snow","Novi sneg"),L2("cm · ↕ modelli","cm · ↕ models","cm · ↕ modeli")],x=>({h:`<div class="sp"${x.sn>=1?` style="background:${snowCol(x.sn,0,1)}"`:""}><span class="v">${x.snT}<i class="u">cm</i></span><small class="srg">${x.rng?`↕ ${x.rng[0]}–${x.rng[1]} cm`:"&nbsp;"}</small></div>`}));
   const bar=x=>{const h=v=>Math.round(58*Math.min(1,v/top)), b=h(x.sn), hi=x.rng?Math.max(b,h(x.rng[1])):b;
     const wk=x.rng?`<i class="wk" style="bottom:${h(x.rng[0])+14}px;height:${Math.max(2,h(x.rng[1])-h(x.rng[0]))}px"></i>`:"";
-    return {h:`<div class="bc"><i class="bb${x.sn>=1?"":" z"}" style="height:${Math.max(2,b)}px"></i>${wk}<span class="bl" style="bottom:${hi+17}px">${x.snT}<i class="u">cm</i></span></div>`};};
-  const snowC=row("bch",[L2("Neve nuova","New snow","Novi sneg"),`<span class="lg"><i class="k1"></i>ECMWF <i class="k2"></i>${L2("modelli","models","modeli")}</span>`],bar)+
+    const ms=x.i===0&&FC===FCTOP&&FC.live?Math.min(b,h(FC.live.meas)):0; // izmerjeni del (danes)
+    return {h:`<div class="bc"><i class="bb${x.sn>=1?"":" z"}" style="height:${Math.max(2,b)}px"></i>${ms>0?`<i class="bb bm" style="height:${ms}px"></i>`:""}${wk}<span class="bl" style="bottom:${hi+17}px">${x.snT}<i class="u">cm</i></span>${x.i===0&&FC===FCTOP&&FC.live?`<span class="bms">📡 ${Math.round(FC.live.meas)} ${L2("mis.","meas.","izm.")}</span>`:""}</div>`};};
+  const snow=row("bch",[L2("Neve nuova","New snow","Novi sneg"),`<span class="lg"><i class="k1"></i>ECMWF <i class="k2"></i>${L2("modelli","models","modeli")}</span>`],bar)+
     row("sm",[L2("Modelli","Models","Modeli"),"min–max, cm"],x=>({h:x.rng?`<span class="t">${x.rng[0]}–${x.rng[1]} cm</span>`:dash}));
-  el.innerHTML=`<div class="mtA mtP${C?" mtC":""}">`+
+  el.innerHTML=`<div class="mtA mtP mtC">`+
     row("hd",["",""],x=>({h:`<span class="dn">${x.name}</span><small>${x.date}</small>`}))+
     row("ic",["",""],x=>({h:x.ic}))+
     row("",[L2("Temperatura","Temperature","Temperatura"),"max / min °C"],x=>({h:`<span class="v tmx">${x.tx}°</span><small class="tmn">${x.tn}°</small>`}))+
-    (C?snowC:snowB)+
+    snow+
     row("",[L2("Probabilità","Probability","Verjetnost"),L2("precipitazioni","precipitation","padavin")],x=>({h:`<span class="t">${x.prob}%</span><i class="pb"><i style="width:${x.prob}%"></i></i>`}))+
     row("",[L2("Pioggia","Rain","Dež"),"mm"],x=>{const r=x.rain>=0.1?x.rain:0;return {h:r?`<span class="t rn">${r.toFixed(r<10?1:0)} mm</span>`:dash};})+
     row("",[L2("Vento","Wind","Veter"),L2("km/h · raffiche","km/h · gusts","km/h · sunki")],x=>({h:`<span class="t" style="color:${wCol(x.g)}">${x.w}<span class="sl">/</span>${x.g}</span><small>${x.arr} ${x.dir}</small>`}))+
     row("",[L2("Sole","Sun","Sonce"),L2("ore","hours","ure")],x=>({h:`<span class="t"${x.sun?"":' style="color:#777"'}>${x.sun} h</span><i class="pb sb"><i style="width:${Math.min(100,x.sun/9*100)}%"></i></i>`}))+
     row("",[L2("Zero termico","0 °C level","Meja 0 °C"),L2("quota","altitude","višina")],x=>({h:x.fz!=null?`<span class="t">${x.fz} m</span>`:dash}))+
     row("ob",["",""],x=>({h:`<span class="obtn">${L2("Ore","Hours","Ure")} ${x.i===FSEL?"▴":"▾"}</span>`}))+
-    `</div><div class="mt-tip">${L2("Tocca un giorno per la previsione oraria","Tap a day for the hourly forecast","Tapni dan za urno napoved")}</div>`;
+    `</div><div class="mt-tip">${L2("Tocca un giorno per la previsione oraria","Tap a day for the hourly forecast","Tapni dan za urno napoved")}</div>`+fcLiveNote();
   el.querySelectorAll(".c[data-i]").forEach(c=>c.onclick=()=>mtSel(+c.dataset.i));
 }
 function mtSel(i){ FSEL=FSEL===i?-1:i; renderMT(); renderHours(); }
 function renderMT(){
   const el=$("fstrip"), n=FC.daily.time.length, D=[...Array(n).keys()].map(mtDay);
   el.style.cssText="display:block;background:none;border:0;padding:0"; el.className="mtA-wrap";
-  if(MTV==="b"||MTV==="c") return renderMTpro(el,D);
-  {
-    const lab=(a,b,cls)=>`<div class="ml r ${cls}"><b>${a}</b>${b?b:""}</div>`;
-    const row=(cls,lb,f)=>lab(...lb,cls)+D.map(x=>`<div class="c r ${cls}${x.i===FSEL?" col-on":""}" data-i="${x.i}" ${f(x).st?`style="${f(x).st}"`:""}>${f(x).h}</div>`).join("");
-    el.innerHTML=`<div class="mtA">`+
-      row("hd",["",""],x=>({h:`<span class="v">${x.name}</span><small>${x.date}</small>`}))+
-      row("ic",["",""],x=>({h:x.ic}))+
-      row("",["🌡️ °C","max min"],x=>({h:`<span class="v"><span class="tmx">${x.tx}°</span> <span class="tmn">${x.tn}°</span></span>`}))+
-      row("sn",["❄️ "+L2("Neve","Snow","Sneg"),L2("nuova, cm","new, cm","novi, cm")],x=>({h:`<span class="v">${x.snT}</span><small>cm</small>`,st:`background:${snowCol(x.sn,0,1)}`}))+
-      row("sm",[L2("Modelli","Models","Modeli"),L2("min–max, cm","min–max, cm","min–max, cm")],x=>({h:`<small style="color:#9cc7ea">${x.rng?x.rng[0]+"–"+x.rng[1]+" cm":"–"}</small>`}))+
-      row("sm",["💧 "+L2("Prob.","Prob.","Verj."),L2("precipit.","precip.","padavin")],x=>({h:`<span class="v" style="font-size:.9rem">${x.prob}%</span>`}))+
-      row("",["🌧️ "+L2("Pioggia","Rain","Dež"),"mm"],x=>{const r=x.rain>=0.1?x.rain:0; return {h:r?`<span class="v" style="font-size:.95rem">${r.toFixed(r<10?1:0)}</span><small>mm</small>`:`<span class="v" style="font-size:.95rem;color:#666">–</span>`,st:r?`background:rgba(60,90,200,${(.3+.6*Math.min(1,r/10)).toFixed(2)})`:""};})+
-      row("",["💨 "+L2("Vento","Wind","Veter"),L2("km/h · raff.","km/h · gust","km/h · sunki")],x=>({h:`<span class="v" style="font-size:.95rem">${x.w}<span style="opacity:.6">/</span>${x.g}</span><small>${x.arr} ${x.dir}</small>`,st:`background:${windCol(x.g)}`}))+
-      row("sm",["☀️ "+L2("Sole","Sun","Sonce"),L2("ore","hours","ure")],x=>({h:`<span class="v" style="font-size:.95rem;color:${x.sun?"#1b1b1b":"#777"}">${x.sun} h</span>`,st:x.sun?`background:rgba(216,179,58,${(.35+.65*Math.min(1,x.sun/8)).toFixed(2)})`:""}))+
-      row("sm",["0 °C",L2("quota m","level m","višina m")],x=>({h:`<span class="v" style="font-size:.9rem">${x.fz??"–"}</span>`}))+
-      row("ob",["",""],x=>({h:`<span class="obtn">${x.i===FSEL?"▲":"▼"} ${L2("Ore","Hours","Ure")}</span>`}))+
-      `</div><div class="mt-tip">👆 ${L2("Tocca un giorno per la previsione oraria","Tap a day for the hourly forecast","Tapni dan za urno napoved")}</div>`;
-    el.querySelectorAll(".c[data-i]").forEach(c=>c.onclick=()=>mtSel(+c.dataset.i));
-  }
+  renderMTpro(el,D);
 }
 window.addEventListener("resize",()=>{if(FC&&FCV==="new"&&!MT)renderStrip();});
 
@@ -1861,7 +1923,7 @@ async function loadBulletin(){
 /* ===== Neve stimata per esposizione (modello semplice, solo indicativo) ===== */
 let FCP=null;
 async function loadPast(){
-  try{ const j=await (await fetch(CONFIG.forecast.past)).json(); const h=j.hourly;
+  try{ const x=await fcJson(); const j=(x&&x.past&&x.past.hourly)?x.past:await (await fetch(CONFIG.forecast.past)).json(); const h=j.hourly;
     FCP=h.time.map((t,k)=>({t:new Date(t+"Z"),T:h.temperature_2m[k],sun:(h.sunshine_duration[k]||0)/3600,sn:h.snowfall[k]||0,rn:h.rain[k]||0,g:h.wind_gusts_10m[k]||0,d:h.wind_direction_10m[k]}));
     renderCond();
   }catch(e){ console.error(e); }

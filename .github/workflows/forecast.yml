@@ -1,0 +1,29 @@
+name: Napoved Open-Meteo (forecast.json)
+# Vsako uro: Open-Meteo -> forecast.json na branchu "data" (en sam commit, brez rasti zgodovine) + arhiv za primerjavo modelov.
+on:
+  schedule:
+    - cron: "23 * * * *"
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [".github/scripts/forecast.py", ".github/workflows/forecast.yml"]
+permissions:
+  contents: write
+concurrency: forecast
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prenesi branch data
+        run: |
+          mkdir data && cd data && git init -q
+          git fetch -q --depth=1 "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" data && git checkout -q FETCH_HEAD || echo "branch data še ne obstaja"
+      - run: python3 .github/scripts/forecast.py data
+      - name: Objavi na branch data
+        run: |
+          cd data
+          git checkout -q --orphan snap
+          git add -A
+          git -c user.name="forecast-bot" -c user.email="forecast-bot@users.noreply.github.com" commit -qm "Napoved $(date -u +%FT%H:%MZ)"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" HEAD:refs/heads/data
