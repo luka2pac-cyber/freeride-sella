@@ -516,6 +516,40 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .st3 .xtra .pwVd .big{background:linear-gradient(100deg,#0d3f9e 0%,#2f9fff 40%,#e8f7ff 50%,#2f9fff 60%,#0d3f9e 100%);background-size:250% 100%;-webkit-background-clip:text;background-clip:text;animation:pwShine 2s linear infinite}
 @keyframes pwShine{from{background-position:120% 0}to{background-position:-120% 0}}
 .st3 .xtra .pwVd{animation:pwRing 1.3s ease-in-out infinite}@keyframes pwRing{50%{box-shadow:0 0 0 6px #2f9fff,0 6px 40px rgba(94,200,242,1)}}
+
+/* freeride stil e–h */
+.st3 .xtra .pwVe{background:#0a0a0a;color:#fff;border-radius:4px;transform:skewX(-10deg);padding:6px 18px;border:2px solid #fff;box-shadow:6px 6px 0 #00e5ff;animation:pwJolt 2.4s ease-in-out infinite}
+.pwVe>*{transform:skewX(10deg)}
+.st3 .xtra .pwVe .spray{position:absolute;right:-10px;top:-8px;width:120px;height:80px;opacity:.28;animation:pwPuff 1.2s ease-out infinite alternate}
+.st3 .xtra .pwVe .t em{font-family:'Ultra',var(--display);font-size:2rem;letter-spacing:.02em;color:#fff;text-shadow:3px 3px 0 #00e5ff;font-style:italic;mix-blend-mode:normal}
+.st3 .xtra .pwVe .t i{color:#00e5ff;font-style:italic}
+.st3 .xtra .pwVe .cm b{font-size:2rem;font-style:italic;color:#00e5ff;text-shadow:0 0 12px #00e5ff}
+@keyframes pwJolt{0%,86%,100%{transform:skewX(-10deg) translate(0)}88%{transform:skewX(-10deg) translate(-3px,1px)}90%{transform:skewX(-10deg) translate(3px,-1px)}92%{transform:skewX(-10deg) translate(-2px,0)}}
+@keyframes pwPuff{from{transform:scale(.9);opacity:.6}to{transform:scale(1.08);opacity:1}}
+.st3 .xtra .pwVf{background:linear-gradient(180deg,#0b1a2e,#123a66);color:#fff;border-radius:12px;padding:6px 16px;min-height:72px;border:2px solid #ff2e88;box-shadow:0 0 18px rgba(255,46,136,.5);animation:pwPink 1.5s ease-in-out infinite}
+.st3 .xtra .pwVf .ridge,.st3 .xtra .pwVf .line{position:absolute;left:0;right:0;bottom:0;width:100%;height:100%}
+.st3 .xtra .pwVf .line path{animation:pwDash 1s linear infinite}
+@keyframes pwDash{to{stroke-dashoffset:-22}}
+@keyframes pwPink{50%{box-shadow:0 0 34px rgba(255,46,136,1)}}
+.st3 .xtra .pwVf .t{margin-top:-18px}
+.st3 .xtra .pwVf .t em{font-size:1.35rem;font-style:italic;letter-spacing:.04em;color:#fff;text-shadow:0 2px 6px #000}
+.st3 .xtra .pwVf .t i{color:#ffd1e6;text-shadow:0 1px 3px #000}
+.st3 .xtra .pwVf .cm{margin-top:-18px}.st3 .xtra .pwVf .cm b{font-size:1.9rem;font-style:italic;color:#ff2e88;text-shadow:0 0 1px #fff,0 2px 6px #000}
+.st3 .xtra .pwVg{background:none;padding:4px 0;flex-direction:column;justify-content:center;gap:4px}
+.st3 .xtra .pwVg .tape{display:flex;width:92%;box-sizing:border-box;justify-content:space-between;align-items:baseline;gap:12px;background:#d7ff00;color:#000;padding:8px 22px;transform:rotate(-3deg);clip-path:polygon(2% 0,98% 4%,100% 50%,97% 100%,3% 96%,0 50%);box-shadow:0 0 0 0;animation:pwSlap 1.6s ease-in-out infinite;filter:drop-shadow(4px 4px 0 #000)}
+.st3 .xtra .pwVg .tape em{font-family:'Ultra',var(--display);font-size:1.7rem;font-style:normal;letter-spacing:.02em;color:#000}
+.st3 .xtra .pwVg .tape b{font-size:1.8rem;color:#000}
+.st3 .xtra .pwVg .t{align-items:center}.st3 .xtra .pwVg .t i{color:#d7ff00}
+@keyframes pwSlap{0%,100%{transform:rotate(-3deg) scale(1)}50%{transform:rotate(-1deg) scale(1.06)}}
+.st3 .xtra .pwVh{background:linear-gradient(100deg,#fff 0 38%,#e6f4fb 38% 100%);color:#000;border-radius:6px;padding:6px 16px 6px 6px;border:3px solid #000;box-shadow:5px 5px 0 #ff5a1f}
+.st3 .xtra .pwVh .spray{position:absolute;left:4px;top:-4px;width:110px;height:76px;animation:pwPuff .9s ease-out infinite alternate}
+.st3 .xtra .pwVh .spray circle{fill:#cfe6f2}
+.st3 .xtra .pwVh .rider{width:54px;height:54px;flex:0 0 auto;margin-left:36px;animation:pwRide 1s ease-in-out infinite alternate}
+.st3 .xtra .pwVh .t{flex-direction:row;flex-wrap:wrap;align-items:baseline;justify-content:flex-end;gap:8px;flex:1}
+.st3 .xtra .pwVh .t em{font-family:'Ultra',var(--display);font-size:1.2rem;font-style:normal;letter-spacing:.02em;color:#000}
+.st3 .xtra .pwVh .t b{font-size:1.9rem;font-style:italic;color:#ff5a1f}
+.st3 .xtra .pwVh .t i{width:100%;text-align:right;color:#333}
+@media(max-width:380px){.st3 .xtra .pwVe .t em{font-size:1.6rem}.st3 .xtra .pwVg .tape em{font-size:1.35rem}.st3 .xtra .pwVh .rider{margin-left:20px}}
 @media(max-width:380px){.pwVd .big{font-size:1.5rem}.st3 .xtra .pwVa .t em{font-size:1.05rem}.pwVa .pwf{width:38px;height:38px}}
 @keyframes pwG{0%,100%{box-shadow:0 0 10px rgba(94,200,242,.5)}50%{box-shadow:0 0 28px rgba(94,200,242,1)}}
 /* b: due box affiancati */
@@ -2515,18 +2549,26 @@ loadKanin();
     var bs=(typeof DATA!=="undefined"&&DATA&&DATA.snow&&DATA.snow.length)?Math.round(DATA.snow[DATA.snow.length-1].v):null;
     var low=bs!=null&&bs<50?'<small>(poca base · '+bs+' cm)</small>':'';
     var dd=Math.max(1,Math.round(PWD.ageH/24)), tot=Math.round(PWD.spanH+PWD.ageH), ag=PWD.ageH>=24?L2(dd+(dd===1?" giorno fa":" giorni fa"),dd+(dd===1?" day ago":" days ago"),"pred "+dd+(dd===1?" dnevom":" dnevi")):tot<=24?L2("ultime 24 h","last 24 h","zadnjih 24 h"):L2("ultime "+tot+" h","last "+tot+" h","zadnjih "+tot+" h");
-    var V=(new URLSearchParams(location.search).get("pw")||"").replace(/[^abcd]/g,"").slice(0,1);
+    var V=(new URLSearchParams(location.search).get("pw")||"").replace(/[^a-h]/g,"").slice(0,1);
     if(V) return '<div class="xtra">'+pwV(V,cm,ag,low)+SMC()+'</div>';
     return '<div class="xtra"><span class="pwA">❄️ POWDER! <b>'+cm+'</b> · '+ag+low+'</span>'+SMC()+'</div>';
   }
   // variante znaka POWDER (Luka 26. 11.): ?pw=a|b|c|d
   var FLAKE='<svg class="pwf" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">'+[0,60,120].map(function(r){return '<g transform="rotate('+r+' 24 24)"><path d="M24 3v42"/><path d="M24 11l-5-5M24 11l5-5M24 37l-5 5M24 37l5 5M24 18l-7-4M24 18l7-4M24 30l-7 4M24 30l7 4"/></g>'}).join('')+'</g><circle cx="24" cy="24" r="3.2" fill="currentColor"/></svg>';
   var SKIER='<svg class="pws" viewBox="0 0 120 56" aria-hidden="true"><g fill="#fff"><circle cx="9" cy="40" r="7" opacity=".55"/><circle cx="20" cy="33" r="9" opacity=".7"/><circle cx="34" cy="28" r="10" opacity=".85"/><circle cx="47" cy="31" r="7" opacity=".9"/><circle cx="4" cy="30" r="3" opacity=".5"/><circle cx="14" cy="22" r="3.5" opacity=".6"/><circle cx="26" cy="16" r="2.5" opacity=".6"/></g><g fill="none" stroke="#04121c" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M70 16l-6 13 9 7-3 12"/><path d="M64 29l-9 4"/><path d="M68 20l12 3"/><path d="M50 50l38-6"/></g><circle cx="75" cy="10" r="5" fill="#04121c"/></svg>';
+  var RIDGE='<svg class="ridge" viewBox="0 0 300 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 70V52l28-14 18 8 30-30 14 10 22-22 26 26 12-6 34 30 20-8 30 18 26-10 40 18V70z" fill="#fff"/><path d="M0 70V60l40-10 30 6 40-18 30 12 40-8 50 14 30-4 40 10V70z" fill="#cfe9f7"/></svg>';
+  var LINE='<svg class="line" viewBox="0 0 300 70" preserveAspectRatio="none" aria-hidden="true"><path d="M112 8c6 10-14 14-6 24s22 6 14 18-24 8-12 20" fill="none" stroke="#ff2e88" stroke-width="3" stroke-linecap="round" stroke-dasharray="5 6"/></svg>';
+  var SPRAY='<svg class="spray" viewBox="0 0 120 70" aria-hidden="true"><g fill="#fff">'+[[20,50,14],[38,40,16],[55,30,13],[30,22,9],[70,44,12],[12,32,7],[48,14,6],[78,24,7],[62,58,9],[88,36,6],[8,58,8],[96,50,5]].map(function(c){return '<circle cx="'+c[0]+'" cy="'+c[1]+'" r="'+c[2]+'"/>'}).join('')+'</g></svg>';
+  var RIDER='<svg class="rider" viewBox="0 0 60 60" aria-hidden="true"><g fill="none" stroke="#000" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M34 14l-8 14 10 8-4 12"/><path d="M26 28l-11 3"/><path d="M33 19l13 1"/><path d="M8 54l44-8"/></g><circle cx="38" cy="8" r="5.5" fill="#000"/></svg>';
   function pwV(V,cm,ag,low){
     var sub='<i>'+ag+'</i>'+low, num=cm.replace(" cm",""), dots='<span class="pwdots" aria-hidden="true"></span>';
     if(V==="a") return '<span class="pwV pwVa">'+dots+FLAKE+'<span class="t"><em>Powder day</em><i>'+ag+'</i>'+low+'</span><span class="cm"><b>'+num+'</b><u>cm</u></span></span>';
     if(V==="b") return '<span class="pwV pwVb"><svg class="drift" viewBox="0 0 400 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40V22c40-14 70-16 110-6s70 12 110-2 80-16 120-4 40 10 60 6V40z" fill="#fff"/></svg>'+SKIER+'<span class="t"><em>Powder!</em><b>'+cm+'</b><i>'+ag+'</i>'+low+'</span></span>';
     if(V==="c") return '<span class="pwV pwVc"><span class="t"><em>❄ Powder alert ❄</em><i>'+ag+'</i>'+low+'</span><span class="seal"><b>'+num+'</b><u>cm</u></span></span>';
+    if(V==="e") return '<span class="pwV pwVe">'+'<span class="pwdots" aria-hidden="true"></span>'+'<span class="t"><em>Powder</em><i>'+ag+'</i>'+low+'</span><span class="cm"><b>'+cm+'</b></span></span>';
+    if(V==="f") return '<span class="pwV pwVf">'+RIDGE+LINE+'<span class="t"><em>Fresh lines</em><i>'+ag+'</i>'+low+'</span><span class="cm"><b>'+cm+'</b></span></span>';
+    if(V==="g") return '<span class="pwV pwVg"><span class="tape"><em>Deep day</em><b>'+cm+'</b></span><span class="t"><i>'+ag+'</i>'+low+'</span></span>';
+    if(V==="h") return '<span class="pwV pwVh">'+SPRAY+RIDER+'<span class="t"><em>Face shots</em><b>'+cm+'</b><i>'+ag+'</i>'+low+'</span></span>';
     return '<span class="pwV pwVd">'+dots+'<span class="big">POWDER</span><span class="cm"><b>'+cm+'</b><i>'+ag+'</i>'+low+'</span></span>';
   }
 
