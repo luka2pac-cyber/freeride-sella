@@ -2527,5 +2527,20 @@ setInterval(loadForecast,60*60e3);
 setInterval(loadPast,60*60e3);
 </script>
 <script>try{var _pv=new URLSearchParams(location.search).get("pv");if(_pv)document.documentElement.classList.add("pv-"+_pv)}catch(e){}</script>
+<script>
+/* Sneženje čez hero – PRIMEREK, samo z ?snow=1 */
+(function(){if(!/[?&]snow=1/.test(location.search))return;
+if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+var h=document.querySelector('.hero');if(!h)return;
+var c=document.createElement('canvas');c.style.cssText='position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3';
+h.appendChild(c);var x=c.getContext('2d'),W,H,F=[],d=window.devicePixelRatio||1;
+function rs(){W=h.offsetWidth;H=h.offsetHeight;c.width=W*d;c.height=H*d;x.setTransform(d,0,0,d,0,0)}
+rs();addEventListener('resize',rs);
+var N=Math.round(Math.min(90,W/8));
+for(var i=0;i<N;i++)F.push({x:Math.random()*W,y:Math.random()*H,r:.8+Math.random()*2.2,v:.3+Math.random()*.8,w:Math.random()*6.28,o:.35+Math.random()*.5});
+(function t(){x.clearRect(0,0,W,H);for(var i=0;i<F.length;i++){var f=F[i];f.y+=f.v;f.w+=.015;f.x+=Math.sin(f.w)*.35;
+if(f.y>H+5){f.y=-5;f.x=Math.random()*W}x.beginPath();x.arc(f.x,f.y,f.r,0,6.283);x.fillStyle='rgba(255,255,255,'+f.o+')';x.fill()}
+requestAnimationFrame(t)})();})();
+</script>
 </body>
 </html>
