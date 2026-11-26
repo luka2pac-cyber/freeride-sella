@@ -1957,6 +1957,12 @@ function sunFac(m){ // m 0-11
 const ASP=["N","E","S","O"], ASPN={N:["Nord","North","Sever"],E:["Est","East","Vzhod"],S:["Sud","South","Jug"],O:["Ovest","West","Zahod"]};
 function aspOf(deg){ return ASP[Math.round(((deg%360)+360)%360/90)%4]; }
 function hourly(arr,mult){ const m={}; (arr||[]).forEach(x=>{const k=Math.floor(x.t/3600e3);(m[k]=m[k]||[]).push(x.v*(mult||1));}); return m; }
+// dež zgoraj samo, če ga potrdi postaja 541: temperatura > 1 °C in višina snega ne raste (sicer je snežilo)
+function stTempAt(tt){ if(!DATA||!DATA.temp||!DATA.temp.length) return null; const v=DATA.temp.filter(x=>Math.abs(x.t-tt)<=40*60e3).map(x=>x.v); return v.length?median(v):null; }
+function stSnowRose(tt){ if(!DATA||!DATA.snow||DATA.snow.length<8) return false;
+  const med=(a,b)=>{const v=DATA.snow.filter(x=>x.t>=a&&x.t<b).map(x=>x.v); return v.length?median(v):null;};
+  const b=med(tt-3*3600e3,tt-3600e3), a=med(tt+3600e3,tt+3*3600e3); return b!=null&&a!=null&&a-b>=1; }
+function stRainOk(tt){ const T=stTempAt(tt); if(T!=null&&T<=1) return false; if(stSnowRose(tt)) return false; return true; }
 function snowModel(){
   if(!DATA||!DATA.snow.length) return null;
   const now=Date.now(), base=Math.round(DATA.snow[DATA.snow.length-1].v);
@@ -1987,7 +1993,7 @@ function snowModel(){
     n++; tmax=Math.max(tmax,x.T);
     ASP.forEach(a=>{ if(x.T>-3) sunW[a]+=x.sun*fac[a]; else sunC[a]+=x.sun*fac[a]; });
     if(x.T>0) warm+=x.T;
-    if(x.rn>0.2&&x.T>0.5) rain=true;
+    if(x.rn>0.2&&x.T>1&&stRainOk(k*H+H/2)) rain=true;
   }
   if(!n) return null;
   const from=(windVec[0]||windVec[1])?(Math.atan2(windVec[0],windVec[1])*180/Math.PI+360)%360:null;
@@ -2137,8 +2143,8 @@ function renderCond(){
     const nx12=rng(k0,k0+12), nx24=rng(k0,k0+24), ps=rng(k0-24,k0);
     const gMax=Math.max(0,...nx12.map(k=>h.wind_gusts_10m[k]||0));
     const snowSoon=nx24.reduce((a,k)=>a+(h.snowfall[k]||0),0);
-    const isRain=k=>(h.snow_mm?(h.precipitation[k]||0)-(h.snow_mm[k]||0):(h.precipitation[k]||0)-(h.snowfall[k]||0)/0.7)>0.3&&(h.temperature_2m[k]||0)>0.5;
-    const rainPast=ps.some(isRain), rainNext=nx12.some(isRain);
+    const isRain=k=>(h.snow_mm?(h.precipitation[k]||0)-(h.snow_mm[k]||0):(h.precipitation[k]||0)-(h.snowfall[k]||0)/0.7)>0.3&&(h.temperature_2m[k]||0)>1;
+    const off=FC.utc_offset_seconds||0, rainPast=ps.some(k=>isRain(k)&&stRainOk(omT(h.time[k],off)+1800e3)), rainNext=nx12.some(isRain);
     const fog=nx12.filter(k=>h.is_day[k]&&(h.weather_code[k]===45||h.weather_code[k]===48)).length;
     if(gMax>=COND.gustVHi) add(2,"💨",`Vento molto forte nelle prossime ore (raffiche fino a ${Math.round(gMax)} km/h): creste esposte${LIFTS_ON?", possibili chiusure degli impianti":""}`,`Very strong wind in the coming hours (gusts up to ${Math.round(gMax)} km/h): exposed ridges${LIFTS_ON?", lifts may close":""}`,`Zelo močan veter v prihodnjih urah (sunki do ${Math.round(gMax)} km/h): izpostavljeni grebeni${LIFTS_ON?", možno zaprtje žičnic":""}`);
     else if(gMax>=COND.gustHi) add(1,"💨",`Vento forte in quota (raffiche fino a ${Math.round(gMax)} km/h)`,`Strong wind up high (gusts up to ${Math.round(gMax)} km/h)`,`Močan veter v višinah (sunki do ${Math.round(gMax)} km/h)`);
