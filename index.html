@@ -464,19 +464,9 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .st3 .xtra .pwA{background:linear-gradient(135deg,#5ec8f2,#2f6fff);color:#04121c;border:0;border-radius:12px;padding:9px 16px;font-size:1.1rem;white-space:nowrap;animation:pwG 1.8s ease-in-out infinite}
 .st3 .xtra .pwA b{color:#fff;font-size:1.3em}
 .st3 .xtra .pwA small{display:block;text-align:center;font-size:.75em;color:#04121c;opacity:.85;margin-top:2px}
-/* POWDER – večji napis na obstoječem pasu (?pw=a|b|c) */
-.st3 .xtra .pwN{display:flex;flex-direction:column;align-items:center;line-height:1;padding:8px 18px 9px;white-space:nowrap}
-.st3 .xtra .pwN .s{font-size:.95rem;color:#04121c;margin-top:3px}
-.st3 .xtra .pwN .s b{font-size:1.25em}
-.pwNa .w{font-family:'Ultra',var(--display);font-size:2.3rem;letter-spacing:.02em;color:#fff;text-shadow:0 3px 0 #0a3d8f,0 5px 10px rgba(0,0,0,.35)}
-.st3 .xtra .pwNb{flex-direction:row;align-items:center;gap:14px;padding:6px 10px 6px 18px}
-.pwNb .w{font-family:var(--display);font-weight:800;font-style:italic;font-size:2.6rem;letter-spacing:.06em;color:#fff;transform:skewX(-8deg);text-shadow:3px 3px 0 #04121c}
-.pwNb .r{display:flex;flex-direction:column;align-items:center;background:#fff;border-radius:10px;padding:5px 10px}
-.st3 .xtra .pwNb .r b{font-size:1.5rem;color:#1d5fd0;line-height:1}.pwNb .r i{font-style:normal;font-size:.62rem;color:#1d5fd0;letter-spacing:.04em}
-.pwNc .w{display:flex;gap:1px}
-.pwNc .w span{font-family:'Ultra',var(--display);font-size:2.2rem;color:#fff;-webkit-text-stroke:1.5px #04121c;paint-order:stroke fill;text-shadow:0 4px 0 #04121c;display:inline-block;animation:pwWave 1.4s ease-in-out infinite;animation-delay:calc(var(--i)*.1s)}
+.st3 .xtra .pwA .pw{display:inline-flex;vertical-align:middle;margin:0 2px}
+.st3 .xtra .pwA .pw span{display:inline-block;font-size:1.55em;font-weight:800;color:#04121c;animation:pwWave 1.4s ease-in-out infinite;animation-delay:calc(var(--i)*.1s)}
 @keyframes pwWave{0%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
-@media(max-width:380px){.pwNa .w{font-size:1.9rem}.pwNb .w{font-size:2.1rem}.pwNc .w span{font-size:1.8rem}}
 @keyframes pwG{0%,100%{box-shadow:0 0 10px rgba(94,200,242,.5)}50%{box-shadow:0 0 28px rgba(94,200,242,1)}}
 /* b: due box affiancati */
 .st3.b .cols{display:grid;grid-template-columns:1.6fr 1fr;gap:8px}
@@ -2475,15 +2465,8 @@ loadKanin();
     var bs=(typeof DATA!=="undefined"&&DATA&&DATA.snow&&DATA.snow.length)?Math.round(DATA.snow[DATA.snow.length-1].v):null;
     var low=bs!=null&&bs<50?'<small>(poca base · '+bs+' cm)</small>':'';
     var dd=Math.max(1,Math.round(PWD.ageH/24)), tot=Math.round(PWD.spanH+PWD.ageH), ag=PWD.ageH>=24?L2(dd+(dd===1?" giorno fa":" giorni fa"),dd+(dd===1?" day ago":" days ago"),"pred "+dd+(dd===1?" dnevom":" dnevi")):tot<=24?L2("ultime 24 h","last 24 h","zadnjih 24 h"):L2("ultime "+tot+" h","last "+tot+" h","zadnjih "+tot+" h");
-    var V=(new URLSearchParams(location.search).get("pw")||"").replace(/[^abc]/g,"").slice(0,1);
-    if(V) return '<div class="xtra">'+pwV(V,cm,ag,low)+SMC()+'</div>';
-    return '<div class="xtra"><span class="pwA">❄️ POWDER! <b>'+cm+'</b> · '+ag+low+'</span>'+SMC()+'</div>';
-  }
-  // variante napisa POWDER na obstoječem modrem pasu (Luka 26. 11.): ?pw=a|b|c
-  function pwV(V,cm,ag,low){
-    if(V==="a") return '<span class="pwA pwN pwNa"><span class="w">❄ POWDER!</span><span class="s"><b>'+cm+'</b> · '+ag+'</span>'+low+'</span>';
-    if(V==="b") return '<span class="pwA pwN pwNb"><span class="w">POWDER</span><span class="r"><b>'+cm+'</b><i>'+ag+'</i></span>'+low+'</span>';
-    return '<span class="pwA pwN pwNc"><span class="w">'+"POWDER".split("").map(function(c,i){return '<span style="--i:'+i+'">'+c+'</span>'}).join("")+'</span><span class="s"><b>'+cm+'</b> · '+ag+'</span>'+low+'</span>';
+    var PW='<span class="pw">'+"POWDER!".split("").map(function(c,i){return '<span style="--i:'+i+'">'+c+'</span>'}).join("")+'</span>';
+    return '<div class="xtra"><span class="pwA">❄️ '+PW+' <b>'+cm+'</b> · '+ag+low+'</span>'+SMC()+'</div>';
   }
   function draw3(){
     var K=SLO||{}, kS=K.snow!=null?Math.round(K.snow)+" cm":"–", kT=K.t!=null?fix1(K.t)+"°":"–",
