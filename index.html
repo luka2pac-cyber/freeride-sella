@@ -194,7 +194,8 @@ html{overflow-x:clip}
 .slo{margin-top:16px;padding:14px 18px;border:1px solid rgba(94,200,242,.45);border-left:4px solid var(--ice);background:linear-gradient(90deg,rgba(94,200,242,.12),rgba(94,200,242,.02));display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;font-size:1rem}
 .slo .big{font-family:var(--display);font-weight:700;font-size:1.6rem;color:#fff;line-height:1}
 .charts.four{grid-template-columns:repeat(2,1fr)}
-.stlow #chWindBox,.stlow #dirBox,.stlow #sloChartBox,.stlow #sloTempBox{display:none!important}@media(min-width:901px){.stlow .charts{grid-template-columns:repeat(2,1fr)}}
+.wsrc{grid-column:1/-1}.wsrc .toggle{margin:0}
+.stlow #wSrcRow,.stlow #chWindBox,.stlow #dirBox,.stlow #sloChartBox,.stlow #sloTempBox{display:none!important}@media(min-width:901px){.stlow .charts{grid-template-columns:repeat(2,1fr)}}
 
 .sloMini{margin:8px 0 0;font-size:.85rem;color:var(--muted)}
 .sloMini b{color:#fff;font-weight:600}
@@ -817,8 +818,9 @@ footer a{color:var(--ice)}
   <div class="charts">
     <div class="chart"><h3>Altezza neve · cm</h3><div class="box"><canvas id="chSnow"></canvas></div><p class="sloMini">Livinal Lunc 1837 m · <a href="https://monitor.protezionecivile.fvg.it/misure/541/23" target="_blank" rel="noopener">PC FVG ↗</a></p></div>
     <div class="chart"><h3>Temperatura · °C</h3><div class="box"><canvas id="chTemp"></canvas></div><p class="sloMini">Livinal Lunc 1837 m · <a href="https://monitor.protezionecivile.fvg.it/misure/541/2" target="_blank" rel="noopener">PC FVG ↗</a></p></div>
-    <div class="chart" id="chWindBox"><h3>Vento e raffiche · km/h</h3><div class="box"><canvas id="chWind"></canvas></div><p class="sloMini">Livinal Lunc 1837 m · <a href="https://monitor.protezionecivile.fvg.it/misure/541/6" target="_blank" rel="noopener">PC FVG ↗</a></p></div>
-    <div class="chart" id="dirBox"><h3>Direzione vento</h3><div class="wdir"><svg id="wrose" viewBox="-120 -120 240 240" role="img" aria-label="Rosa dei venti"></svg><div class="wnow" id="wnow"></div></div><div class="wstrip" id="wstrip"></div><div class="wleg" id="wleg"></div><p class="sloMini wdinfo" id="wdInfo"></p><p class="sloMini">Livinal Lunc 1837 m · <a href="https://monitor.protezionecivile.fvg.it/misure/541/5" target="_blank" rel="noopener">PC FVG ↗</a></p></div>
+    <div class="wsrc" id="wSrcRow" hidden><div class="toggle" id="wSrc"><button data-w="it" class="on">⛰️ Canin IT 1837 m</button><button data-w="slo">🏔️ Kanin SLO 2260 m</button></div></div>
+    <div class="chart" id="chWindBox"><h3>Vento e raffiche · km/h</h3><div class="box"><canvas id="chWind"></canvas></div><p class="sloMini" id="wCap1">Livinal Lunc 1837 m · <a href="https://monitor.protezionecivile.fvg.it/misure/541/6" target="_blank" rel="noopener">PC FVG ↗</a></p></div>
+    <div class="chart" id="dirBox"><h3>Direzione vento</h3><div class="wdir"><svg id="wrose" viewBox="-120 -120 240 240" role="img" aria-label="Rosa dei venti"></svg><div class="wnow" id="wnow"></div></div><div class="wstrip" id="wstrip"></div><div class="wleg" id="wleg"></div><p class="sloMini wdinfo" id="wdInfo"></p><p class="sloMini" id="wCap2">Livinal Lunc 1837 m · <a href="https://monitor.protezionecivile.fvg.it/misure/541/5" target="_blank" rel="noopener">PC FVG ↗</a></p></div>
     <div class="chart" id="sloChartBox" hidden><h3>Neve Kanin SLO 2260 m · cm</h3><div class="box"><canvas id="chSloB"></canvas></div><p class="sloMini" id="sloMini"></p></div>
     <div class="chart" id="sloTempBox" hidden><h3>Temperatura Kanin SLO 2260 m · °C</h3><div class="box"><canvas id="chSloT"></canvas></div><p class="sloMini" id="sloMiniT"></p></div>
   </div>
@@ -1346,10 +1348,26 @@ function render(){
   if(STV==="low"){ renderLow(); return; }
   draw("chSnow",[{label:tr("Neve cm"),data:f(snow),color:"#5ec8f2",fill:true}],{suggestedMin:0});
   draw("chTemp",[{label:"°C",data:f(temp),color:"#ff7a59"}],{zero:true});
+  renderWind();
+}
+/* ---------- veter: preklop Canin IT / Kanin SLO ---------- */
+let WSRC="it";
+function renderWind(){
+  const cut=new Date(Date.now()-hours*3600e3), f=a=>a.filter(x=>x.t>=cut);
+  let wind,gust,dir;
+  if(WSRC==="slo"&&SLO){ const s=SLO.ser;
+    wind=s.filter(x=>x.wind!=null).map(x=>({t:x.t,v:x.wind/3.6})); gust=s.filter(x=>x.gust!=null).map(x=>({t:x.t,v:x.gust/3.6})); dir=s.filter(x=>x.dir!=null).map(x=>({t:x.t,v:x.dir}));
+    const a=`<a href="${SLO.url||"https://www.vreme.si/podatki/Kanin/sneg"}" target="_blank" rel="noopener">ARSO ↗</a>`;
+    $("wCap1").innerHTML=`Kanin 2260 m · ${a}`; $("wCap2").innerHTML=`Kanin 2260 m · ${a}`;
+  } else { if(!DATA) return; ({wind,gust,dir}=DATA);
+    $("wCap1").innerHTML=`Livinal Lunc 1837 m · <a href="https://monitor.protezionecivile.fvg.it/misure/541/6" target="_blank" rel="noopener">PC FVG ↗</a>`;
+    $("wCap2").innerHTML=`Livinal Lunc 1837 m · <a href="https://monitor.protezionecivile.fvg.it/misure/541/5" target="_blank" rel="noopener">PC FVG ↗</a>`; }
   draw("chWind",[{label:tr("Vento"),data:f(wind).map(x=>({t:x.t,v:x.v*3.6})),color:"#5ec8f2",fill:true},
     {label:tr("Raffica"),data:f(wind).map(x=>{const g=valueAt(gust,x.t);return {t:x.t,v:g?g.v*3.6:null}}),color:"#ffc65c"}],{suggestedMin:0,legend:true});
   try{renderDir(dir,wind,cut)}catch(e){console.error(e)}
 }
+$("wSrc").addEventListener("click",e=>{const b=e.target.closest("button"); if(!b) return; WSRC=b.dataset.w;
+  document.querySelectorAll("#wSrc > button").forEach(x=>x.classList.toggle("on",x===b)); renderWind();});
 /* ---------- smer vetra: roža + časovni trak ---------- */
 const D16=LANG==="en"?["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"]:LANG==="sl"?["S","SSV","SV","VSV","V","VJV","JV","JJV","J","JJZ","JZ","ZJZ","Z","ZSZ","SZ","SSZ"]:["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSO","SO","OSO","O","ONO","NO","NNO"];
 const d16=d=>D16[Math.round(((d%360)+360)%360/22.5)%16];
@@ -2185,7 +2203,7 @@ let SLO=null;
 async function loadKanin(){
   let j; try{ const r=await fetch("kanin.json?t="+Date.now(),{cache:"no-store"}); if(!r.ok) return; j=await r.json(); }catch(e){ return; }
   if(j.snow==null && j.t==null) return;
-  j.ser=(j.series||[]).map(r=>({t:new Date(r[0]),snow:r[1],temp:r[2],wind:r[3],gust:r[4]})).filter(x=>!isNaN(x.t));
+  j.ser=(j.series||[]).map(r=>({t:new Date(r[0]),snow:r[1],temp:r[2],wind:r[3],gust:r[4],dir:r[5]!=null?r[5]:null})).filter(x=>!isNaN(x.t));
   let when=null; const m=(j.valid_utc||"").match(/(\d+)\.(\d+)\.(\d+) (\d+):(\d+)/);
   if(m) when=new Date(Date.UTC(+m[3],+m[2]-1,+m[1],+m[4],+m[5]));
   j.when=when; SLO=j;
@@ -2211,12 +2229,14 @@ function compactLine(i){
 }
 function renderSlo(){
   if(!SLO) return; const i=sloInfo();
-  $("sloMini").innerHTML=`🌡 <b>${i.temp}</b> · 💨 <b>${i.wind}</b>`+(i.when?` · ${i.when}`:"")+` · <a href="${SLO.url||"https://www.vreme.si/podatki/Kanin/sneg"}" target="_blank" rel="noopener">ARSO ↗</a>`;
+  const cap=`Kanin 2260 m`+(i.when?` · ${i.when}`:"")+` · <a href="${SLO.url||"https://www.vreme.si/podatki/Kanin/sneg"}" target="_blank" rel="noopener">ARSO ↗</a>`;
+  $("sloMini").innerHTML=cap;
   $("sloChartBox").hidden=false; document.querySelector(".charts").classList.add("four");
+  $("wSrcRow").hidden=!SLO.ser.some(x=>x.wind!=null); if(WSRC==="slo") renderWind();
   if(i.ser.length) draw("chSloB",[{label:tr("Neve")+" cm",data:i.ser.map(x=>({t:x.t,v:x.snow})),color:"#9b8cff",fill:true}],{suggestedMin:0});
   const tser=i.ser.filter(x=>x.temp!=null);
   if(tser.length){ $("sloTempBox").hidden=false;
-    $("sloMiniT").innerHTML=`🌡 <b>${i.temp}</b>`+(i.when?` · ${i.when}`:"")+` · <a href="${SLO.url||"https://www.vreme.si/podatki/Kanin/sneg"}" target="_blank" rel="noopener">ARSO ↗</a>`;
+    $("sloMiniT").innerHTML=cap;
     draw("chSloT",[{label:"°C",data:tser.map(x=>({t:x.t,v:x.temp})),color:"#ff7a59"}],{zero:true}); }
 }
 loadKanin();
