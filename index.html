@@ -466,7 +466,7 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .st3 .xtra .pwA small{display:block;text-align:center;font-size:.75em;color:#04121c;opacity:.85;margin-top:2px}
 .st3 .xtra .pwA{position:relative;overflow:hidden}
 .st3 .xtra .pwA .pwS{position:absolute;inset:0;pointer-events:none}
-.st3 .xtra .pwA .pwS i{position:absolute;top:-6px;width:4px;height:4px;border-radius:50%;background:#fff;opacity:.85;box-shadow:0 0 3px #fff;animation:pwSn var(--t) linear infinite;animation-delay:var(--d)}
+.st3 .xtra .pwA .pwS i{position:absolute;top:-8px;width:6px;height:6px;border-radius:50%;background:#fff;opacity:.95;box-shadow:0 0 4px #fff,0 0 1px rgba(0,40,90,.6);animation:pwSn var(--t) linear infinite;animation-delay:var(--d)}
 @keyframes pwSn{0%{transform:translate(0,0)}50%{transform:translate(4px,30px)}100%{transform:translate(-2px,64px);opacity:0}}
 .st3 .xtra .pwA .pwF{font-style:normal;display:inline-block;font-size:1.9em;vertical-align:middle;line-height:1;filter:brightness(0) invert(1) drop-shadow(0 0 4px rgba(255,255,255,.9))}
 .st3 .xtra .pwA .pw{display:inline-flex;vertical-align:middle;margin:0 2px}
@@ -2475,7 +2475,7 @@ loadKanin();
     var low=bs!=null&&bs<50?'<small>(poca base · '+bs+' cm)</small>':'';
     var dd=Math.max(1,Math.round(PWD.ageH/24)), tot=Math.round(PWD.spanH+PWD.ageH), ag=PWD.ageH>=24?L2(dd+(dd===1?" giorno fa":" giorni fa"),dd+(dd===1?" day ago":" days ago"),"pred "+dd+(dd===1?" dnevom":" dnevi")):tot<=24?L2("ultime 24 h","last 24 h","zadnjih 24 h"):L2("ultime "+tot+" h","last "+tot+" h","zadnjih "+tot+" h");
     var PW='<span class="pw">'+"POWDER!".split("").map(function(c,i){return '<span style="--i:'+i+'">'+c+'</span>'}).join("")+'</span>';
-    return '<div class="xtra"><span class="pwA">'+(/[?&]snow=1/.test(location.search)?'<i class="pwS">'+[8,22,37,51,66,80,93].map(function(l,i){return '<i style="left:'+l+'%;--d:'+(i*.53%2.6).toFixed(2)+'s;--t:'+(2.4+i%3*.5)+'s"></i>'}).join("")+'</i>':'')+'<i class="pwF">❄️</i> '+PW+' <b>'+cm+'</b> · '+ag+low+'</span>'+SMC()+'</div>';
+    return '<div class="xtra"><span class="pwA">'+(/[?&]snow=1/.test(location.search)?'<i class="pwS">'+[5,14,24,33,44,55,64,74,84,94].map(function(l,i){return '<i style="left:'+l+'%;--d:'+(i*.53%2.6).toFixed(2)+'s;--t:'+(2.4+i%3*.5)+'s"></i>'}).join("")+'</i>':'')+'<i class="pwF">❄️</i> '+PW+' <b>'+cm+'</b> · '+ag+low+'</span>'+SMC()+'</div>';
   }
   function draw3(){
     var K=SLO||{}, kS=K.snow!=null?Math.round(K.snow)+" cm":"–", kT=K.t!=null?fix1(K.t)+"°":"–",
