@@ -1901,9 +1901,25 @@ function newSnow24(snow){
   const base=Math.min(...snow.filter(x=>x.t>=new Date(lastT-24*3600e3)).map(x=>x.v));
   return Math.max(0,Math.round(now-base));
 }
+// POWDER! po zadnjem sneženju (Luka 26. 11. 2026): ≥15 cm, velja 48 h; do 5 dni, če po sneženju temperatura (urna mediana, postaja 541) ni presegla 0 °C
+let PWD=null;
+function powderEvent(){
+  const H=3600e3, now=Date.now(), hh={};
+  DATA.snow.filter(x=>x.t>=now-7*864e5).forEach(x=>{const k=Math.floor(x.t/H);(hh[k]=hh[k]||[]).push(x.v);});
+  const ser=Object.keys(hh).map(Number).sort((a,b)=>a-b).map(k=>({k,v:median(hh[k])}));
+  if(ser.length<6) return null;
+  let mn=Infinity, ev={cm:0,end:null};
+  ser.forEach(x=>{ if(x.v<mn) mn=x.v; const d=x.v-mn; if(d>ev.cm+0.5) ev={cm:d,end:x.k}; });
+  if(ev.end==null||ev.cm<CONFIG.powderThreshold) return null;
+  const ageH=(now-(ev.end+1)*H)/H, tH=hourly(DATA.temp.filter(x=>x.t>=(ev.end+1)*H));
+  const tmax=Math.max(-99,...Object.values(tH).map(median));
+  const on=ageH<=48||(ageH<=120&&tmax<=0);
+  return on?{cm:Math.round(ev.cm),ageH:Math.max(0,ageH),tmax}:null;
+}
 function renderPowder(){
   const n=newSnow24(DATA.snow); if(n===null) return;
-  const on=n>=CONFIG.powderThreshold;
+  try{ PWD=powderEvent(); }catch(e){ PWD=null; }
+  const on=!!PWD;
   $("chNewV").textContent=`+${n} cm`+(on?" · POWDER!":"");
   $("chNew").classList.toggle("powder",on);
 }
@@ -2317,11 +2333,12 @@ loadKanin();
   var txt=function(id){var e=$(id);return e?e.textContent.trim():"–"};
   function SMC(){return '<a class="smaa" href="https://www.aametsoc.org/alpi-giulie-meteo-lab/conca-prevala-meteo" target="_blank" rel="noopener" title="'+L2('Inversione termica · stazione SMAA Conca Prevala','Temperature inversion · SMAA station Conca Prevala','Temperaturna inverzija · postaja SMAA Conca Prevala')+'">🥶 Prevala 1787 m <small>↗</small></a>'}
   function pwX(n24){
-    var ce=$("chNew"), on=ce&&ce.classList.contains("powder"), cm=(n24.match(/\+?\d+ cm/)||[n24])[0];
+    var ce=$("chNew"), on=ce&&ce.classList.contains("powder")&&typeof PWD!=="undefined"&&PWD, cm=on?"+"+PWD.cm+" cm":n24;
     if(!on) return '<div class="xtra"><span>Nuova 24 h <b>'+n24+'</b></span>'+SMC()+'</div>';
     var bs=(typeof DATA!=="undefined"&&DATA&&DATA.snow&&DATA.snow.length)?Math.round(DATA.snow[DATA.snow.length-1].v):null;
     var low=bs!=null&&bs<50?'<small>(poca base · '+bs+' cm)</small>':'';
-    return '<div class="xtra"><span class="pwA">❄️ POWDER! <b>'+cm+'</b> · 24 h'+low+'</span>'+SMC()+'</div>';
+    var dd=Math.round(PWD.ageH/24), ag=PWD.ageH<24?L2("ultime 24 h","last 24 h","zadnjih 24 h"):L2(dd+(dd===1?" giorno fa":" giorni fa"),dd+(dd===1?" day ago":" days ago"),"pred "+dd+(dd===1?" dnevom":" dnevi"));
+    return '<div class="xtra"><span class="pwA">❄️ POWDER! <b>'+cm+'</b> · '+ag+low+'</span>'+SMC()+'</div>';
   }
   function draw3(){
     var K=SLO||{}, kS=K.snow!=null?Math.round(K.snow)+" cm":"–", kT=K.t!=null?fix1(K.t)+"°":"–",
