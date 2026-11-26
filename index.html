@@ -135,6 +135,7 @@ html{overflow-x:clip}
 .cond ul{list-style:none;margin:0;padding:0}
 .cond li{font-size:.95rem;line-height:1.35;padding:6px 0 6px 28px;position:relative;color:#eee}
 .cond li i{position:absolute;left:2px;top:6px;font-style:normal}
+#fstrip.fcload{opacity:.25;pointer-events:none;transition:opacity .2s}
 .cond .snq{margin:8px 0 6px;padding:8px 10px;background:rgba(255,255,255,.04);border-left:3px solid var(--c)}
 .cond .snq h4{margin:0 0 6px;font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;color:var(--muted)}
 .cond .snq .r{display:grid;grid-template-columns:1fr;gap:2px;padding:4px 0;font-size:.88rem;line-height:1.3;color:#eee;border-top:1px solid rgba(255,255,255,.06)}
@@ -1757,15 +1758,15 @@ function fcShow(){
 }
 async function fcSetAlt(a){
   FALT=a; if(a==="top"){ FC=FCTOP; fcShow(); return; }
-  if(!FCLOW){ fcShow(); try{ const x=await fcJson(); const [j,e]=(x&&x.low&&x.low.daily)?[JSON.parse(JSON.stringify(x.low)),x.lowEns?JSON.parse(JSON.stringify(x.lowEns)):null]:await Promise.all([fetch(fcLowUrl(CONFIG.forecast.url)).then(r=>r.json()),fetch(fcLowUrl(CONFIG.forecast.ens).replace("hourly=temperature_2m,precipitation","hourly=temperature_2m,precipitation,snowfall")).then(r=>r.ok?r.json():null).catch(()=>null)]);
+  if(!FCLOW){ fcShow(); const fs=$("fstrip"); if(fs) fs.classList.add("fcload"); try{ const x=await fcJson(); const [j,e]=(x&&x.low&&x.low.daily)?[JSON.parse(JSON.stringify(x.low)),x.lowEns?JSON.parse(JSON.stringify(x.lowEns)):null]:await Promise.all([fetch(fcLowUrl(CONFIG.forecast.url)).then(r=>r.json()),fetch(fcLowUrl(CONFIG.forecast.ens).replace("hourly=temperature_2m,precipitation","hourly=temperature_2m,precipitation,snowfall")).then(r=>r.ok?r.json():null).catch(()=>null)]);
       if(!j.daily) throw 0;
       // quota 0 °C = proprietà dell'atmosfera, uguale per Canin e paese → prendila dalla previsione di Canin (Luka 22. 11.)
       if(FCTOP&&FCTOP.hourly){ const T={}; FCTOP.hourly.time.forEach((t,k)=>T[t]=FCTOP.hourly.freezing_level_height[k]); j.hourly.freezing_level_height=j.hourly.time.map((t,k)=>T[t]!=null?T[t]:j.hourly.freezing_level_height[k]); }
       // popravek temperature po postaji Sella Nevea 1180 m (PC FVG 542) – Luka 26. 11.: model v vasi pogosto pretopel (hladen zrak v kotlini); ničte izoterme ne popravljaj
       try{ if(!DLOW||Date.now()-DLOWT>14*60e3) await loadLow(); if(DLOW&&DLOW.temp&&DLOW.temp.length){ j.corr=null; fcCorrect(j,e,DLOW.temp,true); } }catch(x){ console.error(x); }
       try{ applyEns(j,e,CONFIG.forecast.low.elev); }catch(x){ console.error(x); }
-      FCLOW=j; }
-    catch(x){ console.error(x); FALT="top"; FC=FCTOP; fcShow(); $("fcTot").insertAdjacentHTML("beforeend",` <small style="color:#ff9e3d">${L2("Previsioni paese non disponibili","Village forecast unavailable","Napoved za vas ni na voljo")}</small>`); return; } }
+      FCLOW=j; if(fs) fs.classList.remove("fcload"); }
+    catch(x){ console.error(x); if(fs) fs.classList.remove("fcload"); FALT="top"; FC=FCTOP; fcShow(); $("fcTot").insertAdjacentHTML("beforeend",` <small style="color:#ff9e3d">${L2("Previsioni paese non disponibili","Village forecast unavailable","Napoved za vas ni na voljo")}</small>`); return; } }
   if(FALT==="low"){ FC=FCLOW; fcShow(); }
 }
 document.addEventListener("click",ev=>{const b=ev.target.closest("#fcAlt button"); if(b) fcSetAlt(b.dataset.a);});
