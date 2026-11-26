@@ -2197,7 +2197,8 @@ function snowParts(m){
   let lm=null; try{ const S=lowSrc(); if(S) lm=snowModel(S); }catch(e){ console.error(e); }
   const nt=m.notes.map(x=>`<div class="f">💡 ${x}</div>`).join("");
   const nx=m.next.length?`<div class="f">${L2("Prossime 24 h","Next 24 h","Naslednjih 24 h")}: ${m.next.join(" · ")}</div>`:"";
-  return {top:snowRowsHTML(m), low:lowHTML(m,lm), extra:nt+nx, first:Object.values(m.rows)[0]};
+  const g=ASP.filter(a=>m.rows[a].t===m.rows.N.t), fl=g.length===4?L2("Ovunque","Everywhere","Povsod"):g.map(a=>L2(...ASPN[a])).join("·");
+  return {top:snowRowsHTML(m), low:lowHTML(m,lm), extra:nt+nx, first:{t:m.rows.N.t,lab:fl}};
 }
 function snowModelHTML(m){
   if(!m) return "";
@@ -2337,7 +2338,7 @@ function renderCond(){
     }
     else { // c: povzetek + Dettagli
       const top=FF[0], sn=P&&P.first;
-      const sum=`<div class="csum">${top?`<div class="s${top.sev}"><i>${top.ic}</i>${top.t}</div>`:""}${sn?`<div><i>❄️</i><b>${L2("Nord","North","Sever")} 1800–2200 m:</b> ${sn.t}</div>`:""}</div>`;
+      const sum=`<div class="csum">${top?`<div class="s${top.sev}"><i>${top.ic}</i>${top.t}</div>`:""}${sn?`<div><i>❄️</i><b>${sn.lab} · 1800–2200 m:</b> ${sn.t}</div>`:""}</div>`;
       el.innerHTML=bar+sum+`<button class="cmore">${COPEN?L2("Meno ▴","Less ▴","Manj ▴"):L2("Dettagli ▾","Details ▾","Podrobnosti ▾")}${!COPEN&&FF.length>1?` <em>+${FF.length-1}</em>`:""}</button>`+(COPEN?`<div class="cdet">${ul}${snq}</div>`:"")+ft;
     }
     el.hidden=false; return;
