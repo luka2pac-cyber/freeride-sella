@@ -1635,7 +1635,10 @@ async function loadForecast(){
   try{
     const [j,e,at]=await fcGetTop();
     if(!j||!j.daily) throw new Error("fc");
-    FCRAW={j,e,at}; buildTop();
+    FCRAW={j,e,at};
+    // počakaj na meritve postaje (max 6 s), da se »danes« ne pokaže najprej s surovo napovedjo (npr. +51 cm → nato 23 cm)
+    for(let k=0;k<60&&!DATA&&!STFAIL;k++) await new Promise(r=>setTimeout(r,100));
+    buildTop();
   }catch(e){ console.error(e); $("days").innerHTML=`<p class="meta">Previsioni non disponibili. <a href="${CONFIG.forecast.bergfex}" target="_blank" rel="noopener" style="color:var(--ice)">Vedi su bergfex</a></p>`; }
 }
 function buildTop(){
