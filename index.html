@@ -464,6 +464,7 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .st3 .xtra .pwA{background:linear-gradient(135deg,#5ec8f2,#2f6fff);color:#04121c;border:0;border-radius:12px;padding:9px 16px;font-size:1.1rem;white-space:nowrap;animation:pwG 1.8s ease-in-out infinite}
 .st3 .xtra .pwA b{color:#fff;font-size:1.3em}
 .st3 .xtra .pwA small{display:block;text-align:center;font-size:.75em;color:#04121c;opacity:.85;margin-top:2px}
+.st3 .xtra .pwA .pwF{font-style:normal;display:inline-block;font-size:1.4em;vertical-align:middle;line-height:1}
 .st3 .xtra .pwA .pw{display:inline-flex;vertical-align:middle;margin:0 2px}
 .st3 .xtra .pwA .pw span{display:inline-block;font-size:1.55em;font-weight:800;color:#04121c;animation:pwWave 1.4s ease-in-out infinite;animation-delay:calc(var(--i)*.1s)}
 @keyframes pwWave{0%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
@@ -2470,7 +2471,7 @@ loadKanin();
     var low=bs!=null&&bs<50?'<small>(poca base · '+bs+' cm)</small>':'';
     var dd=Math.max(1,Math.round(PWD.ageH/24)), tot=Math.round(PWD.spanH+PWD.ageH), ag=PWD.ageH>=24?L2(dd+(dd===1?" giorno fa":" giorni fa"),dd+(dd===1?" day ago":" days ago"),"pred "+dd+(dd===1?" dnevom":" dnevi")):tot<=24?L2("ultime 24 h","last 24 h","zadnjih 24 h"):L2("ultime "+tot+" h","last "+tot+" h","zadnjih "+tot+" h");
     var PW='<span class="pw">'+"POWDER!".split("").map(function(c,i){return '<span style="--i:'+i+'">'+c+'</span>'}).join("")+'</span>';
-    return '<div class="xtra"><span class="pwA">❄️ '+PW+' <b>'+cm+'</b> · '+ag+low+'</span>'+SMC()+'</div>';
+    return '<div class="xtra"><span class="pwA"><i class="pwF">❄️</i> '+PW+' <b>'+cm+'</b> · '+ag+low+'</span>'+SMC()+'</div>';
   }
   function draw3(){
     var K=SLO||{}, kS=K.snow!=null?Math.round(K.snow)+" cm":"–", kT=K.t!=null?fix1(K.t)+"°":"–",
