@@ -169,7 +169,7 @@ html{overflow-x:clip}
 .cond.vbc .cbadge{display:flex;width:58px;height:58px;border-radius:50%;background:var(--c);color:#111;font-size:2rem;box-shadow:0 0 0 4px rgba(0,0,0,.5)}
 .cond.vbc .chead span{color:#ddd}
 .cond.vbc li{background:rgba(0,0,0,.35)}
-/* kompaktne variante ?cv= */
+/* okvir ocene razmer – varianta B zavihki (Luka 26. 11.) */
 .cond.cv{background:color-mix(in srgb,var(--c) 12%,rgba(0,0,0,.86));border:1.5px solid var(--c);border-radius:12px;padding:10px 12px;box-shadow:0 0 18px color-mix(in srgb,var(--c) 30%,transparent)}
 .cond.cv .cbar{gap:10px}
 .cond.cv .cbadge{display:flex;width:40px;height:40px;border-radius:50%;background:var(--c);color:#111;font-size:1.35rem}
@@ -195,13 +195,6 @@ html{overflow-x:clip}
 .cond.cvb .cpan.hid{display:none}
 .cond.cvb .cpan ul{margin-top:0}
 .cond.cvb .cpan .snq{margin:0}
-.cond.cvc .csum{margin-top:8px;display:grid;gap:4px}
-.cond.cvc .csum div{font-size:.84rem;line-height:1.3;padding-left:24px;position:relative;color:#eee}
-.cond.cvc .csum i{position:absolute;left:0;font-style:normal}
-.cond.cvc .csum b{color:#bbb;font-weight:600}
-.cond.cvc .cmore{display:block;margin:8px 0 0;width:100%;padding:6px;border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.25);color:#ddd;border-radius:8px;font:700 .72rem var(--display);text-transform:uppercase;letter-spacing:.05em;cursor:pointer}
-.cond.cvc .cmore em{font-style:normal;color:var(--c)}
-.cond.cvc .cdet ul{margin-top:6px}
 @media(max-width:600px){.cond.cv .chead b{font-size:1rem}}
 @media(max-width:380px){.cond.cv .cmini span{width:12px}.cond.cv .snq .r{grid-template-columns:80px 1fr}.cond.cvb .ctab button{font-size:.6rem}}
 @media(max-width:600px){.cond .chead b{font-size:1.15rem}.cond.vc .chead b{font-size:1.2rem}.cond li{font-size:.86rem}.cond .cbadge{width:46px;height:46px;font-size:1.6rem}}
@@ -2183,12 +2176,12 @@ function snowModel(S){
 let SQB="top"; const SQV=(new URLSearchParams(location.search).get("sq")||"a");
 function snowRowsHTML(m){
   const G=[]; ASP.forEach(a=>{const o=m.rows[a]; const g=G.find(x=>x.t===o.t); if(g) g.a.push(a); else G.push({t:o.t,c:o.c,a:[a]});});
-  const lab=g=>g.a.length===4?L2("Ovunque","Everywhere","Povsod"):g.a.map(a=>L2(...ASPN[a])).join(" · ");
+  const lab=g=>g.a.length===4?L2("Tutte le esposizioni","All aspects","Vse ekspozicije"):g.a.map(a=>L2(...ASPN[a])).join(" · ");
   return G.map(g=>snR(lab(g),g)).join("");
 }
 const snR=(l,o)=>`<div class="r"><span class="a"><i style="background:${o.c}"></i>${l}</span><span>${o.t}</span></div>`;
 function lowHTML(m,lm){
-  if(lm&&lm.thin) return snR(L2("Poca neve","Little snow","Malo snega"),{c:"#ff9e3d",t:L2(`solo ${lm.base} cm a 1180 m: sassi, mughi e ruscelli scoperti, fuoripista in basso sconsigliato`,`only ${lm.base} cm at 1180 m: rocks, dwarf pines and streams exposed, off-piste lower down not advised`,`le ${lm.base} cm na 1180 m: kamni, ruševje in potoki so odkriti, smuka izven prog nižje ni priporočljiva`)});
+  if(lm&&lm.thin) return snR(L2("Tutte le esposizioni","All aspects","Vse ekspozicije"),{c:"#ff9e3d",t:L2(`poca neve, solo ${lm.base} cm a 1180 m: sassi, mughi e ruscelli scoperti, fuoripista in basso sconsigliato`,`little snow, only ${lm.base} cm at 1180 m: rocks, dwarf pines and streams exposed, off-piste lower down not advised`,`malo snega, le ${lm.base} cm na 1180 m: kamni, ruševje in potoki so odkriti, smuka izven prog nižje ni priporočljiva`)});
   if(lm) return snowRowsHTML(lm);
   return snR(L2("In basso","Lower","Nižje"),m.low); // rezerva: postaja 542 ni naložena
 }
@@ -2197,8 +2190,7 @@ function snowParts(m){
   let lm=null; try{ const S=lowSrc(); if(S) lm=snowModel(S); }catch(e){ console.error(e); }
   const nt=m.notes.map(x=>`<div class="f">💡 ${x}</div>`).join("");
   const nx=m.next.length?`<div class="f">${L2("Prossime 24 h","Next 24 h","Naslednjih 24 h")}: ${m.next.join(" · ")}</div>`:"";
-  const g=ASP.filter(a=>m.rows[a].t===m.rows.N.t), fl=g.length===4?L2("Ovunque","Everywhere","Povsod"):g.map(a=>L2(...ASPN[a])).join("·");
-  return {top:snowRowsHTML(m), low:lowHTML(m,lm), extra:nt+nx, first:{t:m.rows.N.t,lab:fl}};
+  return {top:snowRowsHTML(m), low:lowHTML(m,lm), extra:nt+nx};
 }
 function snowModelHTML(m){
   if(!m) return "";
@@ -2215,11 +2207,10 @@ function snowModelHTML(m){
 document.addEventListener("click",ev=>{const b=ev.target.closest(".sqt button"); if(!b) return; SQB=b.dataset.q; const box=b.closest(".snq");
   box.querySelectorAll(".sqt button").forEach(x=>x.classList.toggle("on",x===b)); box.querySelectorAll(".sqp").forEach(p=>p.classList.toggle("hid",p.dataset.p!==SQB));});
 /* ===== Valutazione automatica delle condizioni ===== */
-// kompaktne variante okvirja (Luka 26. 11.): ?cv=a | b | c ; brez = dosedanji
-const CONDV=(new URLSearchParams(location.search).get("cv")||"").replace(/[^abc]/g,"").slice(0,1); let CTAB="w", COPEN=false;
+// Luka izbral B – zavihki (26. 11. 2026)
+let CTAB="w";
 document.addEventListener("click",ev=>{
   const t=ev.target.closest(".ctab button"); if(t){ CTAB=t.dataset.t; const c=t.closest(".cond"); c.querySelectorAll(".ctab button").forEach(x=>x.classList.toggle("on",x===t)); c.querySelectorAll(".cpan").forEach(p=>p.classList.toggle("hid",p.dataset.p!==CTAB)); return; }
-  const m=ev.target.closest(".cond .cmore"); if(m){ COPEN=!COPEN; renderCond(); }
 });
 let BUL=null;
 const COND={minBase:50, thinBase:80, slabSnow:10, bigSnow:30, slabWind:25, slabGust:50, gustHi:60, gustVHi:80, snowSoon:10};
@@ -2318,36 +2309,23 @@ function renderCond(){
   const sub=lvl?L2(`Pericolo valanghe ${lvl} · ${BUL.txt.split(" · ")[1]}`,`Avalanche danger ${lvl} · ${tr(BUL.txt).split(" · ")[1]}`,`Nevarnost plazov ${lvl} · ${tr(BUL.txt).split(" · ")[1]}`):L2("Bollettino valanghe n.d.","Avalanche bulletin n/a","Plazovni bilten n. p.");
   const EC=["#ccff66","#ffff00","#ff9900","#ff0000","#ff0000"];
   const scale=`<div class="cscale">${[1,2,3,4,5].map(i=>`<span class="${i===lvl?"on":""}" style="--s:${EC[i-1]}">${i}</span>`).join("")}</div>`;
-  const CV=CONDV;
-  if(CV){
+  {
     const SM2=snowModel(), P=snowParts(SM2), FF=(F.length>5?F.slice(0,5):F).map(f=>f.bul?Object.assign({},f,{t:f.t.replace(/^[^:]+:\s*/,"").replace(/^./,c=>c.toUpperCase())}):f);
     const ul=FF.length?`<ul>${FF.map(f=>`<li class="s${f.sev}"><i>${f.ic}</i>${f.t}</li>`).join("")}</ul>`:"";
     const mini=`<div class="cmini">${[1,2,3,4,5].map(i=>`<span class="${i===lvl?"on":""}" style="--s:${EC[i-1]}">${i}</span>`).join("")}</div>`;
     const bar=`<div class="cbar"><div class="cbadge">${badge}</div><div class="chead"><b>${head}</b><span>${sub}</span></div>${mini}</div>`;
     const hi="⛰️ 1800–2200 m", lo="🌲 1200–1800 m";
     const ft=`<small>${L2("Stima automatica (stazioni PC FVG, modello meteo, bollettino): non sostituisce il bollettino né la valutazione sul posto.","Automatic estimate (PC FVG stations, weather model, bulletin): does not replace the bulletin or your own assessment.","Samodejna ocena (postaje PC FVG, vremenski model, bilten): ne nadomešča biltena niti lastne presoje na terenu.")}</small>`;
-    const snq=P?`<div class="snq"><h4>${L2("Neve stimata per esposizione","Estimated snow by aspect","Ocena snega po ekspozicijah")}</h4><div class="sqt" role="group"><button data-q="top" class="${SQB==="top"?"on":""}">${hi}</button><button data-q="low" class="${SQB==="low"?"on":""}">${lo}</button></div><div class="sqp${SQB==="top"?"":" hid"}" data-p="top">${P.top}</div><div class="sqp${SQB==="low"?"":" hid"}" data-p="low">${P.low}</div>${P.extra}</div>`:"";
-    el.className="cond cv cv"+CV; el.style.setProperty("--c",col);
-    if(CV==="a"){ el.innerHTML=bar+ul+snq+ft; }
-    else if(CV==="b"){
+    el.className="cond cv cvb"; el.style.setProperty("--c",col);
+
       const T=[["w",`⚠️ ${L2("Avvisi","Alerts","Opozorila")}${FF.length?" "+FF.length:""}`]].concat(P?[["top",hi],["low",lo]]:[]);
       if(!T.some(t=>t[0]===CTAB)) CTAB=T[0][0];
       const pan={w:ul||`<div class="f">${L2("Nessun avviso","No alerts","Ni opozoril")}</div>`, top:P?P.top+P.extra:"", low:P?P.low+P.extra:""};
       el.innerHTML=bar+`<div class="ctab" role="tablist">${T.map(t=>`<button data-t="${t[0]}" class="${t[0]===CTAB?"on":""}">${t[1]}</button>`).join("")}</div>`+
         T.map(t=>`<div class="cpan${t[0]===CTAB?"":" hid"}" data-p="${t[0]}">${t[0]==="w"?pan.w:`<div class="snq">${pan[t[0]]}</div>`}</div>`).join("")+ft;
-    }
-    else { // c: povzetek + Dettagli
-      const top=FF[0], sn=P&&P.first;
-      const sum=`<div class="csum">${top?`<div class="s${top.sev}"><i>${top.ic}</i>${top.t}</div>`:""}${sn?`<div><i>❄️</i><b>${sn.lab} · 1800–2200 m:</b> ${sn.t}</div>`:""}</div>`;
-      el.innerHTML=bar+sum+`<button class="cmore">${COPEN?L2("Meno ▴","Less ▴","Manj ▴"):L2("Dettagli ▾","Details ▾","Podrobnosti ▾")}${!COPEN&&FF.length>1?` <em>+${FF.length-1}</em>`:""}</button>`+(COPEN?`<div class="cdet">${ul}${snq}</div>`:"")+ft;
-    }
+    
     el.hidden=false; return;
   }
-  el.className="cond vc vbc";
-  el.innerHTML=`<div class="cbar"><div class="cbadge">${badge}</div><div class="chead"><b>${head}</b><span>${sub}</span></div></div>`+
-    scale+(F.length?`<ul>${(F.length>5?F.slice(0,5):F).map(f=>`<li class="s${f.sev}"><i>${f.ic}</i>${f.t}</li>`).join("")}</ul>`:"")+snowModelHTML(snowModel())+
-    `<small>${L2("Stima automatica da stazione Livinal Lunc, modello meteo e bollettino. Non sostituisce il bollettino né la valutazione sul posto.","Automatic estimate from the Livinal Lunc station, weather model and bulletin. It does not replace the bulletin or your own assessment on site.","Samodejna ocena iz postaje Livinal Lunc, vremenskega modela in biltena. Ne nadomešča biltena niti lastne ocene na terenu.")}</small>`;
-  el.hidden=false;
 }
 
 var LIFTS_ON=false; // almeno un impianto aperto = stagione in corso
