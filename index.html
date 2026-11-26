@@ -1627,28 +1627,32 @@ async function fcGetTop(){
 }
 function omT(str,off){ return Date.parse(str+":00Z")-(off||0)*1000; }
 function stAvg(a,t,win){ const v=a.filter(x=>Math.abs(x.t-t)<=win).map(x=>x.v).filter(v=>v!=null&&isFinite(v)); return v.length?v.reduce((p,c)=>p+c,0)/v.length:null; }
-function fcBias(times,off,T,obs,now){
+function fcBias(times,off,T,obs,now,lim){ lim=lim||5;
   let s=0,n=0;
   times.forEach((t,k)=>{ const tt=omT(t,off); if(tt>now||tt<now-6*3600e3||T[k]==null) return; const m=stAvg(obs,tt,20*60e3); if(m==null) return; s+=m-T[k]; n++; });
-  return n>=3?Math.max(-5,Math.min(5,s/n)):null;
+  return n>=3?Math.max(-lim,Math.min(lim,s/n)):null;
 }
-function fcCorrect(j,e,obsIn,noFz){
+// obsIn: meritve postaje (privzeto 541); noFz: ne popravljaj ničte izoterme; lim: največji popravek °C
+// Pretekle ure današnjega in včerajšnjega dne nadomesti z izmerjeno temperaturo (urno povprečje), da so danes max/min resnični.
+function fcCorrect(j,e,obsIn,noFz,lim){
   const obs=obsIn||(DATA&&DATA.temp); if(!obs||!obs.length) return;
   const now=Date.now(); if(now-obs[obs.length-1].t>3*3600e3) return;
   const w=tt=>tt<=now?1:Math.max(0,1-(tt-now)/(24*3600e3));
   const h=j.hourly, off=j.utc_offset_seconds||0, corr={models:{}};
-  const b=fcBias(h.time,off,h.temperature_2m,obs,now);
+  const b=fcBias(h.time,off,h.temperature_2m,obs,now,lim);
   if(b!=null){ corr.bm=b;
-    h.time.forEach((t,k)=>{ const f=w(omT(t,off)); if(!f) return; h.temperature_2m[k]+=b*f; if(!noFz&&h.freezing_level_height[k]!=null) h.freezing_level_height[k]+=b*f*154; });
-    j.daily.time.forEach((day,i)=>{ const v=h.time.map((t,k)=>t.startsWith(day)?h.temperature_2m[k]:null).filter(x=>x!=null); if(v.length>=20&&i<2){ j.daily.temperature_2m_max[i]=Math.max(...v); j.daily.temperature_2m_min[i]=Math.min(...v); } }); }
+    h.time.forEach((t,k)=>{ const f=w(omT(t,off)); if(!f) return; h.temperature_2m[k]+=b*f; if(!noFz&&h.freezing_level_height[k]!=null) h.freezing_level_height[k]+=b*f*154; }); }
+  let nObs=0; h.time.forEach((t,k)=>{ const tt=omT(t,off); if(tt>now-1800e3) return; const m=stAvg(obs,tt,35*60e3); if(m!=null){ h.temperature_2m[k]=m; nObs++; } });
+  if(nObs) corr.obsH=nObs;
+  if(b!=null||nObs) j.daily.time.forEach((day,i)=>{ const v=h.time.map((t,k)=>t.startsWith(day)?h.temperature_2m[k]:null).filter(x=>x!=null); if(v.length>=20&&i<2){ j.daily.temperature_2m_max[i]=Math.max(...v); j.daily.temperature_2m_min[i]=Math.min(...v); } });
   if(e&&e.hourly){ const H=e.hourly, oe=e.utc_offset_seconds||0;
-    Object.keys(CONFIG.forecast.ensNames).forEach(m=>{ const T=H["temperature_2m_"+m]; if(!T) return; const bm=fcBias(H.time,oe,T,obs,now); if(bm==null) return;
+    Object.keys(CONFIG.forecast.ensNames).forEach(m=>{ const T=H["temperature_2m_"+m]; if(!T) return; const bm=fcBias(H.time,oe,T,obs,now,lim); if(bm==null) return;
       corr.models[m]=bm; H.time.forEach((t,k)=>{ const f=w(omT(t,oe)); if(f&&T[k]!=null) T[k]+=bm*f; }); }); }
   if(corr.bm!=null||Object.keys(corr.models).length) j.corr=corr;
 }
-function fcToday(j){
-  if(!DATA||!DATA.snow||DATA.snow.length<8) return;
-  const now=Date.now(), off=j.utc_offset_seconds||0, sn=DATA.snow, d=j.daily, h=j.hourly;
+function fcToday(j,snIn,stName){
+  const sn=snIn||(DATA&&DATA.snow); if(!sn||sn.length<8) return;
+  const now=Date.now(), off=j.utc_offset_seconds||0, d=j.daily, h=j.hourly;
   if(now-sn[sn.length-1].t>3*3600e3) return;
   const mid=omT(d.time[0]+"T00:00",off), since=sn.filter(x=>x.t>=mid&&x.v!=null);
   if(since.length<6) return;
@@ -1657,7 +1661,7 @@ function fcToday(j){
   const meas=Math.max(0,cur-Math.min(...sm));
   const fut=h.time.reduce((a,t,k)=>t.startsWith(d.time[0])&&omT(t,off)>=now-1800e3?a+(h.snowfall[k]||0):a,0);
   d.snowfall_sum[0]=meas+fut;
-  const L={meas,fut,at:sn[sn.length-1].t};
+  const L={meas,fut,at:sn[sn.length-1].t,st:stName||"Livinal Lunc"};
   if(j.ens&&j.ens.days[0]&&j.ensPer){ const P=j.ensPer, by={};
     Object.keys(j.ens.days[0].by).forEach(m=>{ by[m]=meas+P.time.reduce((a,t,k)=>t.startsWith(d.time[0])&&omT(t,P.off)>=now-1800e3&&P.per[m][k]?a+P.per[m][k].s:a,0); });
     const vs=Object.values(by); if(vs.length>=2) Object.assign(j.ens.days[0],{by,min:Math.min(...vs),max:Math.max(...vs)}); }
@@ -1669,7 +1673,7 @@ function fcLiveNote(){
   const hm=t=>new Date(t).toLocaleTimeString(LOC,{hour:"2-digit",minute:"2-digit"});
   const p=[];
   if(FC.live){ const L=FC.live, m=Math.round(L.meas), u=Math.round(L.fut);
-    p.push(`📡 <b>${L2("Oggi","Today","Danes")}:</b> ${L2(`${m} cm misurati dalla mezzanotte (Livinal Lunc, ${hm(L.at)}) + ${u} cm previsti per le ore restanti`,`${m} cm measured since midnight (Livinal Lunc, ${hm(L.at)}) + ${u} cm forecast for the remaining hours`,`${m} cm izmerjeno od polnoči (Livinal Lunc, ${hm(L.at)}) + ${u} cm napoved za preostale ure`)}`); }
+    p.push(`📡 <b>${L2("Oggi","Today","Danes")}:</b> ${L2(`${m} cm misurati dalla mezzanotte (${L.st||"Livinal Lunc"}, ${hm(L.at)}) + ${u} cm previsti per le ore restanti`,`${m} cm measured since midnight (${L.st||"Livinal Lunc"}, ${hm(L.at)}) + ${u} cm forecast for the remaining hours`,`${m} cm izmerjeno od polnoči (${L.st||"Livinal Lunc"}, ${hm(L.at)}) + ${u} cm napoved za preostale ure`)}`); }
   if(FC.corr){ const C=FC.corr, M=CONFIG.forecast.ensMain, oth=Object.entries(C.models).filter(([m])=>m!==M&&FC.ens&&FC.ens.models.includes(m)).map(([,v])=>v), main=C.models[M]??C.bm;
     const a=oth.length?Math.min(...oth):0, z=oth.length?Math.max(...oth):0, rg=oth.length?` (${L2("altri modelli","other models","ostali modeli")} ${f(a)}${f(a)===f(z)?"":"…"+f(z)})`:"";
     if(main!=null) p.push(`🌡️ ${L2("Temperatura corretta con la stazione (ultime 6 h, svanisce in 24 h)","Temperature corrected with the station (last 6 h, fades over 24 h)","Temperatura popravljena po meritvah postaje (zadnjih 6 h, pojenja v 24 h)")}: ECMWF <b>${f(main)} °C</b>${rg}`); }
@@ -1693,7 +1697,11 @@ function applyEns(j,e,elv){
   models.forEach(m=>{ const P=H["precipitation_"+m], T=H["temperature_2m_"+m];
     const S=H["snowfall_"+m]||[];
     per[m]=H.time.map((t,k)=>{ if(P[k]==null||T[k]==null) return null;
-      if(own){ if(S[k]==null) return null; const smm=Math.min(P[k],S[k]/0.7); return {p:P[k],smm,s:S[k]}; }
+      if(own){ if(S[k]==null) return null;
+        // popravljena temperatura modela (po postaji 542) odloči: ≤0,5 °C = vse sneg, ≥2 °C = dež, vmes model (Luka 26. 11.: v vasi je snežilo, model je kazal dež)
+        if(T[k]<=0.5) return {p:P[k],smm:P[k],s:Math.max(S[k],P[k]*0.7)};
+        if(T[k]>=2) return {p:P[k],smm:0,s:0};
+        const smm=Math.min(P[k],S[k]/0.7); return {p:P[k],smm,s:S[k]}; }
       const smm=P[k]*snowFrac(T[k]); return {p:P[k],smm,s:smm*snowRatio(T[k])}; }); });
   const days=[]; const sn=[],pr=[],rn=[];
   d.time.forEach((day,i)=>{
@@ -1763,8 +1771,9 @@ async function fcSetAlt(a){
       // quota 0 °C = proprietà dell'atmosfera, uguale per Canin e paese → prendila dalla previsione di Canin (Luka 22. 11.)
       if(FCTOP&&FCTOP.hourly){ const T={}; FCTOP.hourly.time.forEach((t,k)=>T[t]=FCTOP.hourly.freezing_level_height[k]); j.hourly.freezing_level_height=j.hourly.time.map((t,k)=>T[t]!=null?T[t]:j.hourly.freezing_level_height[k]); }
       // popravek temperature po postaji Sella Nevea 1180 m (PC FVG 542) – Luka 26. 11.: model v vasi pogosto pretopel (hladen zrak v kotlini); ničte izoterme ne popravljaj
-      try{ if(!DLOW||Date.now()-DLOWT>14*60e3) await loadLow(); if(DLOW&&DLOW.temp&&DLOW.temp.length){ j.corr=null; fcCorrect(j,e,DLOW.temp,true); } }catch(x){ console.error(x); }
+      try{ if(!DLOW||Date.now()-DLOWT>14*60e3) await loadLow(); if(DLOW&&DLOW.temp&&DLOW.temp.length){ j.corr=null; fcCorrect(j,e,DLOW.temp,true,8); } }catch(x){ console.error(x); }
       try{ applyEns(j,e,CONFIG.forecast.low.elev); }catch(x){ console.error(x); }
+      try{ if(DLOW&&DLOW.snow) fcToday(j,DLOW.snow,"Sella Nevea 1180 m"); }catch(x){ console.error(x); }
       FCLOW=j; if(fs) fs.classList.remove("fcload"); }
     catch(x){ console.error(x); if(fs) fs.classList.remove("fcload"); FALT="top"; FC=FCTOP; fcShow(); $("fcTot").insertAdjacentHTML("beforeend",` <small style="color:#ff9e3d">${L2("Previsioni paese non disponibili","Village forecast unavailable","Napoved za vas ni na voljo")}</small>`); return; } }
   if(FALT==="low"){ FC=FCLOW; fcShow(); }
