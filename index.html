@@ -2098,7 +2098,8 @@ function renderCond(){
     const tmax=t24.length?Math.max(...t24):null, tmin12=t12.length?Math.min(...t12):null;
     if(base<COND.minBase){}
     else if(base<COND.thinBase) add(1,"🪨",`Fondo sottile (${base} cm): attenzione a sassi e mughi`,`Thin base (${base} cm): watch out for rocks and dwarf pines`,`Tanka podlaga (${base} cm): pazi na skale in rušje`);
-    if(n48>=COND.bigSnow) add(3,"⚠️",`Forte nevicata recente (+${n48} cm in 48 h): pericolo valanghe in aumento, lascia assestare il manto`,`Heavy recent snowfall (+${n48} cm in 48 h): rising avalanche danger, let the snowpack settle`,`Močno nedavno sneženje (+${n48} cm v 48 h): nevarnost plazov narašča, počakaj, da se odeja sesede`);
+    if(n48>=COND.bigSnow&&!(BUL&&BUL.level>0)) add(2,"⚠️",`Nevicata recente (+${n48} cm in 48 h): manto ancora da assestare, attenzione sui pendii ripidi`,`Recent snowfall (+${n48} cm in 48 h): snowpack still settling, take care on steep slopes`,`Nedavno sneženje (+${n48} cm v 48 h): snežna odeja se še useda, previdno na strmih pobočjih`);
+    else if(n48>=COND.bigSnow) add(3,"⚠️",`Forte nevicata recente (+${n48} cm in 48 h): pericolo valanghe in aumento, lascia assestare il manto`,`Heavy recent snowfall (+${n48} cm in 48 h): rising avalanche danger, let the snowpack settle`,`Močno nedavno sneženje (+${n48} cm v 48 h): nevarnost plazov narašča, počakaj, da se odeja sesede`);
     if(n48>=COND.slabSnow&&(w24>=COND.slabWind||g24>=COND.slabGust)){
       const lee=leeDir(wind,dir,s24);
       add(2,"🌬️",`Neve fresca + vento (raffiche ${Math.round(g24)} km/h): probabili accumuli da vento${lee?` sui pendii esposti a ${lee}`:""}`,`New snow + wind (gusts ${Math.round(g24)} km/h): wind slabs likely${lee?` on ${lee}-facing slopes`:""}`,`Nov sneg + veter (sunki ${Math.round(g24)} km/h): verjetne kložaste plošče${lee?` na pobočjih, obrnjenih proti ${lee}`:""}`);
@@ -2136,7 +2137,8 @@ function renderCond(){
     const [sv,it,en,sl]=BADV[BUL.level], el2=BUL.elev?` (${BUL.elev})`:"";
     F.push({sev:sv,ic:"⚠️",t:L2(it,en,sl)+(el2?tr(el2):""),bul:true});
   }
-  else if(BUL&&BUL.level===0&&base!=null&&base>=COND.minBase) add(1,"📋","Bollettino valanghe non disponibile: valuta con prudenza extra","No avalanche bulletin available: be extra careful","Plazovni bilten ni na voljo: bodi še posebej previden");
+  else if(BUL&&BUL.level===0&&base!=null&&base>=COND.minBase&&!F.some(f=>f.ic==="⚠️")) add(1,"📋","Bollettino valanghe non disponibile: valuta con prudenza extra","No avalanche bulletin available: be extra careful","Plazovni bilten ni na voljo: bodi še posebej previden");
+  if(!(BUL&&BUL.level>0)) F.forEach(f=>{if(f.sev>2)f.sev=2;}); // senza bollettino: niente "Massima prudenza", solo un avviso moderato
   F.sort((a,b)=>(b.bul?1:0)-(a.bul?1:0)||b.sev-a.sev);
   const mx=F.length?Math.max(...F.map(f=>f.sev)):0;
   let col,head;
