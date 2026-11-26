@@ -143,6 +143,13 @@ html{overflow-x:clip}
 .cond .snq .a{font-family:var(--display);font-weight:800;letter-spacing:.04em;display:flex;align-items:flex-start;gap:6px;font-size:.8rem;color:var(--muted)}
 .cond .snq .a i{width:9px;height:9px;border-radius:50%;margin-top:4px;flex:0 0 auto}
 .cond .snq .f{font-size:.8rem;color:var(--muted);margin-top:6px;line-height:1.3}
+.cond .snq .sqt{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:0 0 6px}
+.cond .snq .sqt button{font:700 .72rem/1.2 var(--display);letter-spacing:.03em;text-transform:uppercase;padding:6px 4px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.03);color:var(--muted);border-radius:8px;cursor:pointer;white-space:nowrap}
+.cond .snq .sqt button.on{background:var(--ice-deep);border-color:var(--ice-deep);color:#fff}
+.cond .snq .sqp.hid{display:none}
+.cond .snq .sqb{font:700 .72rem/1.2 var(--display);letter-spacing:.05em;text-transform:uppercase;color:var(--ice);margin:8px 0 2px}
+.cond .snq .sqb:first-of-type{margin-top:0}
+@media(max-width:380px){.cond .snq .sqt button{font-size:.64rem;padding:6px 2px}}
 .cond small{display:block;font-size:.7rem;color:var(--muted);line-height:1.3}
 .cond .cscale{display:none;gap:3px;margin:10px 0 4px}
 .cond .cscale span{flex:1;height:22px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--s) 22%,#111);color:rgba(255,255,255,.45);font-family:var(--display);font-weight:800;font-size:.8rem}
@@ -1342,6 +1349,7 @@ async function load(){
   try{
     const [snow,temp,wind,gust,dir]=await Promise.all([s.snow,s.temp,s.wind,s.gust,s.dir].map(id=>getSensor(id,from,to)));
     DATA={snow,temp,wind,gust,dir}; render(); renderPowder(); if(FCRAW){ try{ buildTop(); }catch(x){ console.error(x); } } renderCond();
+    if(!DLOW||Date.now()-DLOWT>14*60e3) loadLow().then(()=>{ renderCond(); if(STV==="low") renderLow(); }).catch(e=>console.error(e));
   }catch(e){ console.error(e); $("err").style.display="block"; STFAIL=true; renderCond(); }
 }
 const last=a=>a.length?a[a.length-1]:null;
@@ -2017,13 +2025,23 @@ function stSnowRose(tt){ if(!DATA||!DATA.snow||DATA.snow.length<8) return false;
   const med=(a,b)=>{const v=DATA.snow.filter(x=>x.t>=a&&x.t<b).map(x=>x.v); return v.length?median(v):null;};
   const b=med(tt-3*3600e3,tt-3600e3), a=med(tt+3600e3,tt+3*3600e3); return b!=null&&a!=null&&a-b>=1; }
 function stRainOk(tt){ const T=stTempAt(tt); if(T!=null&&T<=1) return false; if(stSnowRose(tt)) return false; return true; }
-function snowModel(){
-  if(!DATA||!DATA.snow.length) return null;
-  const now=Date.now(), base=Math.round(DATA.snow[DATA.snow.length-1].v);
-  if(base<COND.minBase) return null;
+// pas 1200–1800 m (Luka 26. 11.): sneg iz postaje 542 (1180 m), temperatura = povprečje 541 in 542 (≈1500 m, upošteva inverzije), brez vetra (gozd)
+function lowSrc(){
+  if(!DLOW||!DLOW.snow||DLOW.snow.length<8) return null;
+  const t541=tt=>stTempAt(tt);
+  const temp=(DLOW.temp||[]).map(x=>{const u=t541(x.t.getTime?x.t.getTime():x.t); return {t:x.t,v:u!=null?(x.v+u)/2:x.v-2};});
+  const rose=tt=>{const med=(a,b)=>{const v=DLOW.snow.filter(x=>x.t>=a&&x.t<b).map(x=>x.v); return v.length?median(v):null;}; const b=med(tt-3*3600e3,tt-3600e3), a=med(tt+3600e3,tt+3*3600e3); return b!=null&&a!=null&&a-b>=1;};
+  const tAt=tt=>{const v=temp.filter(x=>Math.abs(x.t-tt)<=40*60e3).map(x=>x.v); return v.length?median(v):null;};
+  return {snow:DLOW.snow,temp,gust:[],dir:[],fcOff:2.5,low:true,rainOk:tt=>{const T=tAt(tt); if(T!=null&&T<=1) return false; return !rose(tt);}};
+}
+function snowModel(S){
+  if(!S){ if(!DATA||!DATA.snow.length) return null; S={snow:DATA.snow,temp:DATA.temp,gust:DATA.gust,dir:DATA.dir,fcOff:0,rainOk:stRainOk}; }
+  if(!S.snow||!S.snow.length) return null;
+  const now=Date.now(), base=Math.round(S.snow[S.snow.length-1].v);
+  if(base<COND.minBase){ if(!S.low) return null; return {thin:true,base}; }
   const H=3600e3, kNow=Math.floor(now/H);
   // ---- ultima nevicata negli ultimi 7 giorni (stazione): inizio, fine, cm ----
-  const hh={}; DATA.snow.filter(x=>x.t>=now-7*864e5).forEach(x=>{const k=Math.floor(x.t/H);(hh[k]=hh[k]||[]).push(x.v);});
+  const hh={}; S.snow.filter(x=>x.t>=now-7*864e5).forEach(x=>{const k=Math.floor(x.t/H);(hh[k]=hh[k]||[]).push(x.v);});
   const ser=Object.keys(hh).map(Number).sort((a,b)=>a-b).map(k=>({k,v:median(hh[k])}));
   let mn=Infinity, mnK=null, ev={cm:0,end:null,start:null};
   ser.forEach(x=>{ if(x.v<=mn){mn=x.v;mnK=x.k;} const d=x.v-mn; if(d>ev.cm+0.5) ev={cm:d,end:x.k,start:mnK}; });
@@ -2031,9 +2049,9 @@ function snowModel(){
   const hasEv=ev.cm>=10, dust=!hasEv&&ev.cm>=3&&ev.end&&kNow-ev.end<=72;
   const age=hasEv?(kNow-ev.end)/24:null;
   // ---- serie orarie ----
-  const sT=hourly(DATA.temp), sG=hourly(DATA.gust,3.6), sD=hourly(DATA.dir);
+  const sT=hourly(S.temp), sG=hourly(S.gust,3.6), sD=hourly(S.dir);
   const P={}; (FCP||[]).forEach(x=>P[Math.floor(x.t/H)]=x);
-  const at=k=>{const p=P[k]||{}; return {T:sT[k]?median(sT[k]):p.T, G:sG[k]?Math.max(...sG[k]):p.g, D:sD[k]?median(sD[k]):p.d, sun:p.sun||0, rn:p.rn||0};};
+  const at=k=>{const p=P[k]||{}; return {T:sT[k]?median(sT[k]):(p.T!=null?p.T+S.fcOff:p.T), G:S.low?0:sG[k]?Math.max(...sG[k]):p.g, D:sD[k]?median(sD[k]):p.d, sun:p.sun||0, rn:p.rn||0};};
   const fac=sunFac(new Date().getMonth());
   // temperatura e vento durante la nevicata
   let tEv=null, evT=[];
@@ -2047,7 +2065,7 @@ function snowModel(){
     n++; tmax=Math.max(tmax,x.T);
     ASP.forEach(a=>{ if(x.T>-3) sunW[a]+=x.sun*fac[a]; else sunC[a]+=x.sun*fac[a]; });
     if(x.T>0) warm+=x.T;
-    if(x.rn>0.2&&x.T>1&&stRainOk(k*H+H/2)) rain=true;
+    if(x.rn>0.2&&x.T>1&&S.rainOk(k*H+H/2)) rain=true;
   }
   if(!n) return null;
   const from=(windVec[0]||windVec[1])?(Math.atan2(windVec[0],windVec[1])*180/Math.PI+360)%360:null;
@@ -2126,17 +2144,33 @@ function snowModel(){
   return {rows,low,notes,hasEv,ev,age,wind,windward,lee,next:F};
 }
 // enake ekspozicije v eni vrstici (Luka izbral C, 26. 11. 2026): polna imena nad besedilom
-function snowModelHTML(m){
-  if(!m) return "";
-  const head=L2("Neve stimata per esposizione · 1800–2100 m","Estimated snow by aspect · 1800–2100 m","Ocena snega po ekspozicijah · 1800–2100 m");
+// pasova 1800–2200 m in 1200–1800 m (Luka 26. 11.): ?sq=a preklop (privzeto) | ?sq=b oba zložena
+let SQB="top"; const SQV=(new URLSearchParams(location.search).get("sq")||"a");
+function snowRowsHTML(m){
   const G=[]; ASP.forEach(a=>{const o=m.rows[a]; const g=G.find(x=>x.t===o.t); if(g) g.a.push(a); else G.push({t:o.t,c:o.c,a:[a]});});
   const lab=g=>g.a.length===4?L2("Ovunque","Everywhere","Povsod"):g.a.map(a=>L2(...ASPN[a])).join(" · ");
-  const r=(l,o)=>`<div class="r"><span class="a"><i style="background:${o.c}"></i>${l}</span><span>${o.t}</span></div>`;
-  const rows=G.map(g=>r(lab(g),g)).join("")+r(L2("In basso","Lower","Nižje"),m.low);
+  return G.map(g=>snR(lab(g),g)).join("");
+}
+const snR=(l,o)=>`<div class="r"><span class="a"><i style="background:${o.c}"></i>${l}</span><span>${o.t}</span></div>`;
+function lowHTML(m,lm){
+  if(lm&&lm.thin) return snR(L2("Poca neve","Little snow","Malo snega"),{c:"#ff9e3d",t:L2(`solo ${lm.base} cm a 1180 m: sassi, mughi e ruscelli scoperti, fuoripista in basso sconsigliato`,`only ${lm.base} cm at 1180 m: rocks, dwarf pines and streams exposed, off-piste lower down not advised`,`le ${lm.base} cm na 1180 m: kamni, ruševje in potoki so odkriti, smuka izven prog nižje ni priporočljiva`)});
+  if(lm) return snowRowsHTML(lm);
+  return snR(L2("In basso","Lower","Nižje"),m.low); // rezerva: postaja 542 ni naložena
+}
+function snowModelHTML(m){
+  if(!m) return "";
+  let lm=null; try{ const S=lowSrc(); if(S) lm=snowModel(S); }catch(e){ console.error(e); }
+  const hi=L2("In quota","Up high","Zgoraj"), lo=L2("In basso","Lower","Nižje");
+  const t1=`⛰️ ${hi} · 1800–2200 m`, t2=`🌲 ${lo} · 1200–1800 m`;
   const nt=m.notes.map(x=>`<div class="f">💡 ${x}</div>`).join("");
   const nx=m.next.length?`<div class="f">${L2("Prossime 24 h","Next 24 h","Naslednjih 24 h")}: ${m.next.join(" · ")}</div>`:"";
-  return `<div class="snq"><h4>${head}</h4>${rows}${nt}${nx}</div>`;
+  const head=`<h4>${L2("Neve stimata per esposizione","Estimated snow by aspect","Ocena snega po ekspozicijah")}</h4>`;
+  if(SQV==="b") return `<div class="snq">${head}<div class="sqb">${t1}</div>${snowRowsHTML(m)}<div class="sqb">${t2}</div>${lowHTML(m,lm)}${nt}${nx}</div>`;
+  const sw=`<div class="sqt" role="group"><button data-q="top" class="${SQB==="top"?"on":""}" title="${hi}">⛰️ 1800–2200 m</button><button data-q="low" class="${SQB==="low"?"on":""}" title="${lo}">🌲 1200–1800 m</button></div>`;
+  return `<div class="snq">${head}${sw}<div class="sqp${SQB==="top"?"":" hid"}" data-p="top">${snowRowsHTML(m)}</div><div class="sqp${SQB==="low"?"":" hid"}" data-p="low">${lowHTML(m,lm)}</div>${nt}${nx}</div>`;
 }
+document.addEventListener("click",ev=>{const b=ev.target.closest(".sqt button"); if(!b) return; SQB=b.dataset.q; const box=b.closest(".snq");
+  box.querySelectorAll(".sqt button").forEach(x=>x.classList.toggle("on",x===b)); box.querySelectorAll(".sqp").forEach(p=>p.classList.toggle("hid",p.dataset.p!==SQB));});
 /* ===== Valutazione automatica delle condizioni ===== */
 let BUL=null;
 const COND={minBase:50, thinBase:80, slabSnow:10, bigSnow:30, slabWind:25, slabGust:50, gustHi:60, gustVHi:80, snowSoon:10};
