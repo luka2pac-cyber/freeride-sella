@@ -1903,20 +1903,29 @@ function newSnow24(snow){
   const base=Math.min(...snow.filter(x=>x.t>=new Date(lastT-24*3600e3)).map(x=>x.v));
   return Math.max(0,Math.round(now-base));
 }
-// POWDER! po zadnjem sneženju (Luka 26. 11. 2026): ≥15 cm, velja 48 h; do 5 dni, če po sneženju temperatura (urna mediana, postaja 541) ni presegla 0 °C
+// POWDER! po zadnjem sneženju (Luka 26. 11. 2026): sneženje = zaporedje novih maksimumov višine snega s premori < 12 h;
+// velja, če je zadnje sneženje z ≥15 cm končano < 48 h, ali ≤ 5 dni, če po koncu temperatura (urna mediana, postaja 541) ni presegla 0 °C
 let PWD=null;
-function powderEvent(){
+function snowEvents(snow,days){
   const H=3600e3, now=Date.now(), hh={};
-  DATA.snow.filter(x=>x.t>=now-7*864e5).forEach(x=>{const k=Math.floor(x.t/H);(hh[k]=hh[k]||[]).push(x.v);});
+  snow.filter(x=>x.t>=now-days*864e5).forEach(x=>{const k=Math.floor(x.t/H);(hh[k]=hh[k]||[]).push(x.v);});
   const ser=Object.keys(hh).map(Number).sort((a,b)=>a-b).map(k=>({k,v:median(hh[k])}));
-  if(ser.length<6) return null;
-  let mn=Infinity, mnK=null, ev={cm:0,end:null,start:null};
-  ser.forEach(x=>{ if(x.v<=mn){mn=x.v;mnK=x.k;} const d=x.v-mn; if(d>ev.cm+0.5) ev={cm:d,end:x.k,start:mnK}; });
-  if(ev.end==null||ev.cm<CONFIG.powderThreshold) return null;
-  const ageH=(now-(ev.end+1)*H)/H, tH=hourly(DATA.temp.filter(x=>x.t>=(ev.end+1)*H));
-  const tmax=Math.max(-99,...Object.values(tH).map(median));
-  const on=ageH<=48||(ageH<=120&&tmax<=0);
-  return on?{cm:Math.round(ev.cm),ageH:Math.max(0,ageH),spanH:ev.end-ev.start,tmax}:null;
+  const ev=[]; let base=null, cur=null;
+  ser.forEach(x=>{
+    if(cur){ if(x.v>cur.max){ cur.max=x.v; cur.end=x.k; return; } if(x.k-cur.end<12) return; ev.push(cur); cur=null; base=x.v; }
+    if(base==null||x.v<base){ base=x.v; return; }
+    if(x.v-base>=1) cur={start:x.k, end:x.k, base, max:x.v};
+  });
+  if(cur) ev.push(cur);
+  return ev.map(e=>({start:e.start,end:e.end,cm:Math.round(e.max-e.base)}));
+}
+function powderEvent(){
+  const H=3600e3, now=Date.now(), E=snowEvents(DATA.snow,7);
+  for(let i=E.length-1;i>=0;i--){ const e=E[i]; if(e.cm<CONFIG.powderThreshold) continue;
+    const ageH=Math.max(0,(now-(e.end+1)*H)/H), tH=hourly(DATA.temp.filter(x=>x.t>=(e.end+1)*H));
+    const tmax=Math.max(-99,...Object.values(tH).map(median));
+    return (ageH<=48||(ageH<=120&&tmax<=0))?{cm:e.cm,ageH,spanH:e.end-e.start+1,tmax}:null; }
+  return null;
 }
 function renderPowder(){
   const n=newSnow24(DATA.snow); if(n===null) return;
@@ -2339,7 +2348,7 @@ loadKanin();
     if(!on) return '<div class="xtra"><span>Nuova 24 h <b>'+n24+'</b></span>'+SMC()+'</div>';
     var bs=(typeof DATA!=="undefined"&&DATA&&DATA.snow&&DATA.snow.length)?Math.round(DATA.snow[DATA.snow.length-1].v):null;
     var low=bs!=null&&bs<50?'<small>(poca base · '+bs+' cm)</small>':'';
-    var dd=Math.round(PWD.ageH/24), sd=Math.max(1,Math.ceil(PWD.spanH/24)), ag=PWD.ageH<24?(PWD.spanH<=30?L2("ultime 24 h","last 24 h","zadnjih 24 h"):L2("in "+sd+" giorni","in "+sd+" days","v "+sd+(sd===2?" dneh":" dneh"))):L2(dd+(dd===1?" giorno fa":" giorni fa"),dd+(dd===1?" day ago":" days ago"),"pred "+dd+(dd===1?" dnevom":" dnevi"));
+    var dd=Math.max(1,Math.round(PWD.ageH/24)), tot=Math.round(PWD.spanH+PWD.ageH), ag=PWD.ageH>=24?L2(dd+(dd===1?" giorno fa":" giorni fa"),dd+(dd===1?" day ago":" days ago"),"pred "+dd+(dd===1?" dnevom":" dnevi")):tot<=24?L2("ultime 24 h","last 24 h","zadnjih 24 h"):L2("ultime "+tot+" h","last "+tot+" h","zadnjih "+tot+" h");
     return '<div class="xtra"><span class="pwA">❄️ POWDER! <b>'+cm+'</b> · '+ag+low+'</span>'+SMC()+'</div>';
   }
   function draw3(){
