@@ -2475,7 +2475,7 @@ loadKanin();
     var low=bs!=null&&bs<50?'<small>(poca base · '+bs+' cm)</small>':'';
     var dd=Math.max(1,Math.round(PWD.ageH/24)), tot=Math.round(PWD.spanH+PWD.ageH), ag=PWD.ageH>=24?L2(dd+(dd===1?" giorno fa":" giorni fa"),dd+(dd===1?" day ago":" days ago"),"pred "+dd+(dd===1?" dnevom":" dnevi")):tot<=24?L2("ultime 24 h","last 24 h","zadnjih 24 h"):L2("ultime "+tot+" h","last "+tot+" h","zadnjih "+tot+" h");
     var PW='<span class="pw">'+"POWDER!".split("").map(function(c,i){return '<span style="--i:'+i+'">'+c+'</span>'}).join("")+'</span>';
-    return '<div class="xtra"><span class="pwA">'+(/[?&]snow=1/.test(location.search)?'<i class="pwS">'+[5,14,24,33,44,55,64,74,84,94].map(function(l,i){return '<i style="left:'+l+'%;--d:'+(i*.53%2.6).toFixed(2)+'s;--t:'+(2.4+i%3*.5)+'s"></i>'}).join("")+'</i>':'')+'<i class="pwF">❄️</i> '+PW+' <b>'+cm+'</b> · '+ag+low+'</span>'+SMC()+'</div>';
+    return '<div class="xtra"><span class="pwA">'+(1?'<i class="pwS">'+[5,14,24,33,44,55,64,74,84,94].map(function(l,i){return '<i style="left:'+l+'%;--d:'+(i*.53%2.6).toFixed(2)+'s;--t:'+(2.4+i%3*.5)+'s"></i>'}).join("")+'</i>':'')+'<i class="pwF">❄️</i> '+PW+' <b>'+cm+'</b> · '+ag+low+'</span>'+SMC()+'</div>';
   }
   function draw3(){
     var K=SLO||{}, kS=K.snow!=null?Math.round(K.snow)+" cm":"–", kT=K.t!=null?fix1(K.t)+"°":"–",
