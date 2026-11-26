@@ -456,14 +456,42 @@ section>.head:first-child .eyebrow::before,section>.secbanner+.head .eyebrow::be
 .st3 .wa{display:inline-block;font-style:normal;font-size:.85em;margin-left:4px;color:var(--ice);line-height:1}
 .st3 .v.t b{color:#ffb38a}.st3 .v.w{min-width:78px}.st3 .v.w b{color:var(--ink)}
 .st3 .xtra{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:8px}
-.st3 .xtra span{background:rgba(0,0,0,.6);border:1px solid var(--line);padding:5px 10px;font-weight:700;font-size:.9rem}
+.st3 .xtra span:not(.pwV):not(.pwV *):not(.pwA){background:rgba(0,0,0,.6);border:1px solid var(--line);padding:5px 10px;font-weight:700;font-size:.9rem}
 .st3 .xtra b{color:var(--ice)}
 .st3 .xtra .smaa{display:inline-flex;align-items:center;gap:6px;background:rgba(0,0,0,.6);border:1px solid rgba(94,200,242,.55);padding:5px 10px;font-weight:700;font-size:.9rem;color:var(--ink);text-decoration:none;white-space:nowrap}
 .st3 .xtra .smaa small{color:var(--ice);font-size:.85em}.st3 .xtra .smaa:hover{border-color:var(--ice)}
-@media(max-width:380px){.st3 .xtra{gap:6px}.st3 .xtra>span:not(.pwA),.st3 .xtra .smaa{font-size:.78rem;padding:4px 7px}}
+@media(max-width:380px){.st3 .xtra{gap:6px}.st3 .xtra>span:not(.pwA):not(.pwV),.st3 .xtra .smaa{font-size:.78rem;padding:4px 7px}}
 .st3 .xtra .pwA{background:linear-gradient(135deg,#5ec8f2,#2f6fff);color:#04121c;border:0;border-radius:12px;padding:9px 16px;font-size:1.1rem;white-space:nowrap;animation:pwG 1.8s ease-in-out infinite}
 .st3 .xtra .pwA b{color:#fff;font-size:1.3em}
 .st3 .xtra .pwA small{display:block;text-align:center;font-size:.75em;color:#04121c;opacity:.85;margin-top:2px}
+/* POWDER variante ?pw= */
+.st3 .xtra .pwV *{border:0;background:none;padding:0}
+.st3 .xtra .pwV b{color:inherit}
+.st3 .xtra .pwV{display:inline-flex;align-items:center;gap:10px;border-radius:14px;padding:7px 14px 7px 10px;font-family:var(--display);text-transform:uppercase;white-space:nowrap;line-height:1.05}
+.pwV .t{display:flex;flex-direction:column;align-items:flex-start}
+.pwV .t em{font-style:normal;font-weight:800;letter-spacing:.14em;font-size:.72rem}
+.pwV .t b{font-size:1.45rem;font-weight:800}
+.pwV .t i{font-style:normal;font-size:.68rem;letter-spacing:.06em;opacity:.85}
+.pwV .t small{font-size:.62rem;opacity:.8;text-transform:none}
+.st3 .xtra .pwVa{background:linear-gradient(160deg,#0d2b4a,#071526);border:1px solid #5ec8f2;color:#e9f8ff;box-shadow:inset 0 0 18px rgba(94,200,242,.25)}
+.pwVa .pwf{width:40px;height:40px;color:#7fd6ff;filter:drop-shadow(0 0 6px rgba(94,200,242,.7));animation:pwSpin 24s linear infinite}
+.pwVa .t em{color:#7fd6ff}.st3 .xtra .pwVa .t b{color:#fff}
+@keyframes pwSpin{to{transform:rotate(360deg)}}
+.st3 .xtra .pwVb{background:linear-gradient(120deg,#e9f8ff,#9fdcff);color:#04121c;padding-left:6px;box-shadow:0 4px 18px rgba(94,200,242,.35)}
+.pwVb .pws{width:78px;height:38px}
+.pwVb .pws g:first-child circle{fill:#fff;stroke:#7fc8ef;stroke-width:1}
+.pwVb .t em{color:#1d6fa5}
+.st3 .xtra .pwVc{background:#0b1a26;border:1px solid rgba(94,200,242,.5);color:#e9f8ff;padding:6px 14px 6px 6px}
+.st3 .xtra .pwVc .gauge{position:relative;width:40px;height:48px;border:1px solid rgba(255,255,255,.25)!important;border-radius:8px;background:repeating-linear-gradient(to top,rgba(255,255,255,.08) 0 1px,transparent 1px 11px),#06111a;overflow:hidden;border:1px solid rgba(255,255,255,.15)}
+.st3 .xtra .pwVc .fill{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(to top,#bfe9ff,#fff);border-top:3px solid #fff;box-shadow:0 -4px 10px rgba(255,255,255,.6)}
+.pwVc .lv{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;color:#04121c;text-shadow:0 0 4px #fff}
+.pwVc .t em{color:#7fd6ff}.st3 .xtra .pwVc .t b{font-size:1.05rem;color:#fff}
+.st3 .xtra .pwVd{background:none;padding:0;gap:8px;color:#e9f8ff}
+.st3 .xtra .pwVd .stamp{position:relative;width:62px;height:62px;border-radius:50%;background:radial-gradient(circle,#2f6fff,#123a8a);box-shadow:0 0 0 3px #fff,0 0 16px rgba(94,200,242,.6);display:flex;align-items:center;justify-content:center;transform:rotate(-12deg)}
+.pwVd .stamp .pwf{width:26px;height:26px;color:#fff}
+.pwVd .ring{position:absolute;inset:0;width:100%;height:100%}
+.pwVd .ring text{fill:#fff;font:800 11px var(--display);letter-spacing:1.5px}
+.st3 .xtra .pwVd .t b{font-size:1.6rem;color:#fff}
 @keyframes pwG{0%,100%{box-shadow:0 0 10px rgba(94,200,242,.5)}50%{box-shadow:0 0 28px rgba(94,200,242,1)}}
 /* b: due box affiancati */
 .st3.b .cols{display:grid;grid-template-columns:1.6fr 1fr;gap:8px}
@@ -2462,7 +2490,19 @@ loadKanin();
     var bs=(typeof DATA!=="undefined"&&DATA&&DATA.snow&&DATA.snow.length)?Math.round(DATA.snow[DATA.snow.length-1].v):null;
     var low=bs!=null&&bs<50?'<small>(poca base · '+bs+' cm)</small>':'';
     var dd=Math.max(1,Math.round(PWD.ageH/24)), tot=Math.round(PWD.spanH+PWD.ageH), ag=PWD.ageH>=24?L2(dd+(dd===1?" giorno fa":" giorni fa"),dd+(dd===1?" day ago":" days ago"),"pred "+dd+(dd===1?" dnevom":" dnevi")):tot<=24?L2("ultime 24 h","last 24 h","zadnjih 24 h"):L2("ultime "+tot+" h","last "+tot+" h","zadnjih "+tot+" h");
+    var V=(new URLSearchParams(location.search).get("pw")||"").replace(/[^abcd]/g,"").slice(0,1);
+    if(V) return '<div class="xtra">'+pwV(V,cm,ag,low)+SMC()+'</div>';
     return '<div class="xtra"><span class="pwA">❄️ POWDER! <b>'+cm+'</b> · '+ag+low+'</span>'+SMC()+'</div>';
+  }
+  // variante znaka POWDER (Luka 26. 11.): ?pw=a|b|c|d
+  var FLAKE='<svg class="pwf" viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round">'+[0,60,120].map(function(r){return '<g transform="rotate('+r+' 24 24)"><path d="M24 3v42"/><path d="M24 11l-5-5M24 11l5-5M24 37l-5 5M24 37l5 5M24 18l-7-4M24 18l7-4M24 30l-7 4M24 30l7 4"/></g>'}).join('')+'</g><circle cx="24" cy="24" r="3.2" fill="currentColor"/></svg>';
+  var SKIER='<svg class="pws" viewBox="0 0 120 56" aria-hidden="true"><g fill="#fff"><circle cx="9" cy="40" r="7" opacity=".55"/><circle cx="20" cy="33" r="9" opacity=".7"/><circle cx="34" cy="28" r="10" opacity=".85"/><circle cx="47" cy="31" r="7" opacity=".9"/><circle cx="4" cy="30" r="3" opacity=".5"/><circle cx="14" cy="22" r="3.5" opacity=".6"/><circle cx="26" cy="16" r="2.5" opacity=".6"/></g><g fill="none" stroke="#04121c" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"><path d="M70 16l-6 13 9 7-3 12"/><path d="M64 29l-9 4"/><path d="M68 20l12 3"/><path d="M50 50l38-6"/></g><circle cx="75" cy="10" r="5" fill="#04121c"/></svg>';
+  function pwV(V,cm,ag,low){
+    if(V==="a") return '<span class="pwV pwVa">'+FLAKE+'<span class="t"><em>Powder</em><b>'+cm+'</b><i>'+ag+'</i>'+low+'</span></span>';
+    if(V==="b") return '<span class="pwV pwVb">'+SKIER+'<span class="t"><em>Powder day</em><b>'+cm+'</b><i>'+ag+'</i>'+low+'</span></span>';
+    if(V==="c"){ var n=parseInt(cm.replace(/\D/g,""))||0, h=Math.min(100,Math.round(n/50*100));
+      return '<span class="pwV pwVc"><span class="gauge"><span class="fill" style="height:'+h+'%"></span><span class="lv">'+cm.replace(" cm","")+'</span></span><span class="t"><em>❄ Powder</em><b>'+L2("neve fresca","fresh snow","svež sneg")+'</b><i>'+ag+'</i>'+low+'</span></span>'; }
+    return '<span class="pwV pwVd"><span class="stamp">'+FLAKE+'<svg class="ring" viewBox="0 0 100 100" aria-hidden="true"><defs><path id="pwc" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs><text><textPath href="#pwc">POWDER ALERT • POWDER ALERT • </textPath></text></svg></span><span class="t"><b>'+cm+'</b><i>'+ag+'</i>'+low+'</span></span>';
   }
   function draw3(){
     var K=SLO||{}, kS=K.snow!=null?Math.round(K.snow)+" cm":"–", kT=K.t!=null?fix1(K.t)+"°":"–",
