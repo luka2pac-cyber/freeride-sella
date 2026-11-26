@@ -93,3 +93,17 @@ try:
     print("obs OK", len(days))
 except Exception as e:
     print("obs napaka", e)
+
+# ---------- surove meritve postaj 541 (Livinal Lunc) in 542 (Sella Nevea paese) za preverjanje strani (E2E test) ----------
+try:
+    API2 = "https://monitor.protezionecivile.fvg.it/api/stations/{}/sensors/{}/measures?from={}&to={}"
+    f = (now - datetime.timedelta(hours=170)).strftime("%Y-%m-%d %H:%M:%S"); t = now.strftime("%Y-%m-%d %H:%M:%S")
+    st = {"generated": data["generated"]}
+    for sid, sens in ((541, (23, 2, 6, 7, 5)), (542, (23, 2))):
+        for s in sens:
+            j = get(API2.format(sid, s, urllib.parse.quote(f), urllib.parse.quote(t)))
+            st[f"{sid}_{s}"] = j if j and j.get("result") == "OK" else None
+    json.dump(st, open(OUT + "/stations.json", "w"), separators=(",", ":"))
+    print("stations.json OK")
+except Exception as e:
+    print("stations napaka", e)
