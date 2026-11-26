@@ -1988,18 +1988,21 @@ function newSnow24(snow){
   const base=Math.min(...snow.filter(x=>x.t>=new Date(lastT-24*3600e3)).map(x=>x.v));
   return Math.max(0,Math.round(now-base));
 }
-// POWDER! po zadnjem sneženju (Luka 26. 11. 2026): sneženje = zaporedje novih maksimumov višine snega s premori < 12 h;
+// POWDER! po zadnjem sneženju (Luka 26. 11. 2026): sneženje = ure, ko višina snega naraste ≥3 cm nad minimum prejšnjih 6 h, s premori < 12 h;
 // velja, če je zadnje sneženje z ≥15 cm končano < 48 h, ali ≤ 5 dni, če po koncu temperatura (urna mediana, postaja 541) ni presegla 0 °C
 let PWD=null;
 function snowEvents(snow,days){
+  // ura sneženja = višina vsaj 3 cm nad minimumom prejšnjih 6 h (tudi če se sneg vmes sesede); sneženje = ure s premori < 12 h
   const H=3600e3, now=Date.now(), hh={};
   snow.filter(x=>x.t>=now-days*864e5).forEach(x=>{const k=Math.floor(x.t/H);(hh[k]=hh[k]||[]).push(x.v);});
   const ser=Object.keys(hh).map(Number).sort((a,b)=>a-b).map(k=>({k,v:median(hh[k])}));
-  const ev=[]; let base=null, cur=null;
+  const mnB=(k,h)=>{let m=Infinity; ser.forEach(y=>{if(y.k<k&&y.k>=k-h&&y.v<m)m=y.v;}); return m;};
+  const ev=[]; let cur=null;
   ser.forEach(x=>{
-    if(cur){ if(x.v>cur.max){ cur.max=x.v; cur.end=x.k; return; } if(x.k-cur.end<12) return; ev.push(cur); cur=null; base=x.v; }
-    if(base==null||x.v<base){ base=x.v; return; }
-    if(x.v-base>=1) cur={start:x.k, end:x.k, base, max:x.v};
+    const m=mnB(x.k,6); if(!(x.v-m>=3)) return;
+    if(cur&&x.k-cur.end<12){ cur.end=x.k; cur.max=Math.max(cur.max,x.v); return; }
+    if(cur) ev.push(cur);
+    cur={start:x.k,end:x.k,base:m,max:x.v};
   });
   if(cur) ev.push(cur);
   return ev.map(e=>({start:e.start,end:e.end,cm:Math.round(e.max-e.base)}));
