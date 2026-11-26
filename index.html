@@ -141,6 +141,8 @@ html{overflow-x:clip}
 .cond .snq .r:first-of-type{border-top:0}
 .cond .snq .a{font-family:var(--display);font-weight:800;letter-spacing:.04em;display:flex;align-items:flex-start;gap:6px}
 .cond .snq .a i{width:9px;height:9px;border-radius:50%;margin-top:4px;flex:0 0 auto}
+.cond .snq .r.rb{grid-template-columns:auto 1fr;gap:10px}.cond .snq .r.rb .a{min-width:56px;white-space:nowrap}
+.cond .snq .r.rc{grid-template-columns:1fr;gap:2px}.cond .snq .r.rc .a{font-size:.8rem;color:var(--muted)}
 .cond .snq .f{font-size:.8rem;color:var(--muted);margin-top:6px;line-height:1.3}
 .cond small{display:block;font-size:.7rem;color:var(--muted);line-height:1.3}
 .cond .cscale{display:none;gap:3px;margin:10px 0 4px}
@@ -2071,8 +2073,11 @@ function snowModel(){
   if(fG>=60) F.push(L2(`vento forte (raffiche ${Math.round(fG)} km/h): la neve verrà ventata sulle creste`,`strong wind (gusts ${Math.round(fG)} km/h): snow will be wind-affected on ridges`,`močan veter (sunki ${Math.round(fG)} km/h): sneg na grebenih bo spihan`));
   return {rows,low,notes,hasEv,ev,age,wind,windward,lee,next:F};
 }
+const SQ=new URLSearchParams(location.search).get("sq")||"a";
+const ASPC={N:["N","N","S"],E:["E","E","V"],S:["S","S","J"],O:["O","W","Z"]};
 function snowModelHTML(m){
   if(!m) return "";
+  if(SQ!=="a") return snowModelHTMLg(m);
   const head=L2("Neve stimata per esposizione · 1800–2100 m","Estimated snow by aspect · 1800–2100 m","Ocena snega po ekspozicijah · 1800–2100 m");
   const r=(lab,o)=>`<div class="r"><span class="a"><i style="background:${o.c}"></i>${lab}</span><span>${o.t}</span></div>`;
   const rows=ASP.map(a=>r(L2(...ASPN[a]),m.rows[a])).join("")+r(L2("In basso","Lower","Nižje"),m.low);
@@ -2081,6 +2086,17 @@ function snowModelHTML(m){
   return `<div class="snq"><h4>${head}</h4>${rows}${nt}${nx}<div class="f">${L2("Stima indicativa da temperatura, sole, vento e nevicate: verifica sempre sul posto.","Rough estimate from temperature, sun, wind and snowfall: always check on site.","Okvirna ocena iz temperature, sonca, vetra in sneženja: vedno preveri na terenu.")}</div></div>`;
 }
 
+// strnjena varianta: enake ekspozicije v eni vrstici, brez ponovljenega opozorila
+function snowModelHTMLg(m){
+  const head=L2("Neve stimata per esposizione · 1800–2100 m","Estimated snow by aspect · 1800–2100 m","Ocena snega po ekspozicijah · 1800–2100 m");
+  const G=[]; ASP.forEach(a=>{const o=m.rows[a]; const g=G.find(x=>x.t===o.t); if(g) g.a.push(a); else G.push({t:o.t,c:o.c,a:[a]});});
+  const lab=g=>g.a.length===4?L2("Ovunque","Everywhere","Povsod"):SQ==="c"?g.a.map(a=>L2(...ASPN[a])).join(" · "):g.a.map(a=>L2(...ASPC[a])).join(" · ");
+  const r=(l,o)=>SQ==="c"?`<div class="r rc"><span class="a"><i style="background:${o.c}"></i>${l}</span><span>${o.t}</span></div>`:`<div class="r rb"><span class="a"><i style="background:${o.c}"></i>${l}</span><span>${o.t}</span></div>`;
+  const rows=G.map(g=>r(lab(g),g)).join("")+r(L2("In basso","Lower","Nižje"),m.low);
+  const nt=m.notes.map(x=>`<div class="f">💡 ${x}</div>`).join("");
+  const nx=m.next.length?`<div class="f">${L2("Prossime 24 h","Next 24 h","Naslednjih 24 h")}: ${m.next.join(" · ")}</div>`:"";
+  return `<div class="snq"><h4>${head}</h4>${rows}${nt}${nx}</div>`;
+}
 /* ===== Valutazione automatica delle condizioni ===== */
 let BUL=null;
 const COND={minBase:50, thinBase:80, slabSnow:10, bigSnow:30, slabWind:25, slabGust:50, gustHi:60, gustVHi:80, snowSoon:10};
